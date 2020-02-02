@@ -1,1 +1,1 @@
-# project-outpost
+# Project Outpost
