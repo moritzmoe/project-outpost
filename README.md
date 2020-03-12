@@ -15,7 +15,7 @@ Welcome to Project Outpost. This repository contains all the necessary informati
     - With Docker installed you can easily spin up the database needed for this app to run and [Adminer](https://www.adminer.org/de/) *(an admin UI to work on your database from the browser)*. 
     Open a terminal/cmd window within Visual Studio Code and run:
     ```
-    docker-compose up
+    docker-compose up -d
     ```
     - The database and admin UI are now running in containers on your machine. The admin UI can be reached via your browser at `localhost:9000`. The credentials to access the database from the admin UI are:
     ```
