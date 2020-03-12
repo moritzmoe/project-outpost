@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-const sequelize = new Sequelize('database', 'postgres', 'example', {
+const sequelize = new Sequelize('postgres', 'postgres', 'my_pass', {
   host: 'localhost',
   dialect: 'postgres'
 });
@@ -91,4 +91,4 @@ Account.findAll({
 }).then(accounts => console.log(JSON.stringify(accounts, null, 4)));
 
 
-app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
+app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
