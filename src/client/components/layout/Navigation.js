@@ -11,12 +11,15 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+
 import HomeIcon from '@material-ui/icons/Home';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,12 +39,23 @@ const useStyles = makeStyles(theme => ({
   fullList: {
     width: 'auto',
   },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+    marginRight: theme.spacing(2),
+  },
+  profileSection: {
+    backgroundColor: theme.palette.primary.light,
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  }
 }));
 
 export default function Navigation() {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   const toggleDrawer = bool => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -58,30 +72,36 @@ export default function Navigation() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem button key="Home">
+        <ListItem key="User" className={classes.profileSection}>
+          <Avatar className={classes.large}>
+            <PersonIcon />
+          </Avatar>
+          <ListItemText primary="Hey Moritz!" />
+        </ListItem>
+        <ListItem button onClick={() => setSelected(0)} selected={selected === 0} key="Home">
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button key="Timeline">
+        <ListItem button onClick={() => setSelected(1)} selected={selected === 1} key="Timeline">
           <ListItemIcon><TimelineIcon /></ListItemIcon>
           <ListItemText primary="Timeline" />
         </ListItem>
-        <ListItem button key="Shopping">
+        <ListItem button onClick={() => setSelected(2)} selected={selected === 2} key="Shopping">
           <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
           <ListItemText primary="Shopping" />
         </ListItem>
-        <ListItem button key="Friends">
+        <ListItem button onClick={() => setSelected(3)} selected={selected === 3} key="Friends">
           <ListItemIcon><GroupIcon /></ListItemIcon>
           <ListItemText primary="Friends" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button key="Settings">
+        <ListItem button onClick={() => setSelected(4)} selected={selected === 4} key="Settings">
           <ListItemIcon><SettingsIcon /></ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button key="Logout">
+        <ListItem button onClick={() => setSelected(null)} key="Logout">
           <ListItemIcon><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItem>
