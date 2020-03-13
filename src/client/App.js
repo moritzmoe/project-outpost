@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { teal, amber } from '@material-ui/core/colors';
+import amber from '@material-ui/core/colors/amber';
 
 import Navigation from './components/layout/Navigation';
 import Login from './components/Login';
 
 const theme = createMuiTheme({
   palette: {
-    primary: teal,
+    primary: {
+      light: '#80cbc4',
+      main: '#009688',
+    },
     secondary: amber,
   },
   status: {
