@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  passwordAlert: {
+    marginTop: theme.spacing(7),
+  },
 }));
 
 function Alert(props) {
@@ -118,6 +121,7 @@ export default function SignIn() {
           open={wrong}
           autoHideDuration={6000}
           onClose={handleClose}
+          className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
             Wrong Username or Password
