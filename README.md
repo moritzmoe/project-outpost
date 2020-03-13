@@ -69,4 +69,4 @@ Use the following settings with the extensions above installed:
 | ---------------- | --------------------|
 | Frontend         | React w/ Material UI|
 | Backend          | node.js  w/ express | 
-| Database         | mariadb             |  
+| Database         | PostgreSQL          |  
