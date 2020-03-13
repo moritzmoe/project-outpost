@@ -24,9 +24,11 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    position: 'absolute',
   },
   title: {
     flexGrow: 1,
+    textAlign: 'center',
   },
   list: {
     width: 250,
@@ -95,7 +97,7 @@ export default function Navigation() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Project Outpost
+            Login
           </Typography>
         </Toolbar>
       </AppBar>
