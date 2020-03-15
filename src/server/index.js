@@ -62,4 +62,17 @@ app.get('/api/logout', withAuth, (req, res) => {
   res.clearCookie('token').sendStatus(200);
 });
 
+
+if (process.env.NODE_ENV === 'production') {
+  // Exprees will serve up production assets
+  app.use(express.static('client/build'));
+
+  // Express serve up index.html file if it doesn't recognize route
+  // eslint-disable-next-line global-require
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
