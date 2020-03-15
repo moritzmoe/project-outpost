@@ -33,13 +33,15 @@ export default class App extends Component {
       <div>
         <ThemeProvider theme={theme}>
           <Navigation />
-          <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/" exact component={withAuth(Home)} />
-            <Route path="/timeline" component={withAuth(Timeline)} />
-            <Route path="/shopping" component={withAuth(Shopping)} />
+          <div>
+            <Switch>
+              <Route path="/" exact component={withAuth(Home)} />
+              <Route path="/login" component={Login} />
+              <Route path="/timeline" component={withAuth(Timeline)} />
+              <Route path="/shopping" component={withAuth(Shopping)} />
 
-          </Switch>
+            </Switch>
+          </div>
         </ThemeProvider>
       </div>
     );

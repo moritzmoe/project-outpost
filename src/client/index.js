@@ -4,4 +4,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import RouterHistory from './Tools/RouterHistory';
 
-ReactDOM.render(<Router history={RouterHistory}><App /></Router>, document.getElementById('root'));
+ReactDOM.render(
+  <Router history={RouterHistory}>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
