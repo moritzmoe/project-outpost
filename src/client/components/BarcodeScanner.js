@@ -35,7 +35,7 @@ function initQuagga() {
     inputStream: {
       name: 'Live',
       type: 'LiveStream',
-      target: document.querySelector('#barcode-scanner') // Or '#yourElement' (optional)
+      target: document.querySelector('#barcode-scanner')
     },
     decoder: {
       readers: ['ean_reader']
