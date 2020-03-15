@@ -27,10 +27,6 @@ app.get('/api/home', (req, res) => {
   res.send('Welcome!');
 });
 
-app.get('/api/secret', withAuth, (req, res) => {
-  res.send('The password is potato');
-});
-
 app.post('/api/register', (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
