@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,6 +21,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
+import RouterHistory from '../../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,7 +57,13 @@ export default function Navigation() {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(0);
+
+  const logout = () => {
+    setSelected(0);
+    axios.get('/api/logout');
+    RouterHistory.push('/login');
+  };
 
   const toggleDrawer = bool => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -63,6 +71,7 @@ export default function Navigation() {
     }
     setOpen(bool);
   };
+
 
   const sideList = () => (
     <div
@@ -78,15 +87,15 @@ export default function Navigation() {
           </Avatar>
           <ListItemText primary="Hey Moritz!" />
         </ListItem>
-        <ListItem button onClick={() => setSelected(0)} selected={selected === 0} key="Home">
+        <ListItem button onClick={() => { setSelected(0); RouterHistory.push('/'); }} selected={selected === 0} key="Home">
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button onClick={() => setSelected(1)} selected={selected === 1} key="Timeline">
+        <ListItem button onClick={() => { setSelected(1); RouterHistory.push('/timeline'); }} selected={selected === 1} key="Timeline">
           <ListItemIcon><TimelineIcon /></ListItemIcon>
           <ListItemText primary="Timeline" />
         </ListItem>
-        <ListItem button onClick={() => setSelected(2)} selected={selected === 2} key="Shopping">
+        <ListItem button onClick={() => { setSelected(2); RouterHistory.push('/shopping'); }} selected={selected === 2} key="Shopping">
           <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
           <ListItemText primary="Shopping" />
         </ListItem>
@@ -101,7 +110,7 @@ export default function Navigation() {
           <ListItemIcon><SettingsIcon /></ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button onClick={() => setSelected(null)} key="Logout">
+        <ListItem button onClick={() => logout()} key="Logout">
           <ListItemIcon><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItem>
