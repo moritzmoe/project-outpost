@@ -1,5 +1,5 @@
 /* eslint-disable no-alert */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -11,6 +11,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
+import RouterHistory from '../../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -42,19 +43,31 @@ function Alert(props) {
 export default function SignIn() {
   const classes = useStyles();
 
-  const [username, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [wrong, setWrong] = useState(false);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    axios.post('/api/auth', { username, password })
+    axios.post('/api/auth', { email, password })
       .then((res) => {
-        if (res.data === 'incorrect') {
-          setWrong(true);
+        if (res.status === 200) {
+          RouterHistory.push('/');
         }
+      })
+      .catch(() => {
+        setWrong(true);
       });
   };
+
+  useEffect(() => {
+    fetch('/api/checkToken')
+      .then((res) => {
+        if (res.status === 200) {
+          axios.get('/api/logout');
+        }
+      });
+  }, []);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -82,13 +95,13 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
+            id="email"
+            label="E-Mail"
+            name="email"
+            autoComplete="email"
             autoFocus
-            value={username}
-            onChange={e => setName(e.target.value)}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -124,7 +137,7 @@ export default function SignIn() {
           className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
-            Wrong Username or Password
+            Wrong E-Mail or Password
           </Alert>
         </Snackbar>
       </div>
