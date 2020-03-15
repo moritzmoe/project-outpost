@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 //   dialect: 'postgres'
 // });
 
-const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgres', 'postgres', 'my_pass', {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   protocol: 'postgres',
   dialectOptions: {
