@@ -2,7 +2,8 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const sequelize = new Sequelize('postgres', 'postgres', 'my_pass', {
+
+const sequelize = new Sequelize(process.env.DATABASE_URI || 'postgres', 'postgres', 'my_pass', {
   host: 'localhost',
   dialect: 'postgres'
 });
