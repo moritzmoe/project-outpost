@@ -80,5 +80,4 @@ const BarcodeScanner = (props) => {
     </div>
   );
 };
-
 export default BarcodeScanner;
