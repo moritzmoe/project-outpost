@@ -1,20 +1,37 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 
+let sequelize;
+if (process.env.NODE_ENV === 'production') {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+      ssl: true
+    }
+  });
+} else {
+  sequelize = new Sequelize('postgres', 'postgres', 'my_pass', {
+    host: 'localhost',
+    dialect: 'postgres'
+  });
+}
 
-// const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgres', 'postgres', 'my_pass', {
+// const sequelize = new Sequelize(process.env.DATABASE_URL || ('postgres', 'postgres', 'my_pass'), {
 //   host: 'localhost',
 //   dialect: 'postgres'
 // });
+// const connectionString = process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL : ['postgres', 'postgres', 'my_pass'];
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  protocol: 'postgres',
-  dialectOptions: {
-    ssl: true
-  }
-});
+// const sequelize = new Sequelize(connectionString, {
+//   dialect: 'postgres',
+//   protocol: 'postgres',
+//   dialectOptions: {
+//     ssl: true
+//   }
+// });
 
 sequelize
   .authenticate()
