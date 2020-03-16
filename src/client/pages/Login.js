@@ -11,6 +11,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
 import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
@@ -126,6 +128,13 @@ export default function SignIn() {
             Log in
           </Button>
         </form>
+        <Grid container justify="flex-end">
+          <Grid item>
+            <Link href="/signup" variant="body2">
+              Don&apos;t have an Account? Sign up
+            </Link>
+          </Grid>
+        </Grid>
         <Snackbar
           anchorOrigin={{
             vertical: 'top',

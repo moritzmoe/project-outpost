@@ -29,13 +29,17 @@ app.get('/api/home', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  const { email, password } = req.body;
+  const {
+    email, firstname, lastname, password
+  } = req.body;
   console.log(req.body);
   User.create({
-    password,
-    email
+    email,
+    firstname,
+    lastname,
+    password
   });
-  res.send('registered');
+  res.status(200).send('registered');
 });
 
 app.post('/api/auth', (req, res) => {

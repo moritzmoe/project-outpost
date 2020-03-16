@@ -5,6 +5,7 @@ import amber from '@material-ui/core/colors/amber';
 
 import Navigation from './components/layout/Navigation';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import withAuth from './components/withAuth';
 
 import Home from './pages/Home';
@@ -37,9 +38,9 @@ export default class App extends Component {
             <Switch>
               <Route path="/" exact component={withAuth(Home)} />
               <Route path="/login" component={Login} />
+              <Route path="/signup" component={SignUp} />
               <Route path="/timeline" component={withAuth(Timeline)} />
               <Route path="/shopping" component={withAuth(Shopping)} />
-
             </Switch>
           </div>
         </ThemeProvider>
