@@ -1,5 +1,5 @@
 import React from 'react';
-import BarcodeScanner from '../../components/BarcodeScanner';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 function showBarcodeScannerResult(result) {
   console.log(`Scanner Result: ${result}`);

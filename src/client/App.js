@@ -4,12 +4,12 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 
 import Navigation from './components/layout/Navigation';
-import Login from './pages/Login/Login';
+import Login from './pages/Login';
 import withAuth from './components/withAuth';
 
-import Home from './pages/Home/Home';
-import Timeline from './pages/Timeline/Timeline';
-import Shopping from './pages/Shopping/Shopping';
+import Home from './pages/Home';
+import Timeline from './pages/Timeline';
+import Shopping from './pages/Shopping';
 
 const theme = createMuiTheme({
   palette: {

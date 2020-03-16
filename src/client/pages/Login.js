@@ -11,7 +11,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import RouterHistory from '../../Tools/RouterHistory';
+import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
   paper: {
