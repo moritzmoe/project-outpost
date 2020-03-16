@@ -130,7 +130,7 @@ export default function SignIn() {
         </form>
         <Grid container justify="flex-end">
           <Grid item>
-            <Link href="/signup" variant="body2">
+            <Link href="/signup" onClick={(evt) => { evt.preventDefault(); RouterHistory.push('/signup'); }} variant="body2">
               Don&apos;t have an Account? Sign up
             </Link>
           </Grid>
