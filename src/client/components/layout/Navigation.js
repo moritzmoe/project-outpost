@@ -23,13 +23,14 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import RouterHistory from '../../Tools/RouterHistory';
 
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    position: 'absolute',
+    position: 'absolute'
   },
   title: {
     flexGrow: 1,
@@ -53,14 +54,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 export default function Navigation() {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState('Login');
 
   const logout = () => {
-    setSelected(0);
+    setSelected('Login');
     axios.get('/api/logout');
     RouterHistory.push('/login');
   };
@@ -71,7 +73,6 @@ export default function Navigation() {
     }
     setOpen(bool);
   };
-
 
   const sideList = () => (
     <div
@@ -85,28 +86,27 @@ export default function Navigation() {
           <Avatar className={classes.large}>
             <PersonIcon />
           </Avatar>
-          <ListItemText primary="Hey Moritz!" />
         </ListItem>
-        <ListItem button onClick={() => { setSelected(0); RouterHistory.push('/'); }} selected={selected === 0} key="Home">
+        <ListItem button onClick={() => { setSelected('Home'); RouterHistory.push('/'); }} selected={selected === 'Home'} key="Home">
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button onClick={() => { setSelected(1); RouterHistory.push('/timeline'); }} selected={selected === 1} key="Timeline">
+        <ListItem button onClick={() => { setSelected('Timeline'); RouterHistory.push('/timeline'); }} selected={selected === 'Timeline'} key="Timeline">
           <ListItemIcon><TimelineIcon /></ListItemIcon>
           <ListItemText primary="Timeline" />
         </ListItem>
-        <ListItem button onClick={() => { setSelected(2); RouterHistory.push('/shopping'); }} selected={selected === 2} key="Shopping">
+        <ListItem button onClick={() => { setSelected('Shopping'); RouterHistory.push('/shopping'); }} selected={selected === 'Shopping'} key="Shopping">
           <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
           <ListItemText primary="Shopping" />
         </ListItem>
-        <ListItem button onClick={() => setSelected(3)} selected={selected === 3} key="Friends">
+        <ListItem button onClick={() => { setSelected('Friends'); RouterHistory.push('/friends'); }} selected={selected === 'Friends'} key="Friends">
           <ListItemIcon><GroupIcon /></ListItemIcon>
           <ListItemText primary="Friends" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button onClick={() => setSelected(4)} selected={selected === 4} key="Settings">
+        <ListItem button onClick={() => { setSelected('Settings'); RouterHistory.push('/settings'); }} selected={selected === 'Settings'} key="Settings">
           <ListItemIcon><SettingsIcon /></ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
@@ -126,7 +126,7 @@ export default function Navigation() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Login
+            {selected}
           </Typography>
         </Toolbar>
       </AppBar>
