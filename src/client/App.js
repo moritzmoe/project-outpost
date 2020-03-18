@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Navigation from './components/layout/Navigation';
 import Login from './pages/Login';
@@ -33,6 +34,7 @@ export default class App extends Component {
     return (
       <div>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Navigation />
           <div>
             <Switch>
