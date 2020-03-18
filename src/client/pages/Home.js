@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
-
+import Container from '@material-ui/core/Container';
 
 export default class Home extends React.Component {
   constructor() {
@@ -20,10 +20,10 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <Container maxWidth="sm">
         <h1>Home</h1>
         <p>{this.state.message}</p>
-      </div>
+      </Container>
     );
   }
 }

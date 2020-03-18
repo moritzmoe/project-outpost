@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import Container from '@material-ui/core/Container';
 import BarcodeScanner from '../components/BarcodeScanner';
-
 
 export default function Shopping() {
   const [result, setResult] = useState('');
@@ -11,10 +11,10 @@ export default function Shopping() {
   }
 
   return (
-    <div>
+    <Container maxWidth="sm">
       <h1>Shopping</h1>
       <p>{result}</p>
       <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
-    </div>
+    </Container>
   );
 }
