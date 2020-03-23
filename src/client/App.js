@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -27,7 +28,25 @@ const theme = createMuiTheme({
 });
 
 export default class App extends Component {
+  state = {
+    loggedIn: false
+  }
+
   componentDidMount() {
+    fetch('/api/checkToken')
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState({
+            loggedIn: true
+          });
+        }
+      });
+  }
+
+  isLoggedIn = (loggedIn) => {
+    this.setState({
+      loggedIn
+    });
   }
 
   render() {
@@ -35,11 +54,11 @@ export default class App extends Component {
       <div>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Navigation />
+          <Navigation loggedIn={this.state.loggedIn} isLoggedIn={this.isLoggedIn} />
           <div>
             <Switch>
               <Route path="/" exact component={withAuth(Home)} />
-              <Route path="/login" component={Login} />
+              <Route path="/login" component={() => <Login isLoggedIn={this.isLoggedIn} />} />
               <Route path="/signup" component={SignUp} />
               <Route path="/timeline" component={withAuth(Timeline)} />
               <Route path="/shopping" component={withAuth(Shopping)} />

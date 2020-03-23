@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-alert */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -41,7 +42,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
@@ -54,6 +55,7 @@ export default function SignIn() {
       .then((res) => {
         if (res.status === 200) {
           RouterHistory.push('/');
+          props.isLoggedIn(true);
         }
       })
       .catch(() => {

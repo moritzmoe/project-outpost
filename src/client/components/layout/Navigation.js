@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -55,15 +56,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function Navigation() {
+export default function Navigation(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('Login');
 
+
   const logout = () => {
     setSelected('Login');
-    axios.get('/api/logout');
+    props.isLoggedIn(false);
     RouterHistory.push('/login');
   };
 
@@ -122,21 +124,25 @@ export default function Navigation() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" onClick={() => setOpen(!open)} className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
+          { props.loggedIn ? (
+            <IconButton edge="start" onClick={() => setOpen(!open)} className={classes.menuButton} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          ) : '' }
           <Typography variant="h6" className={classes.title}>
             {selected}
           </Typography>
         </Toolbar>
       </AppBar>
-      <SwipeableDrawer
-        open={open}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-      >
-        {sideList('left')}
-      </SwipeableDrawer>
+      { props.loggedIn ? (
+        <SwipeableDrawer
+          open={open}
+          onClose={toggleDrawer(false)}
+          onOpen={toggleDrawer(true)}
+        >
+          {sideList('left')}
+        </SwipeableDrawer>
+      ) : ''}
     </div>
   );
 }
