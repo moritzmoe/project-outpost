@@ -64,10 +64,10 @@ export default function SignIn(props) {
   };
 
   useEffect(() => {
-    fetch('/api/checkToken')
+    fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
-          axios.get('/api/logout');
+          axios.get('/api/auth/logout');
         }
       });
   }, []);
