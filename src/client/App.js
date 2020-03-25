@@ -33,7 +33,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/checkToken')
+    fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
           this.setState({

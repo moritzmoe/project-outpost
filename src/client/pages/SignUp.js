@@ -52,7 +52,7 @@ export default function SignUp() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    axios.post('/api/register', {
+    axios.post('/api/auth/register', {
       email, firstname, lastname, password
     }).then((res) => {
       if (res.status === 200) {
@@ -64,7 +64,7 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    fetch('/api/checkToken')
+    fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
           axios.get('/api/logout');
