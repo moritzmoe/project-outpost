@@ -13,6 +13,7 @@ import withAuth from './components/withAuth';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import Shopping from './pages/Shopping';
+import Items from './pages/Items';
 
 const theme = createMuiTheme({
   palette: {
@@ -23,7 +24,7 @@ const theme = createMuiTheme({
     secondary: amber,
   },
   status: {
-    danger: 'orange',
+    danger: 'orange'
   },
 });
 
@@ -61,6 +62,7 @@ export default class App extends Component {
               <Route path="/login" component={() => <Login isLoggedIn={this.isLoggedIn} />} />
               <Route path="/signup" component={SignUp} />
               <Route path="/timeline" component={withAuth(Timeline)} />
+              <Route path="/items" component={withAuth(Items)} />
               <Route path="/shopping" component={withAuth(Shopping)} />
             </Switch>
           </div>
