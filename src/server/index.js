@@ -41,7 +41,7 @@ app.use('/api/items', require('./routes/items'));
 app.use('/api/auth', require('./routes/auth'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')));
+  app.use(express.static('/'));
 }
 app.get('/', (request, response) => {
   response.sendFile(path.resolve('dist', 'index.html'));
