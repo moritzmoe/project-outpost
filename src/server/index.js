@@ -40,13 +40,11 @@ app.use('/api/items', require('./routes/items'));
 // Authentication/Registration routes
 app.use('/api/auth', require('./routes/auth'));
 
-
 if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join('dist')));// Handle React routing, return all requests to React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.join('dist', 'index.html'));
-  });
+  app.use(express.static('../dist'));
 }
+app.get('*', (request, response) => {
+  response.sendFile(path.join(__dirname, '../dist', 'index.html'));
+});
 
 app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
