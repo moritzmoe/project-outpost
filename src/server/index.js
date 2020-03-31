@@ -2,14 +2,10 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const path = require('path');
 
 const db = require('./config/database');
 
 const path = '/app/dist';
-
-console.log('Dir name');
-console.log(__dirname);
 
 db
   .authenticate()
