@@ -69,6 +69,8 @@ export default function Items() {
   const [packmat, setPackmat] = useState('');
   const [origin, setOrigin] = useState('');
   const [score, setScore] = useState('');
+  const [barcodeErr, setBarcodeErr] = useState(false);
+  const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
 
   useEffect(() => {
     axios.get('/api/items').then((res) => { setItems(res.data); });
@@ -80,6 +82,8 @@ export default function Items() {
 
   const handleClose = () => {
     setOpen(false);
+    setBarcodeErr(false);
+    setBarcodeErrMsg('');
     setBarcode('');
     setName('');
     setCategory('');
@@ -89,7 +93,13 @@ export default function Items() {
     setScore('');
   };
 
-  const handleItemCreate = () => {
+  const handleItemCreate = (evt) => {
+    evt.preventDefault();
+    if (barcode.length !== 13) {
+      setBarcodeErr(true);
+      setBarcodeErrMsg('Currently only 13 Digit EAN Barcodes are supported.');
+      return;
+    }
     axios.post('/api/items', {
       name, category, barcode, packtype, packmat, origin, score
     }).then((res) => {
@@ -116,7 +126,6 @@ export default function Items() {
   };
 
   const handleItemDelete = () => {
-    console.log('Delete called');
     axios.delete(`/api/items/${idToDelete}`).then((res) => {
       if (res.status === 200) {
         axios.get('/api/items').then((response) => { setItems(response.data); });
@@ -179,77 +188,88 @@ export default function Items() {
           Add Item
         </Fab>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please provide the following information to add an item to the database:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="barcode"
-              label="Barcode"
-              type="number"
-              fullWidth
-              onChange={e => setBarcode(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              id="itemname"
-              label="Name"
-              type="text"
-              fullWidth
-              onChange={e => setName(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              id="itemcategory"
-              label="Category"
-              type="text"
-              fullWidth
-              onChange={e => setCategory(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              id="packtype"
-              label="Packaging Type"
-              type="text"
-              fullWidth
-              onChange={e => setPacktype(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              id="packmat"
-              label="Packaging Material"
-              type="text"
-              fullWidth
-              onChange={e => setPackmat(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              id="origin"
-              label="Origin"
-              type="text"
-              fullWidth
-              onChange={e => setOrigin(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              id="score"
-              label="Score"
-              type="text"
-              fullWidth
-              onChange={e => setScore(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleItemCreate} color="primary">
-              Add Item
-            </Button>
-          </DialogActions>
+          <form onSubmit={handleItemCreate}>
+            <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please provide the following information to add an item to the database:
+              </DialogContentText>
+              <TextField
+                error={barcodeErr}
+                helperText={barcodeErrMsg}
+                autoFocus
+                required
+                margin="dense"
+                id="barcode"
+                label="EAN-13 Barcode"
+                type="number"
+                fullWidth
+                onChange={e => setBarcode(e.target.value)}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="itemname"
+                label="Name"
+                type="text"
+                fullWidth
+                onChange={e => setName(e.target.value)}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="itemcategory"
+                label="Category"
+                type="text"
+                fullWidth
+                onChange={e => setCategory(e.target.value)}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="packtype"
+                label="Packaging Type"
+                type="text"
+                fullWidth
+                onChange={e => setPacktype(e.target.value)}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="packmat"
+                label="Packaging Material"
+                type="text"
+                fullWidth
+                onChange={e => setPackmat(e.target.value)}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="origin"
+                label="Origin"
+                type="text"
+                fullWidth
+                onChange={e => setOrigin(e.target.value)}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="score"
+                label="Score"
+                type="text"
+                fullWidth
+                onChange={e => setScore(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button type="submit" color="primary">
+                Add Item
+              </Button>
+            </DialogActions>
+          </form>
         </Dialog>
         <Dialog
           open={deleteAlert}
