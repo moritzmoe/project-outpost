@@ -9,6 +9,9 @@ const db = require('./config/database');
 const outputDirectory = '/dist/';
 const path = `${__dirname}/dist`;
 
+console.log('Dir name');
+console.log(__dirname);
+
 db
   .authenticate()
   .then(() => {
