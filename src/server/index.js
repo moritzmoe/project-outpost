@@ -2,11 +2,12 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const path = require('path');
+// const path = require('path');
 
 const db = require('./config/database');
 
-const outputDirectory = 'dist';
+const outputDirectory = '/dist/';
+const path = `${__dirname}/dist`;
 
 db
   .authenticate()
@@ -42,7 +43,10 @@ app.use('/api/items', require('./routes/items'));
 app.use('/api/auth', require('./routes/auth'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(outputDirectory));
+  app.use(express.static(path));
+  app.get('*', (req, res) => {
+    res.sendFile(`${path}/index.html`);
+  });
 }
 
 app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
