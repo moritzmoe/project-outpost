@@ -2,10 +2,10 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 
 const db = require('./config/database');
 
+const path = '/app/dist';
 
 db
   .authenticate()
@@ -40,12 +40,10 @@ app.use('/api/items', require('./routes/items'));
 // Authentication/Registration routes
 app.use('/api/auth', require('./routes/auth'));
 
-
 if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join('dist')));// Handle React routing, return all requests to React app
+  app.use(express.static(path));
   app.get('*', (req, res) => {
-    res.sendFile(path.join('dist', 'index.html'));
+    res.sendFile(`${path}/index.html`);
   });
 }
 
