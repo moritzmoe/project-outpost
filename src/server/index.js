@@ -41,10 +41,10 @@ app.use('/api/items', require('./routes/items'));
 app.use('/api/auth', require('./routes/auth'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../../dist'));
+  app.use(express.static(`${__dirname}/`));
 }
 app.get('*', (request, response) => {
-  response.sendFile(path.join(__dirname, '../../dist', 'index.html'));
+  response.sendFile(path.resolve(__dirname, 'index.html'));
 });
 
 app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
