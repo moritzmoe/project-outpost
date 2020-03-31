@@ -44,8 +44,5 @@ app.use('/api/auth', require('./routes/auth'));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, outputDirectory)));
 }
-app.get('*', (request, response) => {
-  response.sendFile(path.resolve(path.join(__dirname, outputDirectory), 'index.html'));
-});
 
 app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
