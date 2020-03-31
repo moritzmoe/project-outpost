@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('/'));
 }
 app.get('*', (request, response) => {
-  response.sendFile(path.resolve('index.html'));
+  response.sendFile(path.resolve('dist', 'index.html'));
 });
 
 app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
