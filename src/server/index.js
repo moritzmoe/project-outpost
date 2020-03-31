@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const db = require('./config/database');
 
 const outputDirectory = '/dist/';
-const path = `${__dirname}/dist`;
+const path = '/dist';
 
 console.log('Dir name');
 console.log(__dirname);
