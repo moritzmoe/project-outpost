@@ -22,6 +22,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
+import StorageIcon from '@material-ui/icons/Storage';
 import RouterHistory from '../../Tools/RouterHistory';
 
 
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   list: {
     width: 250,
@@ -105,6 +106,10 @@ export default function Navigation(props) {
           <ListItemIcon><GroupIcon /></ListItemIcon>
           <ListItemText primary="Friends" />
         </ListItem>
+        <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
+          <ListItemIcon><StorageIcon /></ListItemIcon>
+          <ListItemText primary="Item Database" />
+        </ListItem>
       </List>
       <Divider />
       <List>
@@ -122,7 +127,7 @@ export default function Navigation(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           { props.loggedIn ? (
             <IconButton edge="start" onClick={() => setOpen(!open)} className={classes.menuButton} color="inherit" aria-label="menu">
