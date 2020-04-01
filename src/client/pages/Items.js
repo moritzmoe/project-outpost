@@ -19,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 
 const useStyles = makeStyles(theme => ({
@@ -71,13 +72,21 @@ export default function Items() {
   const [score, setScore] = useState('');
   const [barcodeErr, setBarcodeErr] = useState(false);
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
+  const [openBarcode, setOpenBarcode] = useState(false);
+
+  function showBarcodeScannerResult(scanResult) {
+    setBarcode(scanResult);
+    console.log(`Scanner Result: ${barcode}`);
+    setOpenBarcode(false);
+    setOpen(true);
+  }
 
   useEffect(() => {
     axios.get('/api/items').then((res) => { setItems(res.data); });
   }, []);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenBarcode(true);
   };
 
   const handleClose = () => {
@@ -187,6 +196,12 @@ export default function Items() {
           <AddIcon />
           Add Item
         </Fab>
+        <Dialog open={openBarcode}>
+           <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
+           <DialogContent>
+              <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
+           </DialogContent>
+        </Dialog>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <form onSubmit={handleItemCreate}>
             <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
@@ -199,12 +214,13 @@ export default function Items() {
                 helperText={barcodeErrMsg}
                 autoFocus
                 required
+                value={barcode}
                 margin="dense"
                 id="barcode"
                 label="EAN-13 Barcode"
                 type="number"
                 fullWidth
-                onChange={e => setBarcode(e.target.value)}
+                disabled
               />
               <TextField
                 required
