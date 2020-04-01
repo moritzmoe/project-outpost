@@ -4,7 +4,8 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
@@ -19,6 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import { CardActionArea } from '@material-ui/core';
 import BarcodeScanner from '../components/BarcodeScanner';
 
 
@@ -50,8 +52,13 @@ const useStyles = makeStyles(theme => ({
   button: {
     marginLeft: theme.spacing(1),
     marginBottom: theme.spacing(1)
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
   }
-
 }));
 
 
@@ -59,9 +66,10 @@ export default function Items() {
   const classes = useStyles();
 
   const [items, setItems] = useState([]);
+  const [id, setId] = useState(0);
   const [idToDelete, setIdToDelete] = useState(0);
   const [nameToDelete, setNameToDelete] = useState('');
-  const [open, setOpen] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [barcode, setBarcode] = useState('');
   const [name, setName] = useState('');
@@ -73,12 +81,13 @@ export default function Items() {
   const [barcodeErr, setBarcodeErr] = useState(false);
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
   const [openBarcode, setOpenBarcode] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
 
   function showBarcodeScannerResult(scanResult) {
     setBarcode(scanResult);
     console.log(`Scanner Result: ${barcode}`);
     setOpenBarcode(false);
-    setOpen(true);
+    setOpenCreate(true);
   }
 
   useEffect(() => {
@@ -93,8 +102,13 @@ export default function Items() {
     setOpenBarcode(false);
   };
 
+  const handleDetailsClose = () => {
+    setOpenDetails(false);
+  };
+
   const handleClose = () => {
-    setOpen(false);
+    setOpenDetails(false);
+    setOpenCreate(false);
     setBarcodeErr(false);
     setBarcodeErrMsg('');
     setBarcode('');
@@ -104,6 +118,21 @@ export default function Items() {
     setPackmat('');
     setOrigin('');
     setScore('');
+  };
+
+  const handleItemDetails = (passedId) => {
+    console.log('Handle Details called');
+    axios.get(`/api/items/${passedId}`).then((res) => {
+      setId(res.data[0].id);
+      setBarcode(res.data[0].barcode);
+      setName(res.data[0].name);
+      setCategory(res.data[0].category);
+      setPacktype(res.data[0].packtype);
+      setPackmat(res.data[0].packmat);
+      setOrigin(res.data[0].origin);
+      setScore(res.data[0].score);
+      setOpenDetails(true);
+    });
   };
 
   const handleItemCreate = (evt) => {
@@ -126,8 +155,27 @@ export default function Items() {
     });
   };
 
-  const handleDeleteAlertOpen = (id, itemName) => {
-    setIdToDelete(id);
+  const handleItemChange = (evt) => {
+    evt.preventDefault();
+    if (barcode.length !== 13) {
+      setBarcodeErr(true);
+      setBarcodeErrMsg('Currently only 13 Digit EAN Barcodes are supported.');
+      return;
+    }
+    axios.put(`/api/items/${id}`, {
+      name, category, barcode, packtype, packmat, origin, score
+    }).then((res) => {
+      if (res.status === 200) {
+        axios.get('/api/items').then((response) => { setItems(response.data); });
+        handleClose();
+      }
+    }).catch((err) => {
+      console.log(err);
+      handleClose();
+    });
+  };
+  const handleDeleteAlertOpen = (passedId, itemName) => {
+    setIdToDelete(passedId);
     setNameToDelete(itemName);
     setDeleteAlert(true);
   };
@@ -145,6 +193,7 @@ export default function Items() {
       }
     });
     handleDeleteAlertClose();
+    handleDetailsClose();
   };
 
 
@@ -155,43 +204,33 @@ export default function Items() {
           {items.map(value => (
             <Grid key={value.id} item>
               <Card className={classes.root}>
-                <CardContent>
-                  <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    {value.barcode}
-                  </Typography>
-                  <Typography variant="h5" component="h2">
-                    {value.name}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {value.category}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {value.packtype}
-                    <br />
-                    {value.packmat}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    startIcon={<EditIcon />}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    className={classes.deleteButton}
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleDeleteAlertOpen(value.id, value.name)}
-                  >
-                    Delete
-                  </Button>
-                </CardActions>
+                <CardActionArea onClick={() => handleItemDetails(value.id)}>
+                  <CardContent>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                      {value.barcode}
+                    </Typography>
+                    <Typography variant="h5" component="h2">
+                      {value.name}
+                    </Typography>
+                    <Typography color="textSecondary">
+                      {value.category}
+                    </Typography>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" component="p">
+                          {value.packtype}
+                          <br />
+                          {value.packmat}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6} align="right">
+                        <Typography variant="h4" align="right" color="primary">
+                          {value.score}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </CardActionArea>
               </Card>
             </Grid>
           ))}
@@ -206,7 +245,107 @@ export default function Items() {
             <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
           </DialogContent>
         </Dialog>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={openDetails} onClose={handleDetailsClose}>
+          <DialogTitle id="form-dialog-title">
+            {name}
+            <Typography color="textSecondary" variant="body2">
+              ID:
+              {' '}
+              {id}
+            </Typography>
+            <IconButton className={classes.closeButton} onClick={handleDetailsClose}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <form onSubmit={handleItemChange}>
+            <DialogContent>
+              <TextField
+                error={barcodeErr}
+                helperText={barcodeErrMsg}
+                value={barcode}
+                type="number"
+                fullWidth
+                required
+                margin="dense"
+                label="EAN-13 Barcode"
+                onChange={e => setBarcode(e.target.value)}
+              />
+              <TextField
+                value={name}
+                fullWidth
+                required
+                margin="dense"
+                label="Name"
+                onChange={e => setName(e.target.value)}
+              />
+              <TextField
+                value={category}
+                fullWidth
+                required
+                margin="dense"
+                label="Category"
+                onChange={e => setCategory(e.target.value)}
+              />
+              <TextField
+                value={packtype}
+                fullWidth
+                required
+                margin="dense"
+                label="Packaging Type"
+                onChange={e => setPacktype(e.target.value)}
+              />
+              <TextField
+                value={packmat}
+                fullWidth
+                required
+                margin="dense"
+                label="Packaging Material"
+                onChange={e => setPackmat(e.target.value)}
+              />
+              <TextField
+                value={origin}
+                fullWidth
+                required
+                margin="dense"
+                label="Origin"
+                onChange={e => setOrigin(e.target.value)}
+              />
+              <TextField
+                value={score}
+                fullWidth
+                required
+                margin="dense"
+                type="number"
+                label="Score"
+                onChange={e => setScore(e.target.value)}
+              />
+
+            </DialogContent>
+            <DialogActions>
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                className={classes.deleteButton}
+                startIcon={<DeleteIcon />}
+                onClick={() => handleDeleteAlertOpen(id, name)}
+              >
+                Delete
+              </Button>
+              <Button
+                type="submit"
+                size="small"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={<EditIcon />}
+              >
+                Save Changes
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+        <Dialog open={openCreate} onClose={handleClose} aria-labelledby="form-dialog-title">
           <form onSubmit={handleItemCreate}>
             <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
             <DialogContent>
@@ -220,7 +359,6 @@ export default function Items() {
                 required
                 value={barcode}
                 margin="dense"
-                id="barcode"
                 label="EAN-13 Barcode"
                 type="number"
                 fullWidth
@@ -229,7 +367,6 @@ export default function Items() {
               <TextField
                 required
                 margin="dense"
-                id="itemname"
                 label="Name"
                 type="text"
                 fullWidth
@@ -274,9 +411,8 @@ export default function Items() {
               <TextField
                 required
                 margin="dense"
-                id="score"
                 label="Score"
-                type="text"
+                type="number"
                 fullWidth
                 onChange={e => setScore(e.target.value)}
               />
@@ -294,8 +430,6 @@ export default function Items() {
         <Dialog
           open={deleteAlert}
           onClose={handleDeleteAlertClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
             Delete
