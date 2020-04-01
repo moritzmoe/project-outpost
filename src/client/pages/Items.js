@@ -89,6 +89,10 @@ export default function Items() {
     setOpenBarcode(true);
   };
 
+  const handleBarcodeDialogClose = () => {
+    setOpenBarcode(false);
+  };
+
   const handleClose = () => {
     setOpen(false);
     setBarcodeErr(false);
@@ -196,11 +200,11 @@ export default function Items() {
           <AddIcon />
           Add Item
         </Fab>
-        <Dialog open={openBarcode}>
-           <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
-           <DialogContent>
-              <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
-           </DialogContent>
+        <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
+          <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
+          <DialogContent>
+            <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
+          </DialogContent>
         </Dialog>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <form onSubmit={handleItemCreate}>
