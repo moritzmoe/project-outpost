@@ -27,7 +27,7 @@ export default class Home extends React.Component {
     let totalScore = 0;
     axios.get('/api/items').then((data) => {
       data.data.map((item) => {
-        totalScore = parseInt(totalScore) + parseInt(item.score);
+        totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
       });
       this.setState({ score: totalScore });
     });
