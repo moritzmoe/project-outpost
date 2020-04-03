@@ -21,8 +21,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { CardActionArea } from '@material-ui/core';
+import Slider from '@material-ui/core/Slider';
 import BarcodeScanner from '../components/BarcodeScanner';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,6 +58,9 @@ const useStyles = makeStyles(theme => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500]
+  },
+  scoreText: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -310,16 +313,18 @@ export default function Items() {
                 label="Origin"
                 onChange={e => setOrigin(e.target.value)}
               />
-              <TextField
-                value={score}
-                fullWidth
+              <Typography gutterBottom className={classes.scoreText}>
+                Score:
+              </Typography>
+              <Slider
                 required
-                margin="dense"
-                type="number"
-                label="Score"
-                onChange={e => setScore(e.target.value)}
+                defaultValue={score}
+                step={1}
+                min={0}
+                max={100}
+                valueLabelDisplay="auto"
+                onChange={e => setScore(e.target.innerText)}
               />
-
             </DialogContent>
             <DialogActions>
               <Button
@@ -408,13 +413,17 @@ export default function Items() {
                 fullWidth
                 onChange={e => setOrigin(e.target.value)}
               />
-              <TextField
+              <Typography gutterBottom className={classes.scoreText}>
+                Score:
+              </Typography>
+              <Slider
                 required
-                margin="dense"
-                label="Score"
-                type="number"
-                fullWidth
-                onChange={e => setScore(e.target.value)}
+                defaultValue={10}
+                step={1}
+                min={0}
+                max={100}
+                valueLabelDisplay="auto"
+                onChange={e => setScore(e.target.innerText)}
               />
             </DialogContent>
             <DialogActions>
