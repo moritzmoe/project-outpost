@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
@@ -41,7 +42,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
@@ -64,6 +65,7 @@ export default function SignUp() {
   };
 
   useEffect(() => {
+    props.reportPageName('Sign Up');
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {

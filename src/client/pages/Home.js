@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import Container from '@material-ui/core/Container';
@@ -17,6 +18,7 @@ export default class Home extends React.Component {
 
   componentDidMount() {
     // GET message from server using fetch api
+    this.props.reportPageName('Home');
     fetch('/api/home')
       .then(res => res.text())
       .then(res => this.setState({ message: res }));

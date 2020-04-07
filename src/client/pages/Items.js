@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function Items() {
+export default function Items(props) {
   const classes = useStyles();
 
   const [items, setItems] = useState([]);
@@ -95,6 +96,7 @@ export default function Items() {
 
   useEffect(() => {
     axios.get('/api/items').then((res) => { setItems(res.data); });
+    props.reportPageName('Item Database');
   }, []);
 
   const handleClickOpen = () => {

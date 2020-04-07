@@ -64,6 +64,7 @@ export default function SignIn(props) {
   };
 
   useEffect(() => {
+    props.reportPageName('Login');
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
