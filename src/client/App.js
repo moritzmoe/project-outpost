@@ -1,11 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import Navigation from './components/layout/Navigation';
+import Navigation from './components/Navigation';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import withAuth from './components/withAuth';
@@ -28,46 +28,48 @@ const theme = createMuiTheme({
   },
 });
 
-export default class App extends Component {
-  state = {
-    loggedIn: false
-  }
 
-  componentDidMount() {
+export default function App() {
+  const [loggedIn, setloggedIn] = useState(false);
+  const [pageName, setPageName] = useState('Project Outpost');
+
+  useEffect(() => {
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
-          this.setState({
-            loggedIn: true
-          });
+          setloggedIn(true);
         }
       });
-  }
+  }, []);
 
-  isLoggedIn = (loggedIn) => {
-    this.setState({
-      loggedIn
-    });
-  }
+  const isLoggedIn = (logIn) => {
+    setloggedIn(logIn);
+  };
 
-  render() {
-    return (
+  const reportPageName = (name) => {
+    setPageName(name);
+  };
+
+  return (
+    <div>
       <div>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Navigation loggedIn={this.state.loggedIn} isLoggedIn={this.isLoggedIn} />
+          <Navigation loggedIn={loggedIn} pageName={pageName} isLoggedIn={isLoggedIn} />
           <div>
             <Switch>
-              <Route path="/" exact component={withAuth(Home)} />
-              <Route path="/login" component={() => <Login isLoggedIn={this.isLoggedIn} />} />
-              <Route path="/signup" component={SignUp} />
-              <Route path="/timeline" component={withAuth(Timeline)} />
-              <Route path="/items" component={withAuth(Items)} />
-              <Route path="/shopping" component={withAuth(Shopping)} />
+              {/* no authentication needed */}
+              <Route path="/login" component={() => <Login isLoggedIn={isLoggedIn} reportPageName={reportPageName} />} />
+              <Route path="/signup" component={() => <SignUp reportPageName={reportPageName} />} />
+              {/* authentication needed */}
+              <Route path="/" exact component={withAuth(() => <Home reportPageName={reportPageName} />)} />
+              <Route path="/timeline" component={withAuth(() => <Timeline reportPageName={reportPageName} />)} />
+              <Route path="/items" component={withAuth(() => <Items reportPageName={reportPageName} />)} />
+              <Route path="/shopping" component={withAuth(() => <Shopping reportPageName={reportPageName} />)} />
             </Switch>
           </div>
         </ThemeProvider>
       </div>
-    );
-  }
+    </div>
+  );
 }
