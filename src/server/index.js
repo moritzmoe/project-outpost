@@ -47,4 +47,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
+const server = app.listen(process.env.PORT || 8081, () => console.log(`Listening on port ${process.env.PORT || 8081}!`));
+
+process.on('SIGINT', () => {
+  server.close();
+  console.log('Kill Express Server');
+  process.exit(0);
+});
