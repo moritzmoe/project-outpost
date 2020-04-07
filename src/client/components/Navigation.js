@@ -23,7 +23,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import StorageIcon from '@material-ui/icons/Storage';
-import RouterHistory from '../../Tools/RouterHistory';
+import RouterHistory from '../Tools/RouterHistory';
 
 
 const useStyles = makeStyles(theme => ({
@@ -135,7 +135,7 @@ export default function Navigation(props) {
             </IconButton>
           ) : '' }
           <Typography variant="h6" className={classes.title}>
-            {selected}
+            {props.pageName}
           </Typography>
         </Toolbar>
       </AppBar>
