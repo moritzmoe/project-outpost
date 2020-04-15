@@ -1,52 +1,36 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSetStoreValue } from 'react-context-hook';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
-export default class Home extends React.Component {
-  constructor() {
-    super();
-    // Set default message
-    this.state = {
-      message: 'Loading...',
-      score: ''
-    };
-    this.setScore();
-  }
+export default function Home() {
+  const [score, setScore] = useState(0);
+  const setPageName = useSetStoreValue('pageName');
 
-  componentDidMount() {
-    // GET message from server using fetch api
-    this.props.reportPageName('Home');
-    fetch('/api/home')
-      .then(res => res.text())
-      .then(res => this.setState({ message: res }));
-  }
-
-  setScore = (evt) => {
-    // evt.preventDefault();
-    let totalScore = 0;
+  useEffect(() => {
     axios.get('/api/items').then((data) => {
+      let totalScore = 0;
       data.data.map((item) => {
         totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
       });
-      this.setState({ score: totalScore });
+      setScore(totalScore);
     });
-  };
-
-  render() {
-    return (
+    setPageName('Home');
+  }, []);
+  return (
+    <div>
       <Container maxWidth="sm">
-        <h1>Home</h1>
-        <p>{this.state.message}</p>
         <Typography variant="h5" component="h2" gutterBottom>
           Your total Score:
         </Typography>
         <Typography variant="h3" component="h2" gutterBottom>
-          {this.state.score}
+          {score}
         </Typography>
       </Container>
-    );
-  }
+    </div>
+  );
 }
