@@ -50,6 +50,7 @@ export default function SignUp(props) {
   const [lastname, setLastname] = useState('');
   const [password, setPassword] = useState('');
   const [failed, setFailed] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -59,7 +60,8 @@ export default function SignUp(props) {
       if (res.status === 200) {
         RouterHistory.push('/login');
       }
-    }).catch(() => {
+    }).catch((res) => {
+      setErrMsg(res.response.data.error);
       setFailed(true);
     });
   };
@@ -128,6 +130,7 @@ export default function SignUp(props) {
                 variant="outlined"
                 required
                 fullWidth
+                type="email"
                 id="email"
                 label="E-Mail"
                 name="email"
@@ -179,7 +182,7 @@ export default function SignUp(props) {
           className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
-            Registration failed!
+            {errMsg}
           </Alert>
         </Snackbar>
       </div>
