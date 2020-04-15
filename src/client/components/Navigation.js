@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -52,6 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   profileSection: {
     backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.dark,
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
   }
@@ -63,6 +66,8 @@ export default function Navigation(props) {
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('Login');
+  const pageName = useStoreValue('pageName', 'Project Outpost');
+  const userFirstname = useStoreValue('userFirstname');
 
 
   const logout = () => {
@@ -90,6 +95,9 @@ export default function Navigation(props) {
           <Avatar className={classes.large}>
             <PersonIcon />
           </Avatar>
+          <Typography variant="h5">
+            {`Hey ${userFirstname}!`}
+          </Typography>
         </ListItem>
         <ListItem button onClick={() => { setSelected('Home'); RouterHistory.push('/'); }} selected={selected === 'Home'} key="Home">
           <ListItemIcon><HomeIcon /></ListItemIcon>
@@ -139,7 +147,7 @@ export default function Navigation(props) {
             </IconButton>
           ) : '' }
           <Typography variant="h6" className={classes.title}>
-            {props.pageName}
+            {pageName}
           </Typography>
         </Toolbar>
       </AppBar>
