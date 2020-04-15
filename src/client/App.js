@@ -6,6 +6,8 @@ import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/sty
 import amber from '@material-ui/core/colors/amber';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import { withStore, useSetStoreValue } from 'react-context-hook';
+import axios from 'axios';
 import Navigation from './components/Navigation';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
@@ -15,6 +17,7 @@ import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import Shopping from './pages/Shopping';
 import Items from './pages/Items';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -35,13 +38,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
-export default function App() {
+function App() {
   const [loggedIn, setloggedIn] = useState(false);
-  const [pageName, setPageName] = useState('Project Outpost');
   const classes = useStyles();
+  const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
 
   useEffect(() => {
+    axios.get('/api/auth/checkToken').then((res) => {
+      if (res.status === 200) {
+        setloggedIn(true);
+        axios.get('/api/auth/user').then((response) => {
+          console.log(response);
+          setUserFirstname(response.data.firstname);
+        });
+      }
+    });
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
@@ -54,26 +65,22 @@ export default function App() {
     setloggedIn(logIn);
   };
 
-  const reportPageName = (name) => {
-    setPageName(name);
-  };
-
   return (
     <div>
       <div>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Navigation loggedIn={loggedIn} pageName={pageName} isLoggedIn={isLoggedIn} />
+          <Navigation loggedIn={loggedIn} isLoggedIn={isLoggedIn} />
           <div className={classes.content}>
             <Switch>
               {/* no authentication needed */}
-              <Route path="/login" component={() => <Login isLoggedIn={isLoggedIn} reportPageName={reportPageName} />} />
-              <Route path="/signup" component={() => <SignUp reportPageName={reportPageName} />} />
+              <Route path="/login" component={() => <Login isLoggedIn={isLoggedIn} />} />
+              <Route path="/signup" component={() => <SignUp />} />
               {/* authentication needed */}
-              <Route path="/" exact component={withAuth(() => <Home reportPageName={reportPageName} />)} />
-              <Route path="/timeline" component={withAuth(() => <Timeline reportPageName={reportPageName} />)} />
-              <Route path="/items" component={withAuth(() => <Items reportPageName={reportPageName} />)} />
-              <Route path="/shopping" component={withAuth(() => <Shopping reportPageName={reportPageName} />)} />
+              <Route path="/" exact component={withAuth(() => <Home />)} />
+              <Route path="/timeline" component={withAuth(() => <Timeline />)} />
+              <Route path="/items" component={withAuth(() => <Items />)} />
+              <Route path="/shopping" component={withAuth(() => <Shopping />)} />
             </Switch>
           </div>
         </ThemeProvider>
@@ -81,3 +88,5 @@ export default function App() {
     </div>
   );
 }
+
+export default withStore(App);
