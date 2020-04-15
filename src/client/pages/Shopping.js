@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
+import { useSetStoreValue } from 'react-context-hook';
 import BarcodeScanner from '../components/BarcodeScanner';
 
-export default function Shopping(props) {
+export default function Shopping() {
   const [result, setResult] = useState('');
 
+  const setPageName = useSetStoreValue('pageName');
+
   useEffect(() => {
-    props.reportPageName('Shopping');
+    setPageName('Shopping');
   }, []);
 
   function showBarcodeScannerResult(scanResult) {

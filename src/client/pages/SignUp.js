@@ -13,6 +13,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useSetStoreValue } from 'react-context-hook';
 import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
@@ -42,7 +43,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SignUp(props) {
+export default function SignUp() {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
@@ -51,6 +52,8 @@ export default function SignUp(props) {
   const [password, setPassword] = useState('');
   const [failed, setFailed] = useState(false);
   const [errMsg, setErrMsg] = useState('');
+
+  const setPageName = useSetStoreValue('pageName');
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -67,7 +70,7 @@ export default function SignUp(props) {
   };
 
   useEffect(() => {
-    props.reportPageName('Sign Up');
+    setPageName('Sign Up');
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
