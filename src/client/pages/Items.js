@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSetStoreValue } from 'react-context-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -31,9 +32,6 @@ const useStyles = makeStyles(theme => ({
   },
   control: {
     padding: theme.spacing(2)
-  },
-  container: {
-    marginTop: theme.spacing(10)
   },
   deleteButton: {
     color: theme.palette.getContrastText(red[400]),
@@ -86,6 +84,8 @@ export default function Items() {
   const [openBarcode, setOpenBarcode] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
 
+  const setPageName = useSetStoreValue('pageName');
+
   function showBarcodeScannerResult(scanResult) {
     setBarcode(scanResult);
     console.log(`Scanner Result: ${barcode}`);
@@ -95,6 +95,7 @@ export default function Items() {
 
   useEffect(() => {
     axios.get('/api/items').then((res) => { setItems(res.data); });
+    setPageName('Item Database');
   }, []);
 
   const handleClickOpen = () => {
@@ -202,7 +203,7 @@ export default function Items() {
 
   return (
     <div>
-      <Container className={classes.container}>
+      <Container>
         <Grid container justify="center" spacing={2}>
           {items.map(value => (
             <Grid key={value.id} item>

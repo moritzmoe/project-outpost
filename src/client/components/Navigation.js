@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +16,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 import HomeIcon from '@material-ui/icons/Home';
 import TimelineIcon from '@material-ui/icons/Timeline';
@@ -23,7 +26,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import StorageIcon from '@material-ui/icons/Storage';
-import RouterHistory from '../../Tools/RouterHistory';
+import RouterHistory from '../Tools/RouterHistory';
 
 
 const useStyles = makeStyles(theme => ({
@@ -51,6 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   profileSection: {
     backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.dark,
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
   }
@@ -62,6 +66,8 @@ export default function Navigation(props) {
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('Login');
+  const pageName = useStoreValue('pageName', 'Project Outpost');
+  const userFirstname = useStoreValue('userFirstname');
 
 
   const logout = () => {
@@ -89,6 +95,9 @@ export default function Navigation(props) {
           <Avatar className={classes.large}>
             <PersonIcon />
           </Avatar>
+          <Typography variant="h5">
+            {`Hey ${userFirstname}!`}
+          </Typography>
         </ListItem>
         <ListItem button onClick={() => { setSelected('Home'); RouterHistory.push('/'); }} selected={selected === 'Home'} key="Home">
           <ListItemIcon><HomeIcon /></ListItemIcon>
@@ -106,6 +115,9 @@ export default function Navigation(props) {
           <ListItemIcon><GroupIcon /></ListItemIcon>
           <ListItemText primary="Friends" />
         </ListItem>
+      </List>
+      <Divider />
+      <List subheader={<ListSubheader>Logged in as Administrator:</ListSubheader>}>
         <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
           <ListItemIcon><StorageIcon /></ListItemIcon>
           <ListItemText primary="Item Database" />
@@ -135,7 +147,7 @@ export default function Navigation(props) {
             </IconButton>
           ) : '' }
           <Typography variant="h6" className={classes.title}>
-            {selected}
+            {pageName}
           </Typography>
         </Toolbar>
       </AppBar>

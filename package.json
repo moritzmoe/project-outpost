@@ -23,7 +23,6 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.16.3",
-    "express-session": "^1.17.0",
     "history": "^4.10.1",
     "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
@@ -32,8 +31,10 @@
     "prop-types": "^15.7.2",
     "quagga": "^0.12.1",
     "react": "^16.5.2",
+    "react-context-hook": "^2.1.0",
     "react-dom": "^16.5.2",
     "react-router-dom": "^5.1.2",
+    "recharts": "^1.8.5",
     "sequelize": "^5.21.5",
     "webpack": "^4.5.0"
   },

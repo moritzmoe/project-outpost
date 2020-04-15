@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,6 +13,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useSetStoreValue } from 'react-context-hook';
 import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
@@ -49,6 +51,9 @@ export default function SignUp() {
   const [lastname, setLastname] = useState('');
   const [password, setPassword] = useState('');
   const [failed, setFailed] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+
+  const setPageName = useSetStoreValue('pageName');
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -58,12 +63,14 @@ export default function SignUp() {
       if (res.status === 200) {
         RouterHistory.push('/login');
       }
-    }).catch(() => {
+    }).catch((res) => {
+      setErrMsg(res.response.data.error);
       setFailed(true);
     });
   };
 
   useEffect(() => {
+    setPageName('Sign Up');
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
@@ -126,6 +133,7 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
+                type="email"
                 id="email"
                 label="E-Mail"
                 name="email"
@@ -177,7 +185,7 @@ export default function SignUp() {
           className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
-            Registration failed!
+            {errMsg}
           </Alert>
         </Snackbar>
       </div>

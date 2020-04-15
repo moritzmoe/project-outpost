@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import { useSetStoreValue } from 'react-context-hook';
 import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
@@ -49,11 +50,17 @@ export default function SignIn(props) {
   const [password, setPassword] = useState('');
   const [wrong, setWrong] = useState(false);
 
+  const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
+  const setPageName = useSetStoreValue('pageName');
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     axios.post('/api/auth', { email, password })
       .then((res) => {
         if (res.status === 200) {
+          axios.get('/api/auth/user').then((response) => {
+            setUserFirstname(response.data.firstname);
+          });
           RouterHistory.push('/');
           props.isLoggedIn(true);
         }
@@ -64,6 +71,7 @@ export default function SignIn(props) {
   };
 
   useEffect(() => {
+    setPageName('Login');
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
@@ -97,6 +105,7 @@ export default function SignIn(props) {
             margin="normal"
             required
             fullWidth
+            type="email"
             id="email"
             label="E-Mail"
             name="email"

@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 const jwt = require('jsonwebtoken');
 
-const secret = 'mysecret';
+const secret = process.env.SECRET || 'pro_out_secret';
 const withAuth = function (req, res, next) {
   const { token } = req.cookies;
 
@@ -12,7 +12,7 @@ const withAuth = function (req, res, next) {
       if (err) {
         res.status(401).send('Unauthorized: Invalid token');
       } else {
-        req.email = decoded.email;
+        req.userId = decoded.id;
         next();
       }
     });

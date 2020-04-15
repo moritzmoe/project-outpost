@@ -1,11 +1,14 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/destructuring-assignment */
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import Navigation from './components/layout/Navigation';
+import { withStore, useSetStoreValue } from 'react-context-hook';
+import axios from 'axios';
+import Navigation from './components/Navigation';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import withAuth from './components/withAuth';
@@ -14,6 +17,7 @@ import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import Shopping from './pages/Shopping';
 import Items from './pages/Items';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -28,46 +32,61 @@ const theme = createMuiTheme({
   },
 });
 
-export default class App extends Component {
-  state = {
-    loggedIn: false
+const useStyles = makeStyles(theme => ({
+  content: {
+    marginTop: theme.spacing(10)
   }
+}));
 
-  componentDidMount() {
+function App() {
+  const [loggedIn, setloggedIn] = useState(false);
+  const classes = useStyles();
+  const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
+
+  useEffect(() => {
+    axios.get('/api/auth/checkToken').then((res) => {
+      if (res.status === 200) {
+        setloggedIn(true);
+        axios.get('/api/auth/user').then((response) => {
+          console.log(response);
+          setUserFirstname(response.data.firstname);
+        });
+      }
+    });
     fetch('/api/auth/checkToken')
       .then((res) => {
         if (res.status === 200) {
-          this.setState({
-            loggedIn: true
-          });
+          setloggedIn(true);
         }
       });
-  }
+  }, []);
 
-  isLoggedIn = (loggedIn) => {
-    this.setState({
-      loggedIn
-    });
-  }
+  const isLoggedIn = (logIn) => {
+    setloggedIn(logIn);
+  };
 
-  render() {
-    return (
+  return (
+    <div>
       <div>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Navigation loggedIn={this.state.loggedIn} isLoggedIn={this.isLoggedIn} />
-          <div>
+          <Navigation loggedIn={loggedIn} isLoggedIn={isLoggedIn} />
+          <div className={classes.content}>
             <Switch>
-              <Route path="/" exact component={withAuth(Home)} />
-              <Route path="/login" component={() => <Login isLoggedIn={this.isLoggedIn} />} />
-              <Route path="/signup" component={SignUp} />
-              <Route path="/timeline" component={withAuth(Timeline)} />
-              <Route path="/items" component={withAuth(Items)} />
-              <Route path="/shopping" component={withAuth(Shopping)} />
+              {/* no authentication needed */}
+              <Route path="/login" component={() => <Login isLoggedIn={isLoggedIn} />} />
+              <Route path="/signup" component={() => <SignUp />} />
+              {/* authentication needed */}
+              <Route path="/" exact component={withAuth(() => <Home />)} />
+              <Route path="/timeline" component={withAuth(() => <Timeline />)} />
+              <Route path="/items" component={withAuth(() => <Items />)} />
+              <Route path="/shopping" component={withAuth(() => <Shopping />)} />
             </Switch>
           </div>
         </ThemeProvider>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default withStore(App);
