@@ -1,7 +1,8 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/destructuring-assignment */
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -28,10 +29,17 @@ const theme = createMuiTheme({
   },
 });
 
+const useStyles = makeStyles(theme => ({
+  content: {
+    marginTop: theme.spacing(10)
+  }
+}));
+
 
 export default function App() {
   const [loggedIn, setloggedIn] = useState(false);
   const [pageName, setPageName] = useState('Project Outpost');
+  const classes = useStyles();
 
   useEffect(() => {
     fetch('/api/auth/checkToken')
@@ -56,6 +64,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Navigation loggedIn={loggedIn} pageName={pageName} isLoggedIn={isLoggedIn} />
+          <div className={classes.content} {/*needed because position of navbar is absolute */}/>
           <div>
             <Switch>
               {/* no authentication needed */}

@@ -33,9 +33,6 @@ const useStyles = makeStyles(theme => ({
   control: {
     padding: theme.spacing(2)
   },
-  container: {
-    marginTop: theme.spacing(10)
-  },
   deleteButton: {
     color: theme.palette.getContrastText(red[400]),
     backgroundColor: red[400],
@@ -204,7 +201,7 @@ export default function Items(props) {
 
   return (
     <div>
-      <Container className={classes.container}>
+      <Container>
         <Grid container justify="center" spacing={2}>
           {items.map(value => (
             <Grid key={value.id} item>
