@@ -14,6 +14,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 import HomeIcon from '@material-ui/icons/Home';
 import TimelineIcon from '@material-ui/icons/Timeline';
@@ -106,6 +107,9 @@ export default function Navigation(props) {
           <ListItemIcon><GroupIcon /></ListItemIcon>
           <ListItemText primary="Friends" />
         </ListItem>
+      </List>
+      <Divider />
+      <List subheader={<ListSubheader>Logged in as Administrator:</ListSubheader>}>
         <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
           <ListItemIcon><StorageIcon /></ListItemIcon>
           <ListItemText primary="Item Database" />
