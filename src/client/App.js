@@ -64,8 +64,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Navigation loggedIn={loggedIn} pageName={pageName} isLoggedIn={isLoggedIn} />
-          <div className={classes.content} {/*needed because position of navbar is absolute */}/>
-          <div>
+          <div className={classes.content}>
             <Switch>
               {/* no authentication needed */}
               <Route path="/login" component={() => <Login isLoggedIn={isLoggedIn} reportPageName={reportPageName} />} />
