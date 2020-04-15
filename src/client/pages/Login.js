@@ -98,6 +98,7 @@ export default function SignIn(props) {
             margin="normal"
             required
             fullWidth
+            type="email"
             id="email"
             label="E-Mail"
             name="email"
