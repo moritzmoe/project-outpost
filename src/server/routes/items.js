@@ -5,14 +5,14 @@ const router = express.Router();
 
 const Item = require('../models/item');
 
-const withAuth = require('../middleware');
+const withAdmin = require('../middleware/admin');
 
 
-router.get('/', withAuth, (req, res) => Item.findAll().then((items) => {
+router.get('/', withAdmin, (req, res) => Item.findAll().then((items) => {
   res.send(items);
 }).catch(err => console.log(err)));
 
-router.get('/:id', withAuth, (req, res) => {
+router.get('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   Item.findAll({
     where: {
@@ -22,7 +22,7 @@ router.get('/:id', withAuth, (req, res) => {
 });
 
 
-router.post('/', withAuth, (req, res) => {
+router.post('/', withAdmin, (req, res) => {
   const {
     name, category, barcode, packtype, packmat, origin, score
   } = req.body;
@@ -39,7 +39,7 @@ router.post('/', withAuth, (req, res) => {
 });
 
 
-router.delete('/:id', withAuth, (req, res) => {
+router.delete('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   Item.destroy({
     where: {
@@ -50,7 +50,7 @@ router.delete('/:id', withAuth, (req, res) => {
 });
 
 
-router.put('/:id', withAuth, (req, res) => {
+router.put('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const {
     name, category, barcode, packtype, packmat, origin, score
