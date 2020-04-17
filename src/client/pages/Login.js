@@ -33,10 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  passwordAlert: {
-    marginTop: theme.spacing(7),
-  },
+  }
 }));
 
 function Alert(props) {
