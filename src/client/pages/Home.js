@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable no-mixed-spaces-and-tabs */
@@ -24,6 +25,7 @@ class SimplePieChart extends React.Component {
     	<PieChart width={350} height={350} onMouseEnter={this.onPieEnter}>
       <Pie
         data={data}
+        dataKey="value"
         cx={175}
         cy={175}
         innerRadius={100}
@@ -32,7 +34,7 @@ class SimplePieChart extends React.Component {
         paddingAngle={5}
       >
         {
-          	data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
+          	data.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)
           }
       </Pie>
     </PieChart>
@@ -54,6 +56,7 @@ export default function Home() {
     });
     setPageName('Home');
   }, []);
+
   return (
     <div>
       <Container maxWidth="sm">
