@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const User = require('../models/user');
-const withAuth = require('../middleware');
+const withAuth = require('../middleware/auth');
+const withAdmin = require('../middleware/admin');
 
 const secret = process.env.SECRET || 'pro_out_secret';
 
@@ -23,7 +24,7 @@ router.post('/', (req, res) => {
     if (user === null || !user.validPassword(password)) {
       res.status(401).json({ error: 'Invalid' });
     } else {
-      const payload = { id: user.id };
+      const payload = { id: user.id, isAdmin: user.isAdmin };
       const token = jwt.sign(payload, secret, {
         expiresIn: 3600
       });
@@ -73,6 +74,13 @@ router.post('/register', (req, res) => {
 // @desc Check if token is valid (returns 401 if no token is provided)
 // @access private
 router.get('/checkToken', withAuth, (req, res) => {
+  res.sendStatus(200);
+});
+
+// @route GET /api/auth/checkAdmin
+// @desc Check if user is admin (returns 401 if user is not admin)
+// @access admin
+router.get('/checkAdmin', withAdmin, (req, res) => {
   res.sendStatus(200);
 });
 

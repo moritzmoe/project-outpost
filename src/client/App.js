@@ -42,14 +42,15 @@ function App() {
   const [loggedIn, setloggedIn] = useState(false);
   const classes = useStyles();
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
+  const setIsAdmin = useSetStoreValue('isAdmin', false);
 
   useEffect(() => {
     axios.get('/api/auth/checkToken').then((res) => {
       if (res.status === 200) {
         setloggedIn(true);
         axios.get('/api/auth/user').then((response) => {
-          console.log(response);
           setUserFirstname(response.data.firstname);
+          setIsAdmin(response.data.isAdmin);
         });
       }
     });
@@ -70,7 +71,9 @@ function App() {
       <div>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Navigation loggedIn={loggedIn} isLoggedIn={isLoggedIn} />
+          {loggedIn ? (
+            <Navigation loggedIn={loggedIn} isLoggedIn={isLoggedIn} />
+          ) : ''}
           <div className={classes.content}>
             <Switch>
               {/* no authentication needed */}
