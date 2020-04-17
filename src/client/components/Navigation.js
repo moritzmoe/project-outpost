@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStoreValue } from 'react-context-hook';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -68,7 +68,11 @@ export default function Navigation(props) {
   const [selected, setSelected] = useState('Login');
   const pageName = useStoreValue('pageName', 'Project Outpost');
   const userFirstname = useStoreValue('userFirstname');
+  const isAdmin = useStoreValue('isAdmin');
 
+  useEffect(() => {
+    console.log('Navigation did mount');
+  }, []);
 
   const logout = () => {
     setSelected('Login');
@@ -116,13 +120,17 @@ export default function Navigation(props) {
           <ListItemText primary="Friends" />
         </ListItem>
       </List>
-      <Divider />
-      <List subheader={<ListSubheader>Logged in as Administrator:</ListSubheader>}>
-        <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
-          <ListItemIcon><StorageIcon /></ListItemIcon>
-          <ListItemText primary="Item Database" />
-        </ListItem>
-      </List>
+      { isAdmin ? (
+        <>
+          <Divider />
+          <List subheader={<ListSubheader>Logged in as Administrator:</ListSubheader>}>
+            <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
+              <ListItemIcon><StorageIcon /></ListItemIcon>
+              <ListItemText primary="Item Database" />
+            </ListItem>
+          </List>
+        </>
+      ) : ''}
       <Divider />
       <List>
         <ListItem button onClick={() => { setSelected('Settings'); RouterHistory.push('/settings'); }} selected={selected === 'Settings'} key="Settings">
