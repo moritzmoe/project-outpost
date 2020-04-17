@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSetStoreValue } from 'react-context-hook';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -85,6 +85,7 @@ export default function Items() {
   const [openDetails, setOpenDetails] = useState(false);
 
   const setPageName = useSetStoreValue('pageName');
+  const isAdmin = useStoreValue('isAdmin');
 
   function showBarcodeScannerResult(scanResult) {
     setBarcode(scanResult);
@@ -203,260 +204,262 @@ export default function Items() {
 
   return (
     <div>
-      <Container>
-        <Grid container justify="center" spacing={2}>
-          {items.map(value => (
-            <Grid key={value.id} item>
-              <Card className={classes.root}>
-                <CardActionArea onClick={() => handleItemDetails(value.id)}>
-                  <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                      {value.barcode}
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                      {value.name}
-                    </Typography>
-                    <Typography color="textSecondary">
-                      {value.category}
-                    </Typography>
-                    <Grid container>
-                      <Grid item xs={6}>
-                        <Typography variant="body2" component="p">
-                          {value.packtype}
-                          <br />
-                          {value.packmat}
-                        </Typography>
+      {isAdmin ? (
+        <Container>
+          <Grid container justify="center" spacing={2}>
+            {items.map(value => (
+              <Grid key={value.id} item>
+                <Card className={classes.root}>
+                  <CardActionArea onClick={() => handleItemDetails(value.id)}>
+                    <CardContent>
+                      <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        {value.barcode}
+                      </Typography>
+                      <Typography variant="h5" component="h2">
+                        {value.name}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        {value.category}
+                      </Typography>
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <Typography variant="body2" component="p">
+                            {value.packtype}
+                            <br />
+                            {value.packmat}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6} align="right">
+                          <Typography variant="h4" align="right" color="primary">
+                            {value.score}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={6} align="right">
-                        <Typography variant="h4" align="right" color="primary">
-                          {value.score}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handleClickOpen}>
-          <AddIcon />
-          Add Item
-        </Fab>
-        <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
-          <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
-          <DialogContent>
-            <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
-          </DialogContent>
-        </Dialog>
-        <Dialog open={openDetails} onClose={handleDetailsClose}>
-          <DialogTitle id="form-dialog-title">
-            {name}
-            <Typography color="textSecondary" variant="body2">
-              ID:
-              {' '}
-              {id}
-            </Typography>
-            <IconButton className={classes.closeButton} onClick={handleDetailsClose}>
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <form onSubmit={handleItemChange}>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handleClickOpen}>
+            <AddIcon />
+            Add Item
+          </Fab>
+          <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
+            <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
             <DialogContent>
-              <TextField
-                error={barcodeErr}
-                helperText={barcodeErrMsg}
-                value={barcode}
-                type="number"
-                fullWidth
-                required
-                margin="dense"
-                label="EAN-13 Barcode"
-                onChange={e => setBarcode(e.target.value)}
-              />
-              <TextField
-                value={name}
-                fullWidth
-                required
-                margin="dense"
-                label="Name"
-                onChange={e => setName(e.target.value)}
-              />
-              <TextField
-                value={category}
-                fullWidth
-                required
-                margin="dense"
-                label="Category"
-                onChange={e => setCategory(e.target.value)}
-              />
-              <TextField
-                value={packtype}
-                fullWidth
-                required
-                margin="dense"
-                label="Packaging Type"
-                onChange={e => setPacktype(e.target.value)}
-              />
-              <TextField
-                value={packmat}
-                fullWidth
-                required
-                margin="dense"
-                label="Packaging Material"
-                onChange={e => setPackmat(e.target.value)}
-              />
-              <TextField
-                value={origin}
-                fullWidth
-                required
-                margin="dense"
-                label="Origin"
-                onChange={e => setOrigin(e.target.value)}
-              />
-              <Typography gutterBottom className={classes.scoreText}>
-                Score:
-              </Typography>
-              <Slider
-                required
-                defaultValue={score}
-                step={1}
-                min={0}
-                max={100}
-                valueLabelDisplay="auto"
-                onChange={e => setScore(e.target.innerText)}
-              />
+              <BarcodeScanner callback={showBarcodeScannerResult} stopOnDetect stopOnClick />
             </DialogContent>
+          </Dialog>
+          <Dialog open={openDetails} onClose={handleDetailsClose}>
+            <DialogTitle id="form-dialog-title">
+              {name}
+              <Typography color="textSecondary" variant="body2">
+                ID:
+                {' '}
+                {id}
+              </Typography>
+              <IconButton className={classes.closeButton} onClick={handleDetailsClose}>
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+            <form onSubmit={handleItemChange}>
+              <DialogContent>
+                <TextField
+                  error={barcodeErr}
+                  helperText={barcodeErrMsg}
+                  value={barcode}
+                  type="number"
+                  fullWidth
+                  required
+                  margin="dense"
+                  label="EAN-13 Barcode"
+                  onChange={e => setBarcode(e.target.value)}
+                />
+                <TextField
+                  value={name}
+                  fullWidth
+                  required
+                  margin="dense"
+                  label="Name"
+                  onChange={e => setName(e.target.value)}
+                />
+                <TextField
+                  value={category}
+                  fullWidth
+                  required
+                  margin="dense"
+                  label="Category"
+                  onChange={e => setCategory(e.target.value)}
+                />
+                <TextField
+                  value={packtype}
+                  fullWidth
+                  required
+                  margin="dense"
+                  label="Packaging Type"
+                  onChange={e => setPacktype(e.target.value)}
+                />
+                <TextField
+                  value={packmat}
+                  fullWidth
+                  required
+                  margin="dense"
+                  label="Packaging Material"
+                  onChange={e => setPackmat(e.target.value)}
+                />
+                <TextField
+                  value={origin}
+                  fullWidth
+                  required
+                  margin="dense"
+                  label="Origin"
+                  onChange={e => setOrigin(e.target.value)}
+                />
+                <Typography gutterBottom className={classes.scoreText}>
+                  Score:
+                </Typography>
+                <Slider
+                  required
+                  defaultValue={score}
+                  step={1}
+                  min={0}
+                  max={100}
+                  valueLabelDisplay="auto"
+                  onChange={e => setScore(e.target.innerText)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  className={classes.deleteButton}
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleDeleteAlertOpen(id, name)}
+                >
+                  Delete
+                </Button>
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  startIcon={<EditIcon />}
+                >
+                  Save Changes
+                </Button>
+              </DialogActions>
+            </form>
+          </Dialog>
+          <Dialog open={openCreate} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <form onSubmit={handleItemCreate}>
+              <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please provide the following information to add an item to the database:
+                </DialogContentText>
+                <TextField
+                  error={barcodeErr}
+                  helperText={barcodeErrMsg}
+                  autoFocus
+                  required
+                  value={barcode}
+                  margin="dense"
+                  label="EAN-13 Barcode"
+                  type="number"
+                  fullWidth
+                  disabled
+                />
+                <TextField
+                  required
+                  margin="dense"
+                  label="Name"
+                  type="text"
+                  fullWidth
+                  onChange={e => setName(e.target.value)}
+                />
+                <TextField
+                  required
+                  margin="dense"
+                  id="itemcategory"
+                  label="Category"
+                  type="text"
+                  fullWidth
+                  onChange={e => setCategory(e.target.value)}
+                />
+                <TextField
+                  required
+                  margin="dense"
+                  id="packtype"
+                  label="Packaging Type"
+                  type="text"
+                  fullWidth
+                  onChange={e => setPacktype(e.target.value)}
+                />
+                <TextField
+                  required
+                  margin="dense"
+                  id="packmat"
+                  label="Packaging Material"
+                  type="text"
+                  fullWidth
+                  onChange={e => setPackmat(e.target.value)}
+                />
+                <TextField
+                  required
+                  margin="dense"
+                  id="origin"
+                  label="Origin"
+                  type="text"
+                  fullWidth
+                  onChange={e => setOrigin(e.target.value)}
+                />
+                <Typography gutterBottom className={classes.scoreText}>
+                  Score:
+                </Typography>
+                <Slider
+                  required
+                  defaultValue={10}
+                  step={1}
+                  min={0}
+                  max={100}
+                  valueLabelDisplay="auto"
+                  onChange={e => setScore(e.target.innerText)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary">
+                  Add Item
+                </Button>
+              </DialogActions>
+            </form>
+          </Dialog>
+          <Dialog
+            open={deleteAlert}
+            onClose={handleDeleteAlertClose}
+          >
+            <DialogTitle id="alert-dialog-title">
+              Delete
+              {' '}
+              {nameToDelete}
+              ?
+            </DialogTitle>
             <DialogActions>
-              <Button
-                size="small"
-                variant="contained"
-                color="primary"
-                className={classes.deleteButton}
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDeleteAlertOpen(id, name)}
-              >
+              <Button onClick={handleDeleteAlertClose} color="primary">
+                Abort
+              </Button>
+              <Button onClick={handleItemDelete} color="primary" autoFocus>
                 Delete
               </Button>
-              <Button
-                type="submit"
-                size="small"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<EditIcon />}
-              >
-                Save Changes
-              </Button>
             </DialogActions>
-          </form>
-        </Dialog>
-        <Dialog open={openCreate} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <form onSubmit={handleItemCreate}>
-            <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Please provide the following information to add an item to the database:
-              </DialogContentText>
-              <TextField
-                error={barcodeErr}
-                helperText={barcodeErrMsg}
-                autoFocus
-                required
-                value={barcode}
-                margin="dense"
-                label="EAN-13 Barcode"
-                type="number"
-                fullWidth
-                disabled
-              />
-              <TextField
-                required
-                margin="dense"
-                label="Name"
-                type="text"
-                fullWidth
-                onChange={e => setName(e.target.value)}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="itemcategory"
-                label="Category"
-                type="text"
-                fullWidth
-                onChange={e => setCategory(e.target.value)}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="packtype"
-                label="Packaging Type"
-                type="text"
-                fullWidth
-                onChange={e => setPacktype(e.target.value)}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="packmat"
-                label="Packaging Material"
-                type="text"
-                fullWidth
-                onChange={e => setPackmat(e.target.value)}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="origin"
-                label="Origin"
-                type="text"
-                fullWidth
-                onChange={e => setOrigin(e.target.value)}
-              />
-              <Typography gutterBottom className={classes.scoreText}>
-                Score:
-              </Typography>
-              <Slider
-                required
-                defaultValue={10}
-                step={1}
-                min={0}
-                max={100}
-                valueLabelDisplay="auto"
-                onChange={e => setScore(e.target.innerText)}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button type="submit" color="primary">
-                Add Item
-              </Button>
-            </DialogActions>
-          </form>
-        </Dialog>
-        <Dialog
-          open={deleteAlert}
-          onClose={handleDeleteAlertClose}
-        >
-          <DialogTitle id="alert-dialog-title">
-            Delete
-            {' '}
-            {nameToDelete}
-            ?
-          </DialogTitle>
-          <DialogActions>
-            <Button onClick={handleDeleteAlertClose} color="primary">
-              Abort
-            </Button>
-            <Button onClick={handleItemDelete} color="primary" autoFocus>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Container>
+          </Dialog>
+        </Container>
+      ) : ''}
     </div>
   );
 }
