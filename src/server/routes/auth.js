@@ -25,7 +25,6 @@ router.post('/', (req, res) => {
       res.status(401).json({ error: 'Invalid' });
     } else {
       const payload = { id: user.id, isAdmin: user.isAdmin };
-      console.log(payload);
       const token = jwt.sign(payload, secret, {
         expiresIn: 3600
       });
@@ -33,7 +32,6 @@ router.post('/', (req, res) => {
     }
   });
 });
-
 
 // @route POST /api/auth/register
 // @desc User registration
