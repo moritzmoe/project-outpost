@@ -23,6 +23,11 @@ const User = db.define('User', {
   password: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 }, {
   hooks: {
