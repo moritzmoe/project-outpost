@@ -51,6 +51,7 @@ export default function SignIn(props) {
   const [wrong, setWrong] = useState(false);
 
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
+  const setIsAdmin = useSetStoreValue('isAdmin', false);
   const setPageName = useSetStoreValue('pageName');
 
   const handleSubmit = (evt) => {
@@ -60,6 +61,7 @@ export default function SignIn(props) {
         if (res.status === 200) {
           axios.get('/api/auth/user').then((response) => {
             setUserFirstname(response.data.firstname);
+            setIsAdmin(response.data.isAdmin);
           });
           RouterHistory.push('/');
           props.isLoggedIn(true);
