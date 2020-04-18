@@ -125,7 +125,7 @@ export default function Navigation(props) {
       { isAdmin ? (
         <>
           <Divider />
-          <List subheader={<ListSubheader>Logged in as Administrator:</ListSubheader>}>
+          <List subheader={<ListSubheader>You are an Administrator:</ListSubheader>}>
             <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
               <ListItemIcon><StorageIcon /></ListItemIcon>
               <ListItemText primary="Item Database" />
