@@ -26,6 +26,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import StorageIcon from '@material-ui/icons/Storage';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
+
 import RouterHistory from '../Tools/RouterHistory';
 
 
@@ -127,6 +129,10 @@ export default function Navigation(props) {
             <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
               <ListItemIcon><StorageIcon /></ListItemIcon>
               <ListItemText primary="Item Database" />
+            </ListItem>
+            <ListItem button onClick={() => { setSelected('User Management'); RouterHistory.push('/users'); }} selected={selected === 'User Management'} key="Users">
+              <ListItemIcon><RecentActorsIcon /></ListItemIcon>
+              <ListItemText primary="User Management" />
             </ListItem>
           </List>
         </>
