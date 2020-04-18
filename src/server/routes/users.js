@@ -12,4 +12,23 @@ router.get('/', withAdmin, (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.post('/changeAdmin', withAdmin, (req, res) => {
+  const { id } = req.body;
+  User.findOne({
+    where: {
+      id
+    }
+  }).then((user) => {
+    const { isAdmin } = user.dataValues;
+    User.update({
+      isAdmin: !isAdmin
+    }, {
+      where: {
+        id
+      }
+    }).then(res.sendStatus(200))
+      .catch(err => res.send(err));
+  }).catch(err => res.send(err));
+});
+
 module.exports = router;
