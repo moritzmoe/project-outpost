@@ -30,6 +30,15 @@ export default function Users() {
     axios.get('/api/users').then((res) => { setUsers(res.data); console.log(res); });
   }, []);
 
+  const handleAdminChange = (id) => {
+    axios.post('/api/users/changeAdmin', { id })
+      .then((res) => {
+        if (res.status === 200) {
+          axios.get('/api/users').then((response) => { setUsers(response.data); });
+        }
+      });
+  };
+
   return (
     <div>
       <Container>
@@ -57,6 +66,7 @@ export default function Users() {
                     <TableCell>
                       <Checkbox
                         checked={user.isAdmin}
+                        onChange={() => handleAdminChange(user.id)}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                       />
 
