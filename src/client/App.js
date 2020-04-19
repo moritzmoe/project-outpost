@@ -17,6 +17,7 @@ import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import Shopping from './pages/Shopping';
 import Items from './pages/Items';
+import Users from './pages/Users';
 
 
 const theme = createMuiTheme({
@@ -84,6 +85,7 @@ function App() {
               <Route path="/timeline" component={withAuth(() => <Timeline />)} />
               <Route path="/items" component={withAuth(() => <Items />)} />
               <Route path="/shopping" component={withAuth(() => <Shopping />)} />
+              <Route path="/users" component={withAuth(() => <Users />)} />
             </Switch>
           </div>
         </ThemeProvider>

@@ -23,15 +23,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-app.get('/api/home', (req, res) => {
-  res.send('Welcome!');
-});
-
 // Item routes
 app.use('/api/items', require('./routes/items'));
 
 // Authentication/Registration routes
 app.use('/api/auth', require('./routes/auth'));
+
+// User Management routes
+app.use('/api/users', require('./routes/users'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path));
