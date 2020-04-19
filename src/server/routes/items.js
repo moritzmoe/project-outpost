@@ -8,7 +8,11 @@ const Item = require('../models/item');
 const withAdmin = require('../middleware/admin');
 
 
-router.get('/', withAdmin, (req, res) => Item.findAll().then((items) => {
+router.get('/', withAdmin, (req, res) => Item.findAll({
+  order: [
+    ['updatedAt', 'DESC'],
+  ],
+}).then((items) => {
   res.send(items);
 }).catch(err => console.log(err)));
 
