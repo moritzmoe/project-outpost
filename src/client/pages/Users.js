@@ -12,6 +12,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
+import TablePaginationActions from '../components/TablePaginationActions';
 
 const useStyles = makeStyles({
   table: {
@@ -22,19 +25,48 @@ const useStyles = makeStyles({
 export default function Users() {
   const classes = useStyles();
   const [users, setUsers] = useState([]);
+  const [totalUserCount, setTotalUserCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const setPageName = useSetStoreValue('pageName');
   const isAdmin = useStoreValue('isAdmin');
 
+  const handleChangePage = (event, newPage) => {
+    const offset = rowsPerPage * (newPage);
+    axios.get(`api/users?limit=${rowsPerPage}&offset=${offset}`).then((res) => {
+      setUsers(res.data);
+      setPage(newPage);
+    });
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    const newRowsPerPage = event.target.value;
+    setRowsPerPage(newRowsPerPage);
+    const offset = newRowsPerPage * (page);
+    axios.get(`api/users?limit=${newRowsPerPage}&offset=${offset}`).then((res) => {
+      setUsers(res.data);
+    });
+  };
+
   useEffect(() => {
     setPageName('User Management');
-    axios.get('/api/users').then((res) => { setUsers(res.data); console.log(res); });
+    axios.get('/api/users/totalUserCount').then((res) => {
+      setTotalUserCount(res.data);
+      axios.get(`api/users?limit=${rowsPerPage}&offset=0`).then((response) => {
+        setUsers(response.data);
+        console.log(response.data);
+      });
+    });
   }, []);
 
   const handleAdminChange = (id) => {
     axios.post('/api/users/changeAdmin', { id })
       .then((res) => {
         if (res.status === 200) {
-          axios.get('/api/users').then((response) => { setUsers(response.data); });
+          const offset = rowsPerPage * (page);
+          axios.get(`api/users?limit=${rowsPerPage}&offset=${offset}`).then((response) => {
+            setUsers(response.data);
+          });
         }
       });
   };
@@ -42,7 +74,7 @@ export default function Users() {
   return (
     <div>
       <Container>
-        { isAdmin ? (
+        { isAdmin && users ? (
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
@@ -56,7 +88,7 @@ export default function Users() {
               </TableHead>
               <TableBody>
                 {users.map(user => (
-                  <TableRow key={user.id}>
+                  <TableRow key={user.name}>
                     <TableCell component="th" scope="row">
                       {user.id}
                     </TableCell>
@@ -69,11 +101,28 @@ export default function Users() {
                         onChange={() => handleAdminChange(user.id)}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                       />
-
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25, 50]}
+                    colSpan={3}
+                    count={totalUserCount}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: { 'aria-label': 'rows per page' },
+                      native: true
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
             </Table>
           </TableContainer>
         ) : ''}
