@@ -8,11 +8,19 @@ const withAdmin = require('../middleware/admin');
 router.get('/', withAdmin, (req, res) => {
   User.findAll({
     order: [
-      ['createdAt', 'DESC'],
+      ['id', 'ASC'],
     ],
+    limit: req.query.limit,
+    offset: req.query.offset,
     attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
   }).then(users => res.send(users))
     .catch(err => console.log(err));
+});
+
+router.get('/totalUserCount', withAdmin, (req, res) => {
+  User.count().then((result) => {
+    res.send(result.toString());
+  }).catch(err => console.log(err));
 });
 
 router.post('/changeAdmin', withAdmin, (req, res) => {
