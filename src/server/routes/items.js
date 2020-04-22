@@ -38,8 +38,8 @@ router.post('/', withAdmin, (req, res) => {
     packmat,
     origin,
     score,
-    createdBy: req.userID,
-    lastUpdatedBy: req.userID,
+    createdBy: req.userId,
+    lastUpdatedBy: req.userId,
   });
   res.sendStatus(200);
 });
@@ -68,7 +68,8 @@ router.put('/:id', withAdmin, (req, res) => {
     packtype,
     packmat,
     origin,
-    score
+    score,
+    lastUpdatedBy: req.userId,
   }, {
     where: {
       id

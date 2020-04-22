@@ -83,6 +83,8 @@ export default function Items() {
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
   const [openBarcode, setOpenBarcode] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
+  const [createdBy, setCreatedBy] = useState('');
+  const [lastUpdatedBy, setLastUpdatedBy] = useState('');
 
   const setPageName = useSetStoreValue('pageName');
   const isAdmin = useStoreValue('isAdmin');
@@ -136,6 +138,8 @@ export default function Items() {
       setPackmat(res.data[0].packmat);
       setOrigin(res.data[0].origin);
       setScore(res.data[0].score);
+      setCreatedBy(res.data[0].createdBy);
+      setLastUpdatedBy(res.data[0].lastUpdatedBy);
       setOpenDetails(true);
     });
   };
@@ -258,6 +262,15 @@ export default function Items() {
                 ID:
                 {' '}
                 {id}
+                {' '}
+                Created by:
+                {' '}
+                {createdBy}
+                {' '}
+                Last changed by:
+                {' '}
+                {lastUpdatedBy}
+                {' '}
               </Typography>
               <IconButton className={classes.closeButton} onClick={handleDetailsClose}>
                 <CloseIcon />
