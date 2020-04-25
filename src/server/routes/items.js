@@ -8,13 +8,17 @@ const Item = require('../models/item');
 const withAdmin = require('../middleware/admin');
 
 
-router.get('/', withAdmin, (req, res) => Item.findAll({
-  order: [
-    ['updatedAt', 'DESC'],
-  ],
-}).then((items) => {
-  res.send(items);
-}).catch(err => console.log(err)));
+router.get('/', withAdmin, (req, res) => {
+  Item.findAll({
+    order: [
+      ['updatedAt', 'DESC'],
+    ],
+    limit: req.query.limit,
+    offset: req.query.offset,
+  }).then((items) => {
+    res.send(items);
+  }).catch(err => console.log(err));
+});
 
 router.get('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
@@ -24,7 +28,6 @@ router.get('/:id', withAdmin, (req, res) => {
     }
   }).then(item => res.send(item));
 });
-
 
 router.post('/', withAdmin, (req, res) => {
   const {

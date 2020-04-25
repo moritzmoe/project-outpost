@@ -1,4 +1,3 @@
-/* eslint-disable func-names */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 const bcrypt = require('bcrypt');
@@ -39,7 +38,7 @@ const User = db.define('User', {
 });
 
 // instance level method
-User.prototype.validPassword = function (password) {
+User.prototype.validPassword = function validPassword(password) {
   return bcrypt.compareSync(password, this.password);
 };
 

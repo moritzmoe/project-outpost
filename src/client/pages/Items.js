@@ -78,7 +78,7 @@ export default function Items() {
   const [packtype, setPacktype] = useState('');
   const [packmat, setPackmat] = useState('');
   const [origin, setOrigin] = useState('');
-  const [score, setScore] = useState('');
+  const [score, setScore] = useState(0);
   const [barcodeErr, setBarcodeErr] = useState(false);
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
   const [openBarcode, setOpenBarcode] = useState(false);
@@ -321,12 +321,12 @@ export default function Items() {
                 </Typography>
                 <Slider
                   required
-                  defaultValue={score}
+                  value={score}
                   step={1}
                   min={0}
                   max={100}
                   valueLabelDisplay="auto"
-                  onChange={e => setScore(e.target.innerText)}
+                  onChange={(e, v) => setScore(v)}
                 />
               </DialogContent>
               <DialogActions>
