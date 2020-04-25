@@ -233,6 +233,17 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Total User Query Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
