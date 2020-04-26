@@ -75,14 +75,19 @@ export default function Users() {
     axios.post('/api/users/changeAdmin', { id })
       .then((res) => {
         if (res.status === 200) {
-          const offset = rowsPerPage * (page);
-          axios.get(`api/users?limit=${rowsPerPage}&offset=${offset}`).then((response) => {
-            setUsers(response.data);
-          });
+          if (!searchQuery) {
+            const offset = rowsPerPage * (page);
+            axios.get(`api/users?limit=${rowsPerPage}&offset=${offset}`).then((response) => {
+              setUsers(response.data);
+            });
+          } else {
+            axios.get(`api/users?limit=${rowsPerPage}&offset=0&q=${searchQuery}`).then((response) => {
+              setUsers(response.data);
+            });
+          }
         }
       });
   };
-
 
   const handleSearchInputChange = (evt) => {
     const query = evt.target.value;
