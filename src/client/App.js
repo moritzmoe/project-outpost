@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import amber from '@material-ui/core/colors/amber';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { withStore, useSetStoreValue } from 'react-context-hook';
@@ -23,10 +22,12 @@ import Users from './pages/Users';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#80cbc4',
-      main: '#009688',
+      light: '#c1e5e2', // #80cbc4
+      main: '#009688', // #009688
     },
-    secondary: amber,
+    secondary: {
+      main: '#ff4081',
+    }, // amber
   },
   status: {
     danger: 'orange'
