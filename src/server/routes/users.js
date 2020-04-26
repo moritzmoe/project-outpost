@@ -15,9 +15,18 @@ router.get('/', withAdmin, (req, res) => {
       limit: req.query.limit,
       offset: req.query.offset,
       where: {
-        email: {
-          [Op.like]: `%${req.query.q}%`
-        }
+        [Op.or]: [
+          {
+            email: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+          {
+            lastname: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          }
+        ]
       },
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
     }).then(users => res.send(users))
@@ -39,15 +48,24 @@ router.get('/totalQueryCount', withAdmin, (req, res) => {
   if (req.query.q) {
     User.count({
       where: {
-        email: {
-          [Op.like]: `%${req.query.q}%`
-        }
+        [Op.or]: [
+          {
+            email: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+          {
+            lastname: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          }
+        ]
       }
     })
       .then(result => res.send(result.toString()))
       .catch(err => console.log(err));
   } else {
-    res.sendStatus(400);
+    res.send('no query provided');
   }
 });
 
