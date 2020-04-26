@@ -190,7 +190,7 @@ export default function Users() {
                   <TableRow>
                     <TableCell colSpan={5}>
                       {totalQueryCount > rowsPerPage ? (
-                        `Fetched ${totalQueryCount} Results. Showing only ${rowsPerPage}.`
+                        `${totalQueryCount} Results. Showing only ${rowsPerPage}.`
                       ) : (`${totalQueryCount} Result(s).`)}
                     </TableCell>
                   </TableRow>
