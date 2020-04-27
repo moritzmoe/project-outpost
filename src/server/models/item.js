@@ -12,14 +12,10 @@ const Item = db.define('Item', {
     allowNull: false,
     foreignKey: true
   },
-  subCategoryId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  },
   barcode: {
     type: Sequelize.STRING(16),
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   packtype: {
     type: Sequelize.INTEGER,
@@ -39,7 +35,16 @@ const Item = db.define('Item', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-
+  createdBy: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
+  },
+  lastUpdatedBy: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
+  }
 });
 
 db.sync()
