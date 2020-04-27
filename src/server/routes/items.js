@@ -31,11 +31,11 @@ router.get('/:id', withAdmin, (req, res) => {
 
 router.post('/', withAdmin, (req, res) => {
   const {
-    name, category, barcode, packtype, packmat, origin, score,
+    name, categoryId, barcode, packtype, packmat, origin, score,
   } = req.body;
   Item.create({
     name,
-    category,
+    categoryId,
     barcode,
     packtype,
     packmat,
