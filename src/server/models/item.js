@@ -24,6 +24,12 @@ const Item = db.define('Item', {
   score: {
     type: Sequelize.STRING
   },
+  createdBy: {
+    type: Sequelize.STRING
+  },
+  lastUpdatedBy: {
+    type: Sequelize.STRING
+  },
 });
 
 db.sync()

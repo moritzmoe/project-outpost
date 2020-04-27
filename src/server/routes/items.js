@@ -31,7 +31,7 @@ router.get('/:id', withAdmin, (req, res) => {
 
 router.post('/', withAdmin, (req, res) => {
   const {
-    name, category, barcode, packtype, packmat, origin, score
+    name, category, barcode, packtype, packmat, origin, score,
   } = req.body;
   Item.create({
     name,
@@ -40,7 +40,9 @@ router.post('/', withAdmin, (req, res) => {
     packtype,
     packmat,
     origin,
-    score
+    score,
+    createdBy: req.userId,
+    lastUpdatedBy: req.userId,
   });
   res.sendStatus(200);
 });
@@ -69,7 +71,8 @@ router.put('/:id', withAdmin, (req, res) => {
     packtype,
     packmat,
     origin,
-    score
+    score,
+    lastUpdatedBy: req.userId,
   }, {
     where: {
       id
