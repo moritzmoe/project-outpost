@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 
 const db = require('./config/database');
 
+require('./config/associations');
+
 const path = '/app/dist';
 
 db
