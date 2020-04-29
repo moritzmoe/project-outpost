@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "90b2efec-ec55-4d51-bdb9-93597a48d515",
+		"_postman_id": "57de3ee3-9429-47fb-b9d4-7f752fa51e4c",
 		"name": "project-outpost",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -229,13 +229,50 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "localhost:8081/api/users/totalUserCount",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"totalUserCount"
+							]
 						}
 					},
 					"response": []
 				},
 				{
 					"name": "Total User Query Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get all Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subcategories of Category",
 					"request": {
 						"method": "GET",
 						"header": [],
