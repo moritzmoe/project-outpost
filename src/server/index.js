@@ -37,6 +37,9 @@ app.use('/api/users', require('./routes/users'));
 // Category Routes
 app.use('/api/categories', require('./routes/categories'));
 
+// Packaging Routes
+app.use('/api/packaging', require('./routes/packaging'));
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path));
   app.get('*', (req, res) => {
