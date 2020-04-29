@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2)
   },
   inputLabel: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(1)
   }
 }));
 
@@ -124,7 +124,7 @@ export default function ItemCreationDialog(props) {
               fullWidth
               onChange={e => setName(e.target.value)}
             />
-            <InputLabel className={classes.inputLabel}>Category</InputLabel>
+            <InputLabel shrink className={classes.inputLabel}>Category</InputLabel>
             <Select
               required
               fullWidth
@@ -136,7 +136,7 @@ export default function ItemCreationDialog(props) {
                 <MenuItem value={value.id}>{value.name}</MenuItem>
               ))}
             </Select>
-            <InputLabel className={classes.inputLabel}>Subcategory</InputLabel>
+            <InputLabel shrink className={classes.inputLabel}>Subcategory</InputLabel>
             <Select
               fullWidth
               id="subCat-select"
@@ -147,7 +147,7 @@ export default function ItemCreationDialog(props) {
                 <MenuItem value={value.id}>{value.name}</MenuItem>
               ))}
             </Select>
-            <InputLabel className={classes.inputLabel}>Packaging Type</InputLabel>
+            <InputLabel shrink className={classes.inputLabel}>Packaging Type</InputLabel>
             <Select
               fullWidth
               id="packMat-select"
@@ -158,7 +158,7 @@ export default function ItemCreationDialog(props) {
                 <MenuItem value={value.id}>{value.name}</MenuItem>
               ))}
             </Select>
-            <InputLabel className={classes.inputLabel}>Packaging Material</InputLabel>
+            <InputLabel shrink className={classes.inputLabel}>Packaging Material</InputLabel>
             <Select
               fullWidth
               id="packMat-select"
