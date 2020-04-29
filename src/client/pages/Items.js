@@ -27,6 +27,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { CardActionArea } from '@material-ui/core';
 import Slider from '@material-ui/core/Slider';
 import BarcodeScanner from '../components/BarcodeScanner';
+import ItemCreationDialog from '../components/ItemCreationDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,7 +77,7 @@ export default function Items() {
   const [nameToDelete, setNameToDelete] = useState('');
   const [openCreate, setOpenCreate] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const [barcode, setBarcode] = useState('');
+  const [barcode, setBarcode] = useState('3637425637412');
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [packtype, setPacktype] = useState('');
@@ -107,7 +108,7 @@ export default function Items() {
   }, []);
 
   const handleClickOpen = () => {
-    setOpenBarcode(true);
+    setOpenCreate(true);
   };
 
   const handleBarcodeDialogClose = () => {
@@ -209,11 +210,6 @@ export default function Items() {
     handleDeleteAlertClose();
     handleDetailsClose();
   };
-
-  const handleCategoryPick = (evt) => {
-    setCategoryId(evt.target.value);
-  };
-
   return (
     <div>
       {isAdmin ? (
@@ -374,7 +370,8 @@ export default function Items() {
               </DialogActions>
             </form>
           </Dialog>
-          <Dialog open={openCreate} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <ItemCreationDialog isOpen={openCreate} handleClose={handleClose} barcode={barcode} />
+          {/* <Dialog open={openCreate} onClose={handleClose} aria-labelledby="form-dialog-title">
             <form onSubmit={handleItemCreate}>
               <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
               <DialogContent>
@@ -462,7 +459,7 @@ export default function Items() {
                 </Button>
               </DialogActions>
             </form>
-          </Dialog>
+                  </Dialog> */}
           <Dialog
             open={deleteAlert}
             onClose={handleDeleteAlertClose}
