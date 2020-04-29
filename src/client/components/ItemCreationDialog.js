@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   scoreText: {
     marginTop: theme.spacing(2)
   },
-  inputLabel: {
+  dropDown: {
     marginTop: theme.spacing(1)
   }
 }));
@@ -124,51 +125,55 @@ export default function ItemCreationDialog(props) {
               fullWidth
               onChange={e => setName(e.target.value)}
             />
-            <InputLabel shrink className={classes.inputLabel}>Category</InputLabel>
-            <Select
-              required
-              fullWidth
-              id="category-select"
-              value={categoryId}
-              onChange={handleCategoryPick}
-            >
-              {categories.map(value => (
-                <MenuItem value={value.id}>{value.name}</MenuItem>
-              ))}
-            </Select>
-            <InputLabel shrink className={classes.inputLabel}>Subcategory</InputLabel>
-            <Select
-              fullWidth
-              id="subCat-select"
-              value={subCategoryId}
-              onChange={handleSubCategoryPick}
-            >
-              {subCategories.map(value => (
-                <MenuItem value={value.id}>{value.name}</MenuItem>
-              ))}
-            </Select>
-            <InputLabel shrink className={classes.inputLabel}>Packaging Type</InputLabel>
-            <Select
-              fullWidth
-              id="packMat-select"
-              value={packtype}
-              onChange={handlePackTypePick}
-            >
-              {packagingTypes.map(value => (
-                <MenuItem value={value.id}>{value.name}</MenuItem>
-              ))}
-            </Select>
-            <InputLabel shrink className={classes.inputLabel}>Packaging Material</InputLabel>
-            <Select
-              fullWidth
-              id="packMat-select"
-              value={packmat}
-              onChange={handlePackMatPick}
-            >
-              {packagingMaterials.map(value => (
-                <MenuItem value={value.id}>{value.name}</MenuItem>
-              ))}
-            </Select>
+            <FormControl required fullWidth className={classes.dropDown}>
+              <InputLabel>Category</InputLabel>
+              <Select
+                id="category-select"
+                value={categoryId}
+                onChange={handleCategoryPick}
+              >
+                {categories.map(value => (
+                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl required fullWidth className={classes.dropDown} disabled={!categoryId}>
+              <InputLabel>Subcategory</InputLabel>
+              <Select
+                id="subCat-select"
+                value={subCategoryId}
+                onChange={handleSubCategoryPick}
+              >
+                {subCategories.map(value => (
+                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl required fullWidth className={classes.dropDown}>
+              <InputLabel>Packaging Type</InputLabel>
+              <Select
+                id="packMat-select"
+                value={packtype}
+                onChange={handlePackTypePick}
+              >
+                {packagingTypes.map(value => (
+                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl required fullWidth className={classes.dropDown}>
+              <InputLabel>Packaging Material</InputLabel>
+              <Select
+                fullWidth
+                id="packMat-select"
+                value={packmat}
+                onChange={handlePackMatPick}
+              >
+                {packagingMaterials.map(value => (
+                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               margin="dense"
