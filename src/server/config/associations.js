@@ -73,3 +73,5 @@ PackType.hasMany(Item, {
 Item.belongsTo(PackType, {
   foreignKey: 'packtype'
 });
+
+require('./initialData');
