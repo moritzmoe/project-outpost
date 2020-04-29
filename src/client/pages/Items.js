@@ -21,6 +21,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import { CardActionArea } from '@material-ui/core';
 import Slider from '@material-ui/core/Slider';
 import BarcodeScanner from '../components/BarcodeScanner';
@@ -67,6 +70,7 @@ export default function Items() {
   const classes = useStyles();
 
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [id, setId] = useState(0);
   const [idToDelete, setIdToDelete] = useState(0);
   const [nameToDelete, setNameToDelete] = useState('');
@@ -74,7 +78,7 @@ export default function Items() {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [barcode, setBarcode] = useState('');
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
   const [packtype, setPacktype] = useState('');
   const [packmat, setPackmat] = useState('');
   const [origin, setOrigin] = useState('');
@@ -98,6 +102,7 @@ export default function Items() {
 
   useEffect(() => {
     axios.get('/api/items').then((res) => { setItems(res.data); });
+    axios.get('/api/categories').then((res) => { setCategories(res.data); });
     setPageName('Item Database');
   }, []);
 
@@ -120,7 +125,7 @@ export default function Items() {
     setBarcodeErrMsg('');
     setBarcode('');
     setName('');
-    setCategory('');
+    setCategoryId('');
     setPacktype('');
     setPackmat('');
     setOrigin('');
@@ -133,7 +138,7 @@ export default function Items() {
       setId(res.data[0].id);
       setBarcode(res.data[0].barcode);
       setName(res.data[0].name);
-      setCategory(res.data[0].category);
+      setCategoryId(res.data[0].categoryId);
       setPacktype(res.data[0].packtype);
       setPackmat(res.data[0].packmat);
       setOrigin(res.data[0].origin);
@@ -152,7 +157,7 @@ export default function Items() {
       return;
     }
     axios.post('/api/items', {
-      name, category, barcode, packtype, packmat, origin, score
+      name, categoryId, barcode, packtype, packmat, origin, score
     }).then((res) => {
       if (res.status === 200) {
         axios.get('/api/items').then((response) => { setItems(response.data); });
@@ -172,7 +177,7 @@ export default function Items() {
       return;
     }
     axios.put(`/api/items/${id}`, {
-      name, category, barcode, packtype, packmat, origin, score
+      name, categoryId, barcode, packtype, packmat, origin, score
     }).then((res) => {
       if (res.status === 200) {
         axios.get('/api/items').then((response) => { setItems(response.data); });
@@ -205,6 +210,9 @@ export default function Items() {
     handleDetailsClose();
   };
 
+  const handleCategoryPick = (evt) => {
+    setCategoryId(evt.target.value);
+  };
 
   return (
     <div>
@@ -298,12 +306,12 @@ export default function Items() {
                   onChange={e => setName(e.target.value)}
                 />
                 <TextField
-                  value={category}
+                  value={categoryId}
                   fullWidth
                   required
                   margin="dense"
                   label="Category"
-                  onChange={e => setCategory(e.target.value)}
+                  onChange={e => setCategoryId(e.target.value)}
                 />
                 <TextField
                   value={packtype}
@@ -393,15 +401,18 @@ export default function Items() {
                   fullWidth
                   onChange={e => setName(e.target.value)}
                 />
-                <TextField
-                  required
-                  margin="dense"
-                  id="itemcategory"
-                  label="Category"
-                  type="text"
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                <Select
                   fullWidth
-                  onChange={e => setCategory(e.target.value)}
-                />
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={categoryId}
+                  onChange={handleCategoryPick}
+                >
+                  {categories.map(value => (
+                    <MenuItem value={value.id}>{value.name}</MenuItem>
+                  ))}
+                </Select>
                 <TextField
                   required
                   margin="dense"
