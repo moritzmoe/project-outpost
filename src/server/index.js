@@ -34,6 +34,9 @@ app.use('/api/auth', require('./routes/auth'));
 // User Management routes
 app.use('/api/users', require('./routes/users'));
 
+// Category Routes
+app.use('/api/categories', require('./routes/categories'));
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path));
   app.get('*', (req, res) => {
