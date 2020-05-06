@@ -4,6 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const Item = require('../models/item');
+const Packmat = require('../models/packMat');
+const Packtype = require('../models/packType');
+const SubCategory = require('../models/subCategory');
 
 const withAdmin = require('../middleware/admin');
 
@@ -15,6 +18,7 @@ router.get('/', withAdmin, (req, res) => {
     ],
     limit: req.query.limit,
     offset: req.query.offset,
+    include: [Packmat, Packtype, SubCategory]
   }).then((items) => {
     res.send(items);
   }).catch(err => console.log(err));
@@ -25,7 +29,8 @@ router.get('/:id', withAdmin, (req, res) => {
   Item.findAll({
     where: {
       id
-    }
+    },
+    include: [Packmat, Packtype, SubCategory]
   }).then(item => res.send(item));
 });
 
