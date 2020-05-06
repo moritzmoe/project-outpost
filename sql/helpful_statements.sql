@@ -15,3 +15,4 @@ DROP TABLE "SubCategories" CASCADE;
 DROP TABLE "Users" CASCADE;
 DROP TABLE "purchaseItem" CASCADE;
 
+
