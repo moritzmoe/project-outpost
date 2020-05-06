@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 
 const db = require('./config/database');
 
+require('./config/associations');
+
 const path = '/app/dist';
 
 db
@@ -31,6 +33,12 @@ app.use('/api/auth', require('./routes/auth'));
 
 // User Management routes
 app.use('/api/users', require('./routes/users'));
+
+// Category Routes
+app.use('/api/categories', require('./routes/categories'));
+
+// Packaging Routes
+app.use('/api/packaging', require('./routes/packaging'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path));

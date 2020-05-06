@@ -4,32 +4,47 @@ const db = require('../config/database');
 
 const Item = db.define('Item', {
   name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING(30),
+    allowNull: false
   },
-  category: {
-    type: Sequelize.STRING
+  categoryId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
   },
   barcode: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING(16),
+    allowNull: false,
+    unique: true
   },
   packtype: {
-    type: Sequelize.STRING
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
   },
   packmat: {
-    type: Sequelize.STRING
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
   },
   origin: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING(50),
+    allowNull: false
   },
   score: {
-    type: Sequelize.STRING
+    type: Sequelize.INTEGER,
+    allowNull: false
   },
   createdBy: {
-    type: Sequelize.STRING
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
   },
   lastUpdatedBy: {
-    type: Sequelize.STRING
-  },
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
+  }
 });
 
 db.sync()
