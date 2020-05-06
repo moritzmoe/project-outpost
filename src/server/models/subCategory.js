@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const db = require('../config/database');
 
-const SubCategory = db.define('SubCatgory', {
+const SubCategory = db.define('SubCategory', {
   parentCat: {
     type: Sequelize.INTEGER,
     allowNull: false,
