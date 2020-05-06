@@ -7,6 +7,8 @@ const Item = require('../models/item');
 const Packmat = require('../models/packMat');
 const Packtype = require('../models/packType');
 const SubCategory = require('../models/subCategory');
+const User = require('../models/user');
+const Category = require('../models/category');
 
 const withAdmin = require('../middleware/admin');
 
@@ -30,7 +32,13 @@ router.get('/:id', withAdmin, (req, res) => {
     where: {
       id
     },
-    include: [Packmat, Packtype, SubCategory]
+    // attributes: ['id', 'name', 'barcode', 'origin', 'score'],
+    include: [
+      { model: Packmat, attributes: ['name'] },
+      { model: Packtype, attributes: ['name'] },
+      { model: SubCategory, attributes: ['name', 'id', 'parentCat'] },
+      { model: User, as: 'created', attributes: ['email'] },
+      { model: User, as: 'lastUpdated', attributes: ['email'] }]
   }).then(item => res.send(item));
 });
 
@@ -67,11 +75,11 @@ router.delete('/:id', withAdmin, (req, res) => {
 router.put('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const {
-    name, category, barcode, packtype, packmat, origin, score
+    name, subCategoryId, barcode, packtype, packmat, origin, score
   } = req.body;
   Item.update({
     name,
-    category,
+    categoryId: subCategoryId,
     barcode,
     packtype,
     packmat,
