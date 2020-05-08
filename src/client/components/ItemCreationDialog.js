@@ -28,7 +28,9 @@ const useStyles = makeStyles(theme => ({
 export default function ItemCreationDialog(props) {
   const classes = useStyles();
 
-  const { isOpen, barcode, handleClose } = props;
+  const {
+    isOpen, barcode, handleClose, handleItemCreated
+  } = props;
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [categories, setCategories] = useState([]);
@@ -77,7 +79,7 @@ export default function ItemCreationDialog(props) {
       name, categoryId: subCategoryId, barcode, packtype, packmat, origin, score
     }).then((res) => {
       if (res.status === 200) {
-        handleClose();
+        handleItemCreated();
       }
     }).catch((err) => {
       console.log(err);
@@ -213,5 +215,6 @@ export default function ItemCreationDialog(props) {
 ItemCreationDialog.propTypes = {
   barcode: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired
+  handleClose: PropTypes.func.isRequired,
+  handleItemCreated: PropTypes.func.isRequired
 };
