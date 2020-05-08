@@ -10,7 +10,9 @@ const SubCategory = require('../models/subCategory');
 
 const withAuth = require('../middleware/auth');
 
-
+// endpoint to delete a purchase
+// purchase can only be deleted by user that created it
+// returns 200 if delete was successful and 404 if the purchase requested to delete was not found
 router.delete('/:id', withAuth, (req, res) => {
   const purchaseId = parseInt(req.params.id, 10);
   Purchase.destroy({
@@ -20,7 +22,7 @@ router.delete('/:id', withAuth, (req, res) => {
     }
   }).then((sequelizeResponse) => {
     if (sequelizeResponse === 0) {
-      res.status(400).json({ error: 'Purchase not found' });
+      res.status(404).json({ error: 'Purchase not found' });
     } else {
       res.sendStatus(200);
     }
@@ -60,7 +62,7 @@ router.post('/item/:id', withAuth, (req, res) => {
     }
   }).then((item) => {
     if (!item) {
-      res.status(400).json({ error: 'Item not found' });
+      res.status(404).json({ error: 'Item not found' });
       return;
     }
     Purchase.findOne({
@@ -70,7 +72,7 @@ router.post('/item/:id', withAuth, (req, res) => {
       }
     }).then((purchase) => {
       if (!purchase) {
-        res.status(400).json({ error: 'Purchase not found' });
+        res.status(404).json({ error: 'Purchase not found' });
         return;
       }
       purchase.addItem(item).then(() => {
@@ -87,7 +89,7 @@ router.post('/item/:id', withAuth, (req, res) => {
           }]
         }).then((purchaseWithNewItem) => {
           if (!purchaseWithNewItem) {
-            res.status(400).json({ error: 'Purchase with new item could not be retrieved.' });
+            res.status(404).json({ error: 'Purchase with new item could not be retrieved.' });
             return;
           }
           // This Response gets send on success
