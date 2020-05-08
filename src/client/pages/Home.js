@@ -8,8 +8,9 @@ import { useSetStoreValue } from 'react-context-hook';
 import {
   PieChart, Pie, Cell
 } from 'recharts';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { Container, Typography, Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 
 const data = [
@@ -18,6 +19,14 @@ const data = [
   { name: 'Group C', value: 30 },
 ];
 const COLORS = ['#ff726f', '#00C49F', '#FFBB28'];
+
+const useStyles = makeStyles(theme => ({
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing(4),
+    right: theme.spacing(3),
+  }
+}));
 
 class SimplePieChart extends React.Component {
   render() {
@@ -43,6 +52,7 @@ class SimplePieChart extends React.Component {
 }
 
 export default function Home() {
+  const classes = useStyles();
   const [score, setScore] = useState(0);
   const setPageName = useSetStoreValue('pageName');
 
@@ -67,6 +77,10 @@ export default function Home() {
           {score}
         </Typography>
         <SimplePieChart />
+        <Fab color="primary" aria-label="add" className={classes.fab} variant="extended">
+          <AddIcon />
+          Add Purchase
+        </Fab>
       </Container>
     </div>
   );
