@@ -10,6 +10,29 @@ const SubCategory = require('../models/subCategory');
 
 const withAuth = require('../middleware/auth');
 
+
+router.delete('/:id', withAuth, (req, res) => {
+  const purchaseId = parseInt(req.params.id, 10);
+  Purchase.destroy({
+    where: {
+      id: purchaseId,
+      userId: req.userId
+    }
+  }).then((sequelizeResponse) => {
+    if (sequelizeResponse === 0) {
+      res.status(400).json({ error: 'Purchase not found' });
+    } else {
+      res.sendStatus(200);
+    }
+  }).catch((err) => {
+    console.log(`Internal error while trying to delete a purchase:\n${err}`);
+    res.sendStatus(500);
+  });
+});
+
+// endpoint to create a new purchase
+// purchase gets created for the user that sends the request
+// returns the purchase
 router.post('/', withAuth, (req, res) => {
   Purchase.create({
     userId: req.userId,

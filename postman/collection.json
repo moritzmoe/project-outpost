@@ -360,7 +360,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"items\": \"\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -388,7 +388,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"barcode\": \"4009249022503\"\n}",
+							"raw": "{\n  \"barcode\": \"4316268370059\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -406,6 +406,26 @@
 								"purchases",
 								"item",
 								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Purchase",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/purchases/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"purchases",
+								"7"
 							]
 						}
 					},
