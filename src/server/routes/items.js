@@ -8,7 +8,6 @@ const Packmat = require('../models/packMat');
 const Packtype = require('../models/packType');
 const SubCategory = require('../models/subCategory');
 const User = require('../models/user');
-const Category = require('../models/category');
 
 const withAdmin = require('../middleware/admin');
 
