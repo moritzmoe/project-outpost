@@ -11,6 +11,10 @@ const SubCategory = db.define('SubCategory', {
   name: {
     type: Sequelize.STRING(50),
     allowNull: false
+  },
+  co2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
 
