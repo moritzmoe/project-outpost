@@ -7,6 +7,10 @@ const Item = db.define('Item', {
     type: Sequelize.STRING(30),
     allowNull: false
   },
+  weight: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   categoryId: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -17,19 +21,15 @@ const Item = db.define('Item', {
     allowNull: false,
     unique: true
   },
-  packtype: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  },
-  packmat: {
+  packaging: {
     type: Sequelize.INTEGER,
     allowNull: false,
     foreignKey: true
   },
   origin: {
-    type: Sequelize.STRING(50),
-    allowNull: false
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    foreignKey: true
   },
   score: {
     type: Sequelize.INTEGER,
