@@ -35,16 +35,16 @@ export default function ItemCard(props) {
                 {item.SubCategory.name}
               </Typography>
               <Grid container>
-                <Grid item xs={6}>
+                <Grid item xs={7}>
                   <Typography variant="body2" component="p">
-                    {item.PackType.name}
-                    <br />
-                    {item.PackMat.name}
+                    {item.Packaging.name}
                   </Typography>
                 </Grid>
-                <Grid item xs={6} align="right">
+                <Grid item xs={5} align="right">
                   <Typography variant="h4" align="right" color="primary">
                     {item.score}
+                    {' '}
+                    g
                   </Typography>
                 </Grid>
               </Grid>

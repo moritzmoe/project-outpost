@@ -7,12 +7,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import InputLabel from '@material-ui/core/InputLabel';
-import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import Slider from '@material-ui/core/Slider';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 
@@ -32,23 +30,22 @@ export default function ItemCreationDialog(props) {
     isOpen, barcode, handleClose, handleItemCreated
   } = props;
   const [name, setName] = useState('');
+  const [weight, setWeight] = useState(0);
   const [categoryId, setCategoryId] = useState('');
   const [categories, setCategories] = useState([]);
   const [subCategoryId, setSubCategoryId] = useState([]);
   const [subCategories, setSubcategories] = useState([]);
-  const [packmat, setPackmat] = useState('');
-  const [packagingMaterials, setPackagingMaterials] = useState([]);
-  const [packtype, setPacktype] = useState('');
-  const [packagingTypes, setPackagingTypes] = useState([]);
-  const [origin, setOrigin] = useState('');
-  const [score, setScore] = useState(0);
+  const [packagingId, setPackagingId] = useState('');
+  const [packaging, setPackaging] = useState([]);
+  const [originId, setOriginId] = useState('');
+  const [origin, setOrigin] = useState([]);
   const [barcodeErr, setBarcodeErr] = useState(false);
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
 
   useEffect(() => {
     axios.get('/api/categories').then((res) => { setCategories(res.data); });
-    axios.get('/api/packaging/packMat').then((res) => { setPackagingMaterials(res.data); });
-    axios.get('/api/packaging/packType').then((res) => { setPackagingTypes(res.data); });
+    axios.get('/api/packaging').then((res) => { setPackaging(res.data); });
+    axios.get('/api/origins').then((res) => { setOrigin(res.data); });
   }, []);
 
   const handleCategoryPick = (evt) => {
@@ -60,12 +57,20 @@ export default function ItemCreationDialog(props) {
     setSubCategoryId(evt.target.value);
   };
 
-  const handlePackMatPick = (evt) => {
-    setPackmat(evt.target.value);
+  const handlePackagingPick = (evt) => {
+    setPackagingId(evt.target.value);
   };
 
-  const handlePackTypePick = (evt) => {
-    setPacktype(evt.target.value);
+  const handleOriginPick = (evt) => {
+    setOriginId(evt.target.value);
+  };
+
+  const clearState = () => {
+    setName('');
+    setCategoryId('');
+    setSubCategoryId('');
+    setPackagingId('');
+    setOriginId('');
   };
 
   const handleItemCreate = (evt) => {
@@ -76,27 +81,19 @@ export default function ItemCreationDialog(props) {
       return;
     }
     axios.post('/api/items', {
-      name, categoryId: subCategoryId, barcode, packtype, packmat, origin, score
+      name, weight, categoryId: subCategoryId, barcode, packaging: packagingId, origin: originId
     }).then((res) => {
       if (res.status === 200) {
+        clearState();
         handleItemCreated();
       }
     }).catch((err) => {
       console.log(err);
+      clearState();
       handleClose();
     });
   };
 
-  const clearState = () => {
-    setName('');
-    setCategoryId('');
-    setSubCategoryId('');
-    setPackmat('');
-    setPacktype('');
-    setOrigin('');
-    setScore('');
-    handleClose();
-  };
 
   return (
     <div>
@@ -120,12 +117,21 @@ export default function ItemCreationDialog(props) {
               disabled
             />
             <TextField
+              autoFocus
               required
               margin="dense"
               label="Name"
               type="text"
               fullWidth
               onChange={e => setName(e.target.value)}
+            />
+            <TextField
+              required
+              margin="dense"
+              label="Weight (g)"
+              type="number"
+              fullWidth
+              onChange={e => setWeight(e.target.value)}
             />
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Category</InputLabel>
@@ -152,51 +158,29 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging Type</InputLabel>
+              <InputLabel>Packaging </InputLabel>
               <Select
-                id="packMat-select"
-                value={packtype}
-                onChange={handlePackTypePick}
+                id="pack-select"
+                value={packagingId}
+                onChange={handlePackagingPick}
               >
-                {packagingTypes.map(value => (
+                {packaging.map(value => (
                   <MenuItem value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging Material</InputLabel>
+              <InputLabel>Origin </InputLabel>
               <Select
-                fullWidth
-                id="packMat-select"
-                value={packmat}
-                onChange={handlePackMatPick}
+                id="origin-select"
+                value={originId}
+                onChange={handleOriginPick}
               >
-                {packagingMaterials.map(value => (
+                {origin.map(value => (
                   <MenuItem value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              required
-              margin="dense"
-              id="origin"
-              label="Origin"
-              type="text"
-              fullWidth
-              onChange={e => setOrigin(e.target.value)}
-            />
-            <Typography gutterBottom className={classes.scoreText}>
-              Score:
-            </Typography>
-            <Slider
-              required
-              defaultValue={10}
-              step={1}
-              min={0}
-              max={100}
-              valueLabelDisplay="auto"
-              onChange={e => setScore(e.target.innerText)}
-            />
           </DialogContent>
           <DialogActions>
             <Button onClick={clearState} color="primary">
