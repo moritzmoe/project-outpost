@@ -4,11 +4,80 @@ const router = express.Router();
 
 const Purchase = require('../models/purchase');
 const Item = require('../models/item');
-const Packmat = require('../models/packMat');
-const Packtype = require('../models/packType');
+const Packaging = require('../models/packaging');
 const SubCategory = require('../models/subCategory');
 
 const withAuth = require('../middleware/auth');
+
+
+// endpoint to create a new purchase
+// purchase gets created for the user that sends the request
+// returns the purchase
+router.post('/', withAuth, (req, res) => {
+  Purchase.create({
+    userId: req.userId,
+  }).then(purchase => res.send(purchase))
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+});
+
+// endpoint to retrieve a purchase
+// purchase can only be retrieved by the user who created it
+// return the purchase including all items in it.
+router.get('/:id', withAuth, (req, res) => {
+  const purchaseId = parseInt(req.params.id, 10);
+  if (!purchaseId) {
+    res.status(400).json({ error: 'Please provide a purchase id' });
+    return;
+  }
+  Purchase.findOne({
+    where: {
+      id: purchaseId,
+      userId: req.userId
+    },
+    include: [{
+      model: Item,
+      attributes: ['id', 'name', 'barcode', 'origin'],
+      include: [
+        { model: Packaging, attributes: ['name'] },
+        { model: SubCategory, attributes: ['name', 'id', 'parentCat'] }
+      ]
+    }]
+  }).then((purchase) => {
+    if (!purchase) {
+      res.status(404).json({ error: 'Purchase not found' });
+    } else {
+      res.send(purchase);
+    }
+  }).catch((err) => {
+    console.log(`Internal error while retriving purchase:\n${err}`);
+  });
+});
+
+// endpoint to retrieve all purchases of a user
+// user can only retrive his own purchases
+// return the purchase including all items in it.
+router.get('/', withAuth, (req, res) => {
+  Purchase.findAll({
+    where: {
+      userId: req.userId
+    },
+    include: [{
+      model: Item,
+      attributes: ['id', 'name', 'barcode', 'origin'],
+      include: [
+        { model: Packaging, attributes: ['name'] },
+        { model: SubCategory, attributes: ['name', 'id', 'parentCat'] }
+      ]
+    }]
+  }).then((purchase) => {
+    res.send(purchase);
+  }).catch((err) => {
+    console.log(`Internal error while retriving purchase:\n${err}`);
+  });
+});
 
 // endpoint to delete a purchase
 // purchase can only be deleted by user that created it
@@ -30,19 +99,6 @@ router.delete('/:id', withAuth, (req, res) => {
     console.log(`Internal error while trying to delete a purchase:\n${err}`);
     res.sendStatus(500);
   });
-});
-
-// endpoint to create a new purchase
-// purchase gets created for the user that sends the request
-// returns the purchase
-router.post('/', withAuth, (req, res) => {
-  Purchase.create({
-    userId: req.userId,
-  }).then(purchase => res.send(purchase))
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(400);
-    });
 });
 
 // endpoint to add an item to a purchase
@@ -77,13 +133,15 @@ router.post('/item/:id', withAuth, (req, res) => {
       }
       purchase.addItem(item).then(() => {
         Purchase.findOne({
-          where: { id: purchaseId },
+          where: {
+            id: purchaseId,
+            userId: req.userId
+          },
           include: [{
             model: Item,
             attributes: ['id', 'name', 'barcode', 'origin'],
             include: [
-              { model: Packmat, attributes: ['name'] },
-              { model: Packtype, attributes: ['name'] },
+              { model: Packaging, attributes: ['name'] },
               { model: SubCategory, attributes: ['name', 'id', 'parentCat'] }
             ]
           }]
