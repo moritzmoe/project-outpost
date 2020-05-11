@@ -73,6 +73,11 @@ export default function ItemCreationDialog(props) {
     setOriginId('');
   };
 
+  const clearStateHandleClose = () => {
+    clearState();
+    handleClose();
+  };
+
   const handleItemCreate = (evt) => {
     evt.preventDefault();
     if (barcode.length !== 13) {
@@ -89,15 +94,14 @@ export default function ItemCreationDialog(props) {
       }
     }).catch((err) => {
       console.log(err);
-      clearState();
-      handleClose();
+      clearStateHandleClose();
     });
   };
 
 
   return (
     <div>
-      <Dialog open={isOpen} onClose={clearState} aria-labelledby="form-dialog-title">
+      <Dialog open={isOpen} onClose={clearStateHandleClose} aria-labelledby="form-dialog-title">
         <form onSubmit={handleItemCreate}>
           <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
           <DialogContent>
@@ -183,7 +187,7 @@ export default function ItemCreationDialog(props) {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={clearState} color="primary">
+            <Button onClick={clearStateHandleClose} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">
