@@ -3,24 +3,19 @@ const express = require('express');
 
 const router = express.Router();
 
-const Item = require('../models/item');
-const Packmat = require('../models/packMat');
-const Packtype = require('../models/packType');
-const SubCategory = require('../models/subCategory');
-const User = require('../models/user');
-const Category = require('../models/category');
+const models = require('../models');
 
 const withAdmin = require('../middleware/admin');
 
 
 router.get('/', withAdmin, (req, res) => {
-  Item.findAll({
+  models.Item.findAll({
     order: [
       ['updatedAt', 'DESC'],
     ],
     limit: req.query.limit,
     offset: req.query.offset,
-    include: [Packmat, Packtype, SubCategory]
+    include: [models.Packaging, models.SubCategory, models.Origin]
   }).then((items) => {
     res.send(items);
   }).catch(err => console.log(err));
@@ -28,42 +23,105 @@ router.get('/', withAdmin, (req, res) => {
 
 router.get('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
-  Item.findAll({
+  models.Item.findAll({
     where: {
       id
     },
     // attributes: ['id', 'name', 'barcode', 'origin', 'score'],
     include: [
-      { model: Packmat, attributes: ['name'] },
-      { model: Packtype, attributes: ['name'] },
-      { model: SubCategory, attributes: ['name', 'id', 'parentCat'] },
-      { model: User, as: 'created', attributes: ['email'] },
-      { model: User, as: 'lastUpdated', attributes: ['email'] }]
+      { model: models.Packaging, attributes: ['name'] },
+      { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] },
+      { model: models.Origin, attributes: ['name'] },
+      { model: models.User, as: 'created', attributes: ['email'] },
+      { model: models.User, as: 'lastUpdated', attributes: ['email'] }]
   }).then(item => res.send(item));
 });
 
+
 router.post('/', withAdmin, (req, res) => {
   const {
-    name, categoryId, barcode, packtype, packmat, origin, score,
+    name, weight, categoryId, barcode, packaging, origin
   } = req.body;
-  Item.create({
-    name,
-    categoryId,
-    barcode,
-    packtype,
-    packmat,
-    origin,
-    score,
-    createdBy: req.userId,
-    lastUpdatedBy: req.userId,
+  if (!name || !weight || !categoryId || !barcode || !packaging || !origin) {
+    res.status(400).json({ error: 'Please provide all neccessary information needed to create an item' });
+    return;
+  }
+  models.Item.findOne({
+    where: {
+      barcode
+    }
+  }).then((item) => {
+    if (item) {
+      res.status(409).json({ error: 'Item already exists' });
+    } else {
+      models.SubCategory.findOne({
+        where: {
+          id: categoryId
+        }
+      }).then((categoryVal) => {
+        if (!categoryVal) {
+          res.status(404).json({ error: 'category not found' });
+          return;
+        }
+        models.Packaging.findOne({
+          where: {
+            id: packaging
+          }
+        }).then((packagingVal) => {
+          if (!packagingVal) {
+            res.status(404).json({ error: 'packaging not found' });
+            return;
+          }
+          models.Origin.findOne({
+            where: {
+              id: origin
+            }
+          }).then((originVal) => {
+            if (!originVal) {
+              res.status(404).json({ error: 'origin not found' });
+              return;
+            }
+            const score = Math.floor(packagingVal.co2
+              + originVal.co2 + (weight * (categoryVal.co2 / 1000)));
+            models.Item.create({
+              name,
+              weight,
+              categoryId,
+              barcode,
+              packaging,
+              origin,
+              score,
+              createdBy: req.userId,
+              lastUpdatedBy: req.userId,
+            }).then((createdItem) => {
+              res.send(createdItem);
+            }).catch((err) => {
+              console.log(`Internal error while creating new item:\n${err}`);
+              res.sendStatus(500);
+            });
+          }).catch((err) => {
+            console.log(`Internal error while retriving origin:\n${err}`);
+            res.sendStatus(500);
+          });
+        }).catch((err) => {
+          console.log(`Internal error while retriving packaging:\n${err}`);
+          res.sendStatus(500);
+        });
+      }).catch((err) => {
+        console.log(`Internal error while retriving subcategory:\n${err}`);
+        res.sendStatus(500);
+      });
+    }
+  }).catch((err) => {
+    console.log(`Internal error while checking if an item already exists:\n${err}`);
+    res.sendStatus(500);
   });
-  res.sendStatus(200);
 });
 
 
 router.delete('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
-  Item.destroy({
+  models.Item.destroy({
     where: {
       id
     }
@@ -75,14 +133,13 @@ router.delete('/:id', withAdmin, (req, res) => {
 router.put('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const {
-    name, subCategoryId, barcode, packtype, packmat, origin, score
+    name, subCategoryId, barcode, packaging, origin, score
   } = req.body;
-  Item.update({
+  models.Item.update({
     name,
     categoryId: subCategoryId,
     barcode,
-    packtype,
-    packmat,
+    packaging,
     origin,
     score,
     lastUpdatedBy: req.userId,

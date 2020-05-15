@@ -1,55 +1,34 @@
-const Sequelize = require('sequelize');
-
-const db = require('../config/database');
-
-const Item = db.define('Item', {
-  name: {
-    type: Sequelize.STRING(30),
-    allowNull: false
-  },
-  categoryId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  },
-  barcode: {
-    type: Sequelize.STRING(16),
-    allowNull: false,
-    unique: true
-  },
-  packtype: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  },
-  packmat: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  },
-  origin: {
-    type: Sequelize.STRING(50),
-    allowNull: false
-  },
-  score: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
-  createdBy: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  },
-  lastUpdatedBy: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    foreignKey: true
-  }
-});
-
-db.sync()
-  .then(() => console.log('item table has been successfully created, if one doesn\'t exist'))
-  .catch(error => console.log('This error occured', error));
-
-
-module.exports = Item;
+module.exports = (sequelize, DataTypes) => {
+  const Item = sequelize.define('Item', {
+    name: DataTypes.STRING,
+    weight: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER,
+    barcode: DataTypes.STRING,
+    packaging: DataTypes.INTEGER,
+    origin: DataTypes.INTEGER,
+    score: DataTypes.INTEGER
+  }, {});
+  Item.associate = function (models) {
+    models.Item.belongsToMany(models.Purchase, {
+      through: 'PurchaseItem'
+    });
+    models.Item.belongsTo(models.User, {
+      as: 'created',
+      foreignKey: 'createdBy'
+    });
+    models.Item.belongsTo(models.User, {
+      as: 'lastUpdated',
+      foreignKey: 'lastUpdatedBy'
+    });
+    models.Item.belongsTo(models.SubCategory, {
+      foreignKey: 'categoryId'
+    });
+    models.Item.belongsTo(models.Packaging, {
+      foreignKey: 'packaging'
+    });
+    models.Item.belongsTo(models.Origin, {
+      foreignKey: 'origin'
+    });
+  };
+  return Item;
+};

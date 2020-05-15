@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import {
   Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Slider, Grid, FormControl, InputLabel, Select, MenuItem
+  Button, Grid, FormControl, InputLabel, Select, MenuItem
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -41,17 +41,18 @@ export default function ItemUpdateDialog(props) {
   const {
     isOpen, id, handleClose, handleSave, handleDelete
   } = props;
+
   const [barcode, setBarcode] = useState('');
   const [name, setName] = useState('');
+  const [weight, setWeight] = useState(0);
   const [categoryId, setCategoryId] = useState('');
   const [categories, setCategories] = useState([]);
   const [subCategoryId, setSubCategoryId] = useState([]);
   const [subCategories, setSubcategories] = useState([]);
-  const [packmat, setPackmat] = useState('');
-  const [packagingMaterials, setPackagingMaterials] = useState([]);
-  const [packtype, setPacktype] = useState('');
-  const [packagingTypes, setPackagingTypes] = useState([]);
-  const [origin, setOrigin] = useState('');
+  const [packagingId, setPackagingId] = useState('');
+  const [packaging, setPackaging] = useState([]);
+  const [originId, setOriginId] = useState('');
+  const [origin, setOrigin] = useState([]);
   const [score, setScore] = useState(0);
   const [createdBy, setCreatedBy] = useState('');
   const [lastUpdatedBy, setLastUpdatedBy] = useState('');
@@ -65,11 +66,11 @@ export default function ItemUpdateDialog(props) {
     axios.get(`/api/items/${id}`).then((res) => {
       setBarcode(res.data[0].barcode);
       setName(res.data[0].name);
+      setWeight(res.data[0].weight);
       setCategoryId(res.data[0].SubCategory.parentCat);
       setSubCategoryId(res.data[0].categoryId);
-      setPacktype(res.data[0].packtype);
-      setPackmat(res.data[0].packmat);
-      setOrigin(res.data[0].origin);
+      setPackagingId(res.data[0].packaging);
+      setOriginId(res.data[0].origin);
       setScore(res.data[0].score);
       setCreatedBy(res.data[0].created.email);
       setLastUpdatedBy(res.data[0].lastUpdated.email);
@@ -81,8 +82,8 @@ export default function ItemUpdateDialog(props) {
 
   useEffect(() => {
     axios.get('/api/categories').then((res) => { setCategories(res.data); });
-    axios.get('/api/packaging/packMat').then((res) => { setPackagingMaterials(res.data); });
-    axios.get('/api/packaging/packType').then((res) => { setPackagingTypes(res.data); });
+    axios.get('/api/packaging').then((res) => { setPackaging(res.data); });
+    axios.get('/api/origins').then((res) => { setOrigin(res.data); });
   }, []);
 
   const handleItemChange = (evt) => {
@@ -93,7 +94,7 @@ export default function ItemUpdateDialog(props) {
       return;
     }
     axios.put(`/api/items/${id}`, {
-      name, subCategoryId, barcode, packtype, packmat, origin, score
+      name, subCategoryId, barcode, packaging, origin, score
     }).then((res) => {
       if (res.status === 200) {
         handleSave();
@@ -126,12 +127,8 @@ export default function ItemUpdateDialog(props) {
     handleClose();
   };
 
-  const handlePackMatPick = (evt) => {
-    setPackmat(evt.target.value);
-  };
-
-  const handlePackTypePick = (evt) => {
-    setPacktype(evt.target.value);
+  const handlePackagingPick = (evt) => {
+    setPackaging(evt.target.value);
   };
 
   const handleCategoryPick = (evt) => {
@@ -143,22 +140,44 @@ export default function ItemUpdateDialog(props) {
     setSubCategoryId(evt.target.value);
   };
 
+  const handleOriginPick = (evt) => {
+    setOriginId(evt.target.value);
+  };
+
   return (
     <div>
       <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle id="form-dialog-title">
-          {name}
           <Grid container>
             <Grid item xs={6}>
+              <Typography variant="h5">
+                {name}
+              </Typography>
+            </Grid>
+            <Grid item xs={5} align="right">
+              <Typography variant="h4" color="primary">
+                {score}
+                {'g'}
+              </Typography>
+            </Grid>
+            <Grid item xs={1} align="right">
+              <IconButton className={classes.closeButton} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+
+          <Grid container>
+            <Grid item xs={5}>
               <Typography color="textSecondary" variant="body2">
                 ID:
                 <br />
-                Created by:
+                Created:
                 <br />
-                Last changed by:
+                Last changed:
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={7}>
               <Typography color="textSecondary" variant="body2">
                 {id}
                 <br />
@@ -168,9 +187,7 @@ export default function ItemUpdateDialog(props) {
               </Typography>
             </Grid>
           </Grid>
-          <IconButton className={classes.closeButton} onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
+
         </DialogTitle>
         <form onSubmit={handleItemChange}>
           <DialogContent>
@@ -192,6 +209,15 @@ export default function ItemUpdateDialog(props) {
               margin="dense"
               label="Name"
               onChange={e => setName(e.target.value)}
+            />
+            <TextField
+              value={weight}
+              required
+              margin="dense"
+              label="Weight (g)"
+              type="number"
+              fullWidth
+              onChange={e => setWeight(e.target.value)}
             />
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Category</InputLabel>
@@ -218,50 +244,29 @@ export default function ItemUpdateDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging Type</InputLabel>
+              <InputLabel>Packaging </InputLabel>
               <Select
-                id="packMat-select"
-                value={packtype}
-                onChange={handlePackTypePick}
+                id="pack-select"
+                value={packagingId}
+                onChange={handlePackagingPick}
               >
-                {packagingTypes.map(value => (
+                {packaging.map(value => (
                   <MenuItem value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging Material</InputLabel>
+              <InputLabel>Origin </InputLabel>
               <Select
-                fullWidth
-                id="packMat-select"
-                value={packmat}
-                onChange={handlePackMatPick}
+                id="origin-select"
+                value={originId}
+                onChange={handleOriginPick}
               >
-                {packagingMaterials.map(value => (
+                {origin.map(value => (
                   <MenuItem value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              value={origin}
-              fullWidth
-              required
-              margin="dense"
-              label="Origin"
-              onChange={e => setOrigin(e.target.value)}
-            />
-            <Typography gutterBottom className={classes.scoreText}>
-              Score:
-            </Typography>
-            <Slider
-              required
-              value={score}
-              step={1}
-              min={0}
-              max={100}
-              valueLabelDisplay="auto"
-              onChange={(e, v) => setScore(v)}
-            />
           </DialogContent>
           <DialogActions>
             <Button

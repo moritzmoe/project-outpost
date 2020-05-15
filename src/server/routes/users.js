@@ -3,12 +3,12 @@ const { Op } = require('sequelize');
 
 const router = express.Router();
 
-const User = require('../models/user');
+const models = require('../models');
 const withAdmin = require('../middleware/admin');
 
 router.get('/', withAdmin, (req, res) => {
   if (req.query.q) {
-    User.findAll({
+    models.User.findAll({
       order: [
         ['id', 'ASC'],
       ],
@@ -32,7 +32,7 @@ router.get('/', withAdmin, (req, res) => {
     }).then(users => res.send(users))
       .catch(err => console.log(err));
   } else {
-    User.findAll({
+    models.User.findAll({
       order: [
         ['id', 'ASC'],
       ],
@@ -46,7 +46,7 @@ router.get('/', withAdmin, (req, res) => {
 
 router.get('/totalQueryCount', withAdmin, (req, res) => {
   if (req.query.q) {
-    User.count({
+    models.User.count({
       where: {
         [Op.or]: [
           {
@@ -70,21 +70,21 @@ router.get('/totalQueryCount', withAdmin, (req, res) => {
 });
 
 router.get('/totalUserCount', withAdmin, (req, res) => {
-  User.count().then((result) => {
+  models.User.count().then((result) => {
     res.send(result.toString());
   }).catch(err => console.log(err));
 });
 
 router.post('/changeAdmin', withAdmin, (req, res) => {
   const { id } = req.body;
-  User.findOne({
+  models.User.findOne({
     where: {
       id
     },
     attributes: ['isAdmin']
   }).then((user) => {
     const { isAdmin } = user.dataValues;
-    User.update({
+    models.User.update({
       isAdmin: !isAdmin
     }, {
       where: {

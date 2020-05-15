@@ -94,7 +94,7 @@ export default function Items() {
     });
   };
 
-  const handleItemChange = () => {
+  const handleItemsChange = () => {
     axios.get('/api/items').then((res) => {
       setItems(res.data);
       handleClose();
@@ -133,14 +133,15 @@ export default function Items() {
           <ItemCreationDialog
             isOpen={openCreate}
             handleClose={handleClose}
+            handleItemCreated={handleItemsChange}
             barcode={barcode}
           />
           <ItemUpdateDialog
             isOpen={openUpdate}
             id={id}
             handleClose={handleClose}
-            handleSave={handleItemChange}
-            handleDelete={handleItemChange}
+            handleSave={handleItemsChange}
+            handleDelete={handleItemsChange}
           />
         </Container>
       ) : ''}

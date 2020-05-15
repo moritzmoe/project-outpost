@@ -7,9 +7,9 @@ const models = require('../models');
 const withAuth = require('../middleware/auth');
 
 router.get('/', withAuth, (req, res) => {
-  models.Packaging.findAll({
+  models.Origin.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt', 'co2'] }
-  }).then(packMats => res.send(packMats));
+  }).then(origins => res.send(origins));
 });
 
 
