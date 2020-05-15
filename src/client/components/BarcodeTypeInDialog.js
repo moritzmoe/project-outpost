@@ -34,7 +34,7 @@ export default function BarcodeTypeInDialog(props) {
           <DialogTitle id="form-dialog-title">Type in Barcode</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Sadly we could not detect a camera :(
+              Could not detect camera.
             </DialogContentText>
             <TextField
               error={barcodeErr}

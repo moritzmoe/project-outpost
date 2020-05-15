@@ -25,25 +25,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-// Item Routes
+// Routes
 app.use('/api/items', require('./routes/items'));
 
-// Authentication/Registration Routes
 app.use('/api/auth', require('./routes/auth'));
 
-// User Management Routes
 app.use('/api/users', require('./routes/users'));
 
-// Category Routes
 app.use('/api/categories', require('./routes/categories'));
 
-// Packaging Routes
 app.use('/api/packaging', require('./routes/packaging'));
 
-// Purchase Routes
 app.use('/api/purchases', require('./routes/purchases'));
 
-// Origin Routes
 app.use('/api/origins', require('./routes/origins'));
 
 if (process.env.NODE_ENV === 'production') {
