@@ -43,7 +43,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/items/23",
+							"raw": "localhost:8081/api/items/6",
 							"host": [
 								"localhost"
 							],
@@ -51,7 +51,7 @@
 							"path": [
 								"api",
 								"items",
-								"23"
+								"6"
 							]
 						}
 					},
@@ -93,7 +93,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Testitem\",\n    \"categoryId\": 13,\n    \"barcode\": \"4031678039824\",\n    \"packtype\": 3,\n    \"packmat\": 3,\n    \"origin\": \"N/A\",\n    \"score\": \"50\"\n}",
+							"raw": "{\n\t\"name\": \"6 Eier aus Bodenhaltung\",\n\t\"weight\": 210,\n    \"categoryId\": 30,\n    \"barcode\": \"4260089830233\",\n    \"packaging\": 13,\n    \"origin\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -308,40 +308,19 @@
 			"name": "Packaging",
 			"item": [
 				{
-					"name": "Get all Packaging Materials",
+					"name": "Get all Packaging",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/packaging/packMat",
+							"raw": "localhost:8081/api/packaging",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
 								"api",
-								"packaging",
-								"packMat"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all Packaging Types",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8081/api/packaging/packType",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"api",
-								"packaging",
-								"packType"
+								"packaging"
 							]
 						}
 					},
@@ -427,6 +406,63 @@
 								"purchases",
 								"7"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Purchase ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/purchases/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"purchases",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Purchases of User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/purchases/",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"purchases",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Origins",
+			"item": [
+				{
+					"name": "Get all Origins",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
 						}
 					},
 					"response": []
