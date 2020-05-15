@@ -3,23 +3,19 @@ const express = require('express');
 
 const router = express.Router();
 
-const Item = require('../models/item');
-const Packaging = require('../models/packaging');
-const SubCategory = require('../models/subCategory');
-const Origin = require('../models/origin');
-const User = require('../models/user');
+const models = require('../models');
 
 const withAdmin = require('../middleware/admin');
 
 
 router.get('/', withAdmin, (req, res) => {
-  Item.findAll({
+  models.Item.findAll({
     order: [
       ['updatedAt', 'DESC'],
     ],
     limit: req.query.limit,
     offset: req.query.offset,
-    include: [Packaging, SubCategory, Origin]
+    include: [models.Packaging, models.SubCategory, models.Origin]
   }).then((items) => {
     res.send(items);
   }).catch(err => console.log(err));
@@ -27,17 +23,17 @@ router.get('/', withAdmin, (req, res) => {
 
 router.get('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
-  Item.findAll({
+  models.Item.findAll({
     where: {
       id
     },
     // attributes: ['id', 'name', 'barcode', 'origin', 'score'],
     include: [
-      { model: Packaging, attributes: ['name'] },
-      { model: SubCategory, attributes: ['name', 'id', 'parentCat'] },
-      { model: Origin, attributes: ['name'] },
-      { model: User, as: 'created', attributes: ['email'] },
-      { model: User, as: 'lastUpdated', attributes: ['email'] }]
+      { model: models.Packaging, attributes: ['name'] },
+      { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] },
+      { model: models.Origin, attributes: ['name'] },
+      { model: models.User, as: 'created', attributes: ['email'] },
+      { model: models.User, as: 'lastUpdated', attributes: ['email'] }]
   }).then(item => res.send(item));
 });
 
@@ -50,7 +46,7 @@ router.post('/', withAdmin, (req, res) => {
     res.status(400).json({ error: 'Please provide all neccessary information needed to create an item' });
     return;
   }
-  Item.findOne({
+  models.Item.findOne({
     where: {
       barcode
     }
@@ -58,7 +54,7 @@ router.post('/', withAdmin, (req, res) => {
     if (item) {
       res.status(409).json({ error: 'Item already exists' });
     } else {
-      SubCategory.findOne({
+      models.SubCategory.findOne({
         where: {
           id: categoryId
         }
@@ -67,7 +63,7 @@ router.post('/', withAdmin, (req, res) => {
           res.status(404).json({ error: 'category not found' });
           return;
         }
-        Packaging.findOne({
+        models.Packaging.findOne({
           where: {
             id: packaging
           }
@@ -76,7 +72,7 @@ router.post('/', withAdmin, (req, res) => {
             res.status(404).json({ error: 'packaging not found' });
             return;
           }
-          Origin.findOne({
+          models.Origin.findOne({
             where: {
               id: origin
             }
@@ -87,7 +83,7 @@ router.post('/', withAdmin, (req, res) => {
             }
             const score = Math.floor(packagingVal.co2
               + originVal.co2 + (weight * (categoryVal.co2 / 1000)));
-            Item.create({
+            models.Item.create({
               name,
               weight,
               categoryId,
@@ -125,7 +121,7 @@ router.post('/', withAdmin, (req, res) => {
 
 router.delete('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
-  Item.destroy({
+  models.Item.destroy({
     where: {
       id
     }
@@ -139,7 +135,7 @@ router.put('/:id', withAdmin, (req, res) => {
   const {
     name, subCategoryId, barcode, packaging, origin, score
   } = req.body;
-  Item.update({
+  models.Item.update({
     name,
     categoryId: subCategoryId,
     barcode,

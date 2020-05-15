@@ -1,51 +1,31 @@
-/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 const bcrypt = require('bcrypt');
-const Sequelize = require('sequelize');
 
-const db = require('../config/database');
-
-const User = db.define('User', {
-  email: {
-    type: Sequelize.STRING(50),
-    unique: true,
-    allowNull: false
-  },
-  firstname: {
-    type: Sequelize.STRING(30),
-    allowNull: false
-  },
-  lastname: {
-    type: Sequelize.STRING(30),
-    allowNull: false
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  isAdmin: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  }
-}, {
-  hooks: {
-    beforeCreate: (user) => {
-      const salt = bcrypt.genSaltSync();
-      user.password = bcrypt.hashSync(user.password, salt);
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    email: DataTypes.STRING,
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING,
+    password: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN
+  }, {
+    hooks: {
+      beforeCreate: (user) => {
+        const salt = bcrypt.genSaltSync();
+        user.password = bcrypt.hashSync(user.password, salt);
+      }
     }
-  }
-});
+  });
+  User.associate = function (models) {
+    models.User.hasMany(models.Purchase, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE'
+    });
+  };
 
-// instance level method
-User.prototype.validPassword = function validPassword(password) {
-  return bcrypt.compareSync(password, this.password);
+  User.prototype.validPassword = function validPassword(password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+
+  return User;
 };
-
-// create all the defined tables in the specified database.
-db.sync()
-  .then(() => console.log('Users table has been successfully created, if one doesn\'t exist'))
-  .catch(error => console.log('While syncing the user table this error occurred:', error));
-
-// export User model for use in other files.
-module.exports = User;

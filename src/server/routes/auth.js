@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-const User = require('../models/user');
+const models = require('../models');
 const withAuth = require('../middleware/auth');
 const withAdmin = require('../middleware/admin');
 
@@ -20,7 +20,7 @@ function validateEmail(email) {
 // @access public
 router.post('/', (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ where: { email } }).then((user) => {
+  models.User.findOne({ where: { email } }).then((user) => {
     if (user === null || !user.validPassword(password)) {
       res.status(401).json({ error: 'Invalid' });
     } else {
@@ -48,7 +48,7 @@ router.post('/register', (req, res) => {
     res.status(400).json({ error: 'Invalid E-Mail!' });
     return;
   }
-  User.create({
+  models.User.create({
     email,
     firstname,
     lastname,
@@ -88,7 +88,7 @@ router.get('/checkAdmin', withAdmin, (req, res) => {
 // @desc get registered user
 // @access private
 router.get('/user', withAuth, (req, res) => {
-  User.findOne({
+  models.User.findOne({
     attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     where: { id: req.userId }
   }).then(user => res.json(user));

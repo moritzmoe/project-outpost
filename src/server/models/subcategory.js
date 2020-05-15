@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const Origin = sequelize.define('Origin', {
+  const SubCategory = sequelize.define('SubCategory', {
+    parentCat: DataTypes.INTEGER,
     name: DataTypes.STRING,
     co2: DataTypes.INTEGER
   }, {});
-  Origin.associate = function (models) {
+  SubCategory.associate = function (models) {
     // associations can be defined here
   };
-  return Origin;
+  return SubCategory;
 };

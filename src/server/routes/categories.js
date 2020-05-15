@@ -2,20 +2,19 @@ const express = require('express');
 
 const router = express.Router();
 
-const Category = require('../models/category');
-const SubCategory = require('../models/subCategory');
+const models = require('../models');
 
 const withAuth = require('../middleware/auth');
 
 router.get('/', withAuth, (req, res) => {
-  Category.findAll({
+  models.Category.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   }).then(categories => res.send(categories));
 });
 
 router.get('/subCats/:id', withAuth, (req, res) => {
   const id = parseInt(req.params.id, 10);
-  SubCategory.findAll({
+  models.SubCategory.findAll({
     where: {
       parentCat: id
     },

@@ -2,10 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const Purchase = require('../models/purchase');
-const Item = require('../models/item');
-const Packaging = require('../models/packaging');
-const SubCategory = require('../models/subCategory');
+const models = require('../models');
 
 const withAuth = require('../middleware/auth');
 
@@ -14,7 +11,7 @@ const withAuth = require('../middleware/auth');
 // purchase gets created for the user that sends the request
 // returns the purchase
 router.post('/', withAuth, (req, res) => {
-  Purchase.create({
+  models.Purchase.create({
     userId: req.userId,
   }).then(purchase => res.send(purchase))
     .catch((err) => {
@@ -32,17 +29,17 @@ router.get('/:id', withAuth, (req, res) => {
     res.status(400).json({ error: 'Please provide a purchase id' });
     return;
   }
-  Purchase.findOne({
+  models.Purchase.findOne({
     where: {
       id: purchaseId,
       userId: req.userId
     },
     include: [{
-      model: Item,
+      model: models.Item,
       attributes: ['id', 'name', 'barcode', 'origin'],
       include: [
-        { model: Packaging, attributes: ['name'] },
-        { model: SubCategory, attributes: ['name', 'id', 'parentCat'] }
+        { model: models.Packaging, attributes: ['name'] },
+        { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
       ]
     }]
   }).then((purchase) => {
@@ -60,16 +57,16 @@ router.get('/:id', withAuth, (req, res) => {
 // user can only retrive his own purchases
 // return the purchase including all items in it.
 router.get('/', withAuth, (req, res) => {
-  Purchase.findAll({
+  models.Purchase.findAll({
     where: {
       userId: req.userId
     },
     include: [{
-      model: Item,
+      model: models.Item,
       attributes: ['id', 'name', 'barcode', 'origin'],
       include: [
-        { model: Packaging, attributes: ['name'] },
-        { model: SubCategory, attributes: ['name', 'id', 'parentCat'] }
+        { model: models.Packaging, attributes: ['name'] },
+        { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
       ]
     }]
   }).then((purchase) => {
@@ -84,7 +81,7 @@ router.get('/', withAuth, (req, res) => {
 // returns 200 if delete was successful and 404 if the purchase requested to delete was not found
 router.delete('/:id', withAuth, (req, res) => {
   const purchaseId = parseInt(req.params.id, 10);
-  Purchase.destroy({
+  models.Purchase.destroy({
     where: {
       id: purchaseId,
       userId: req.userId
@@ -112,7 +109,7 @@ router.post('/item/:id', withAuth, (req, res) => {
     res.status(400).json({ error: 'Please provide a barcode' });
     return;
   }
-  Item.findOne({
+  models.Item.findOne({
     where: {
       barcode
     }
@@ -121,7 +118,7 @@ router.post('/item/:id', withAuth, (req, res) => {
       res.status(404).json({ error: 'Item not found' });
       return;
     }
-    Purchase.findOne({
+    models.Purchase.findOne({
       where: {
         id: purchaseId,
         userId: req.userId
@@ -132,17 +129,17 @@ router.post('/item/:id', withAuth, (req, res) => {
         return;
       }
       purchase.addItem(item).then(() => {
-        Purchase.findOne({
+        models.Purchase.findOne({
           where: {
             id: purchaseId,
             userId: req.userId
           },
           include: [{
-            model: Item,
+            model: models.Item,
             attributes: ['id', 'name', 'barcode', 'origin'],
             include: [
-              { model: Packaging, attributes: ['name'] },
-              { model: SubCategory, attributes: ['name', 'id', 'parentCat'] }
+              { model: models.Packaging, attributes: ['name'] },
+              { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
             ]
           }]
         }).then((purchaseWithNewItem) => {
