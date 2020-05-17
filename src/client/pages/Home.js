@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Typography, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
+import PurchaseDialog from '../components/PurchaseDialog';
 
 const data = [
   { name: 'Group A', value: 50 },
@@ -54,6 +55,7 @@ class SimplePieChart extends React.Component {
 export default function Home() {
   const classes = useStyles();
   const [score, setScore] = useState(0);
+  const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
   const setPageName = useSetStoreValue('pageName');
 
   useEffect(() => {
@@ -67,6 +69,14 @@ export default function Home() {
     setPageName('Home');
   }, []);
 
+  const handlePurchaseDialogClose = () => {
+    setPurchaseDialogOpen(false);
+  };
+
+  const handlePurchaseDialogOpen = () => {
+    setPurchaseDialogOpen(true);
+  };
+
   return (
     <div>
       <Container maxWidth="sm">
@@ -77,10 +87,11 @@ export default function Home() {
           {score}
         </Typography>
         <SimplePieChart />
-        <Fab color="primary" aria-label="add" className={classes.fab} variant="extended">
+        <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handlePurchaseDialogOpen}>
           <AddIcon />
           Add Purchase
         </Fab>
+        <PurchaseDialog isOpen={purchaseDialogOpen} handleClose={handlePurchaseDialogClose} />
       </Container>
     </div>
   );
