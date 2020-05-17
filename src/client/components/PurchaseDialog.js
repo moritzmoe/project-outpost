@@ -70,6 +70,7 @@ export default function PurchaseDialog(props) {
   const clearStateAndHandleClose = () => {
     setPurchaseId(0);
     setItems([]);
+    setTotalScore(0);
     handleClose();
   };
 
