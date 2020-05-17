@@ -136,7 +136,7 @@ router.post('/item/:id', withAuth, (req, res) => {
           },
           include: [{
             model: models.Item,
-            attributes: ['id', 'name', 'barcode', 'origin'],
+            attributes: ['id', 'name', 'barcode', 'origin', 'score'],
             include: [
               { model: models.Packaging, attributes: ['name'] },
               { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
