@@ -9,10 +9,13 @@ import {
   PieChart, Pie, Cell
 } from 'recharts';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Typography, Fab } from '@material-ui/core';
+import {
+  Container, Typography, Fab, Grid
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
-import PurchaseDialog from '../components/PurchaseDialog';
+import PurchaseDialog from './PurchaseDialog';
+import PurchaseCard from '../components/PurchaseCard';
 
 const data = [
   { name: 'Group A', value: 50 },
@@ -26,6 +29,11 @@ const useStyles = makeStyles(theme => ({
     position: 'fixed',
     bottom: theme.spacing(4),
     right: theme.spacing(3),
+  },
+  co2Display: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }));
 
@@ -56,18 +64,22 @@ export default function Home() {
   const classes = useStyles();
   const [score, setScore] = useState(0);
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
+  const [purchases, setPurchases] = useState([]);
   const setPageName = useSetStoreValue('pageName');
 
   useEffect(() => {
-    axios.get('/api/items').then((res) => {
+    axios.get('/api/purchases').then((res) => {
       let totalScore = 0;
-      res.data.map((item) => {
-        totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+      res.data.map((purchase) => {
+        purchase.Items.map((item) => {
+          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+        });
       });
-      setScore(totalScore);
+      setScore(totalScore / 1000);
+      setPurchases(res.data);
     });
     setPageName('Home');
-  }, []);
+  }, [purchaseDialogOpen]);
 
   const handlePurchaseDialogClose = () => {
     setPurchaseDialogOpen(false);
@@ -77,16 +89,35 @@ export default function Home() {
     setPurchaseDialogOpen(true);
   };
 
+  const handlePurchaseDetails = (id) => {
+    console.log(`Purchase Details for ${id} called.\n Still needs to be implemented`);
+  };
+
   return (
     <div>
-      <Container maxWidth="sm">
-        <Typography variant="h5" component="h2" gutterBottom>
-          Your total Score:
-        </Typography>
-        <Typography variant="h3" component="h2" gutterBottom>
-          {score}
-        </Typography>
-        <SimplePieChart />
+      <Container>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Typography variant="h5" gutterBottom className={classes.co2Display}>
+              Your total CO2:
+            </Typography>
+            <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
+              {score}
+              {' '}
+              kg
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container justify="center" spacing={2}>
+              {purchases.map(value => (
+                <PurchaseCard purchase={value} openDetails={handlePurchaseDetails} />
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* <SimplePieChart /> */}
+
         <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handlePurchaseDialogOpen}>
           <AddIcon />
           Add Purchase
