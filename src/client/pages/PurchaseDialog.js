@@ -5,15 +5,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Button, Dialog, ListItemText, ListItem, List, Divider,
   AppBar, Toolbar, IconButton, Typography, Slide, Container,
-  Grid, Paper, Box, DialogTitle, DialogContent
+  Grid, Paper, Box, DialogTitle, DialogContent, Snackbar
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
-import ScanBarcodeCard from './ScanBarcodeCard';
-import ScanQRCodeCard from './ScanQRCodeCard';
-import BarcodeScanner from './BarcodeScanner';
-import BarcodeTypeInDialog from './BarcodeTypeInDialog';
-import ItemCard from './ItemCard';
+import MuiAlert from '@material-ui/lab/Alert';
+import ScanBarcodeCard from '../components/ScanBarcodeCard';
+import ScanQRCodeCard from '../components/ScanQRCodeCard';
+import BarcodeScanner from '../components/BarcodeScanner';
+import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
+import ItemCard from '../components/ItemCard';
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,8 +35,15 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: theme.spacing(2)
+  },
+  error: {
+    marginBottom: theme.spacing(2),
   }
 }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -47,7 +55,17 @@ export default function PurchaseDialog(props) {
   const [openBarcode, setOpenBarcode] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [items, setItems] = useState([]);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
+  const clearStateAndHandleClose = () => {
+    setPurchaseId(0);
+    setItems([]);
+    setTotalScore(0);
+    handleClose();
+    setError(false);
+    setErrorMsg('');
+  };
   // this is needed to detect if the users system has a camera
   navigator.getMedia = (navigator.getUserMedia
       || navigator.webkitGetUserMedia
@@ -67,11 +85,11 @@ export default function PurchaseDialog(props) {
     });
   };
 
-  const clearStateAndHandleClose = () => {
-    setPurchaseId(0);
-    setItems([]);
-    setTotalScore(0);
-    handleClose();
+  const discardPurchase = () => {
+    if (purchaseId !== 0) {
+      axios.delete(`/api/purchases/${purchaseId}`);
+    }
+    clearStateAndHandleClose();
   };
 
   const handleBarcodeDialogClose = () => {
@@ -80,6 +98,14 @@ export default function PurchaseDialog(props) {
 
   const handleBarcodeTypeInClose = () => {
     setOpenBarcodeTypeIn(false);
+  };
+
+  const handleErrorClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setError(false);
+    setErrorMsg('');
   };
 
   const handleBarcodeInput = (data) => {
@@ -92,6 +118,9 @@ export default function PurchaseDialog(props) {
       });
       setTotalScore(score);
       setItems(res.data.Items);
+    }).catch((err) => {
+      setErrorMsg(err.response.data.error);
+      setError(true);
     });
   };
 
@@ -109,21 +138,21 @@ export default function PurchaseDialog(props) {
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={clearStateAndHandleClose} aria-label="close">
+            <IconButton edge="start" color="inherit" onClick={discardPurchase} aria-label="close">
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
               Purchase
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={clearStateAndHandleClose}>
               save
             </Button>
           </Toolbar>
         </AppBar>
-        <Container>
-          <Grid container spacing={3}>
+        <Container spacing={2}>
+          <Grid container>
             <Grid item xs={12}>
-              <Typography variant="h5" className={classes.co2Display}>
+              <Typography variant="h4" className={classes.co2Display}>
                 Total:
                 {' '}
                 {totalScore}
@@ -132,9 +161,11 @@ export default function PurchaseDialog(props) {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              {items.map(value => (
-                <ItemCard item={value} openDetails={nothing} />
-              ))}
+              <Grid container justify="center" spacing={2}>
+                {items.map(value => (
+                  <ItemCard item={value} openDetails={nothing} />
+                ))}
+              </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
               <ScanBarcodeCard handleClick={handleBarcodeScan} />
@@ -156,6 +187,20 @@ export default function PurchaseDialog(props) {
         barcodeTypeInResult={handleBarcodeInput}
         handleClose={handleBarcodeTypeInClose}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={error}
+        autoHideDuration={6000}
+        onClose={handleErrorClose}
+        className={classes.error}
+      >
+        <Alert onClose={handleErrorClose} severity="error">
+          {errorMsg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
