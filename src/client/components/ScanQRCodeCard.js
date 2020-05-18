@@ -7,7 +7,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.primary.main,
-    color: theme.palette.secondary.contrastText,
+    color: theme.palette.primary.contrastText,
     width: 300,
     margin: theme.spacing(1)
   },
