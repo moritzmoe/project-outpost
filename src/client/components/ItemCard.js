@@ -60,4 +60,3 @@ ItemCard.propTypes = {
   item: PropTypes.object.isRequired,
   openDetails: PropTypes.func.isRequired
 };
-c;
