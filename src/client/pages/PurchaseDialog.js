@@ -122,6 +122,8 @@ export default function PurchaseDialog(props) {
       setErrorMsg(err.response.data.error);
       setError(true);
     });
+    handleBarcodeDialogClose();
+    handleBarcodeTypeInClose();
   };
 
   const nothing = () => {
