@@ -61,9 +61,12 @@ router.get('/', withAuth, (req, res) => {
     where: {
       userId: req.userId
     },
+    order: [
+      ['updatedAt', 'DESC'],
+    ],
     include: [{
       model: models.Item,
-      attributes: ['id', 'name', 'barcode', 'origin'],
+      attributes: ['id', 'name', 'barcode', 'origin', 'score'],
       include: [
         { model: models.Packaging, attributes: ['name'] },
         { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
