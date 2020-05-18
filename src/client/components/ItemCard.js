@@ -9,7 +9,7 @@ import {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    minWidth: 320,
+    width: 320,
     margin: theme.spacing(1)
   }
 }));
@@ -60,3 +60,4 @@ ItemCard.propTypes = {
   item: PropTypes.object.isRequired,
   openDetails: PropTypes.func.isRequired
 };
+c;
