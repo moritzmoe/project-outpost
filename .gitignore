@@ -3,3 +3,4 @@ dist
 *.log
 yarn.lock
 .DS_Store
+apidoc
