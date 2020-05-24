@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Card, CardActionArea, CardContent,
-  Typography, List, ListItem, ListItemText
+  Typography, List, ListItem, ListItemText, IconButton
 } from '@material-ui/core';
 import ItemList from './ItemList';
 
@@ -51,7 +51,8 @@ export default function PurchaseCard(props) {
                   <Typography variant="body2" component="h2">
                     {createdDate.getHours()}
                     :
-                    {createdDate.getMinutes()}
+                    {(createdDate.getMinutes() < 10 ? '0' : '') + createdDate.getMinutes()}
+                    {' '}
                     h
                   </Typography>
                 </Grid>
