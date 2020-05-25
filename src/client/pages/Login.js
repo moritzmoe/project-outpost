@@ -89,15 +89,16 @@ export default function SignIn(props) {
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+        <img src="../../../public/logoText.svg" alt="Logo" width="300em" height="150em" />
+        {/* <Avatar className={classes.avatar}>
           <EcoIcon />
         </Avatar>
         <Typography variant="body1">
           Project Outpost
         </Typography>
         <Typography component="h1" variant="h5">
-          Log in
-        </Typography>
+          Login
+        </Typography> */}
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
