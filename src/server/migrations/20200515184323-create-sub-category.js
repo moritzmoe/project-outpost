@@ -10,7 +10,13 @@ module.exports = {
     parentCat: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'Categories'
+      }
     },
     name: {
       type: Sequelize.STRING,

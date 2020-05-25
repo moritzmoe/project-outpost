@@ -90,7 +90,8 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+        <img src="../../../public/logoText.svg" alt="Logo" width="300em" height="150em" />
+        {/* <Avatar className={classes.avatar}>
           <PersonIcon />
         </Avatar>
         <Typography variant="body1">
@@ -98,7 +99,7 @@ export default function SignUp() {
         </Typography>
         <Typography component="h1" variant="h5">
           Sign up
-        </Typography>
+        </Typography> */}
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>

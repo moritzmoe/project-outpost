@@ -18,7 +18,12 @@ module.exports = {
     categoryId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'SubCategories'
+      }
     },
     barcode: {
       type: Sequelize.STRING,
@@ -28,12 +33,22 @@ module.exports = {
     packaging: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'Packagings'
+      }
     },
     origin: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'Origins'
+      }
     },
     score: {
       type: Sequelize.INTEGER,
@@ -42,12 +57,22 @@ module.exports = {
     createdBy: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'Users'
+      }
     },
     lastUpdatedBy: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'Users'
+      }
     },
     createdAt: {
       allowNull: false,

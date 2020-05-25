@@ -13,6 +13,13 @@
     "test-unit": "cross-env NODE_ENV=test ./node_modules/.bin/mocha src/server/test/unit/*.test.js",
     "heroku-prebuild": "npm install --dev"
   },
+  "apidoc": {
+    "name": "Outpost API Documentation",
+    "version": "0.0.0",
+    "description": "All Endpoints of the Outpost API",
+    "title": "API Outpost",
+    "url" : "/api"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
