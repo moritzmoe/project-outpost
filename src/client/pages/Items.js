@@ -117,12 +117,18 @@ export default function Items() {
             Add Item
           </Fab>
 
-          <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
+          {/* <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
             <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
             <DialogContent>
               <BarcodeScanner callback={onBarcodeScannerResult} stopOnDetect stopOnClick />
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
+
+          <BarcodeTypeInDialog
+            isOpen={openBarcode}
+            barcodeTypeInResult={handleBarcodeTypeIn}
+            handleClose={handleBarcodeDialogClose}
+          />
 
           <BarcodeTypeInDialog
             isOpen={openBarcodeTypeIn}
