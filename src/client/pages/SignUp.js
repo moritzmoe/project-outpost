@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useSetStoreValue } from 'react-context-hook';
 import RouterHistory from '../Tools/RouterHistory';
+import LogoText from '../img/logoText.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -90,7 +91,7 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <img src="../../../public/logoText.svg" alt="Logo" width="300em" height="150em" />
+        <img src={LogoText} alt="Logo" width="300em" height="150em" />
         {/* <Avatar className={classes.avatar}>
           <PersonIcon />
         </Avatar>

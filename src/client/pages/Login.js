@@ -15,6 +15,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { useSetStoreValue } from 'react-context-hook';
 import RouterHistory from '../Tools/RouterHistory';
+import LogoText from '../img/logoText.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -89,8 +90,9 @@ export default function SignIn(props) {
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <img src="../../../public/logoText.svg" alt="Logo" width="300em" height="150em" />
-        {/* <Avatar className={classes.avatar}>
+        <img src={LogoText} alt="Logo" width="300em" height="150em" />
+        {/* <img src="../../img/logoText.svg" alt="Logo" width="300em" height="150em" />
+         <Avatar className={classes.avatar}>
           <EcoIcon />
         </Avatar>
         <Typography variant="body1">
