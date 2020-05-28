@@ -18,7 +18,7 @@
     "version": "0.0.0",
     "description": "All Endpoints of the Outpost API",
     "title": "API Outpost",
-    "url" : "/api"
+    "url": "/api"
   },
   "author": "",
   "license": "ISC",
