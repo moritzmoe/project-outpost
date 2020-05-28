@@ -48,11 +48,11 @@ export default function Items() {
     || navigator.msGetUserMedia);
 
   const handleClickOpen = () => {
-    navigator.getMedia({ video: true }, () => {
-      setOpenBarcode(true);
-    }, () => {
-      setOpenBarcodeTypeIn(true);
-    });
+    // navigator.getMedia({ video: true }, () => {
+    setOpenBarcode(true);
+    // }, () => {
+    //   setOpenBarcodeTypeIn(true);
+    // });
   };
 
   function onBarcodeScannerResult(scanResult) {
@@ -117,18 +117,12 @@ export default function Items() {
             Add Item
           </Fab>
 
-          {/* <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
+          <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
             <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
             <DialogContent>
               <BarcodeScanner callback={onBarcodeScannerResult} stopOnDetect stopOnClick />
             </DialogContent>
-          </Dialog> */}
-
-          <BarcodeTypeInDialog
-            isOpen={openBarcode}
-            barcodeTypeInResult={handleBarcodeTypeIn}
-            handleClose={handleBarcodeDialogClose}
-          />
+          </Dialog>
 
           <BarcodeTypeInDialog
             isOpen={openBarcodeTypeIn}
