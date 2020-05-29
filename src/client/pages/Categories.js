@@ -64,7 +64,7 @@ export default function Categories() {
 
   const [state, setState] = React.useState({
     columns: [
-      { title: 'ID', field: 'id' },
+      { title: 'ID', field: 'id', editable: 'never' },
       { title: 'Name', field: 'name' },
     ],
     data: [
