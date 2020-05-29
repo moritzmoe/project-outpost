@@ -127,6 +127,16 @@ export default function Categories() {
                       return { ...prevState, data };
                     });
                   }
+                  const { name } = newData;
+                  axios.put(`/api/categories/${oldData.id}`, {
+                    name
+                  }).then((res) => {
+                    if (res.status === 200) {
+                      console.log(name);
+                    }
+                  }).catch((err) => {
+                    console.log(err);
+                  });
                 }, 600);
               }),
               onRowDelete: oldData => new Promise((resolve) => {

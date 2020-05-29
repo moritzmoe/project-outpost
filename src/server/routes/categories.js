@@ -65,4 +65,19 @@ router.delete('/:id', withAdmin, (req, res) => {
   res.sendStatus(200);
 });
 
+router.put('/:id', withAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const {
+    name
+  } = req.body;
+  models.Category.update({
+    name
+  }, {
+    where: {
+      id
+    }
+  });
+  res.sendStatus(200);
+});
+
 module.exports = router;
