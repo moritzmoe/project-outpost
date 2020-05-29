@@ -100,17 +100,16 @@ export default function Categories() {
               onRowAdd: newData => new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.push(newData);
-                    return { ...prevState, data };
-                  });
                   const { name } = newData;
                   axios.post('/api/categories', {
                     name
                   }).then((res) => {
                     if (res.status === 200) {
-                      console.log('Placeholder status 200');
+                      setState((prevState) => {
+                        const data = [...prevState.data];
+                        data.push(newData);
+                        return { ...prevState, data };
+                      });
                     }
                   }).catch((err) => {
                     console.log(err);
@@ -120,19 +119,18 @@ export default function Categories() {
               onRowUpdate: (newData, oldData) => new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  if (oldData) {
-                    setState((prevState) => {
-                      const data = [...prevState.data];
-                      data[data.indexOf(oldData)] = newData;
-                      return { ...prevState, data };
-                    });
-                  }
                   const { name } = newData;
                   axios.put(`/api/categories/${oldData.id}`, {
                     name
                   }).then((res) => {
                     if (res.status === 200) {
-                      console.log(name);
+                      if (oldData) {
+                        setState((prevState) => {
+                          const data = [...prevState.data];
+                          data[data.indexOf(oldData)] = newData;
+                          return { ...prevState, data };
+                        });
+                      }
                     }
                   }).catch((err) => {
                     console.log(err);
@@ -142,12 +140,17 @@ export default function Categories() {
               onRowDelete: oldData => new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return { ...prevState, data };
+                  axios.delete(`/api/categories/${oldData.id}`).then((res) => {
+                    if (res.status === 200) {
+                      setState((prevState) => {
+                        const data = [...prevState.data];
+                        data.splice(data.indexOf(oldData), 1);
+                        return { ...prevState, data };
+                      });
+                    }
+                  }).catch((err) => {
+                    console.log(err);
                   });
-                  axios.delete(`/api/categories/${oldData.id}`);
                 }, 600);
               }),
             }}
