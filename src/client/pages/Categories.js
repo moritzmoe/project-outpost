@@ -82,12 +82,17 @@ export default function Categories() {
     setPageName('Category Database');
   }, []);
 
+  const handleRowClick = (event, rowData) => {
+    console.log(rowData);
+  };
+
   return (
     <div>
       {isAdmin ? (
         <Container>
           <MaterialTable
             icons={tableIcons}
+            onRowClick={handleRowClick}
             title="Categories"
             columns={state.columns}
             data={state.data}
@@ -99,6 +104,16 @@ export default function Categories() {
                     const data = [...prevState.data];
                     data.push(newData);
                     return { ...prevState, data };
+                  });
+                  const { name } = newData;
+                  axios.post('/api/categories', {
+                    name
+                  }).then((res) => {
+                    if (res.status === 200) {
+                      console.log('Placeholder status 200');
+                    }
+                  }).catch((err) => {
+                    console.log(err);
                   });
                 }, 600);
               }),

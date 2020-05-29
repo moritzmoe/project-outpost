@@ -20,7 +20,6 @@ router.get('/', withAuth, (req, res) => {
   }).then(categories => res.send(categories));
 });
 
-
 /**
  * @api {get} /auth/subCats/:id Subcategories
  * @apiGroup Categories
@@ -39,5 +38,21 @@ router.get('/subCats/:id', withAuth, (req, res) => {
   }).then(subCategories => res.send(subCategories));
 });
 
+const withAdmin = require('../middleware/admin');
+
+router.post('/', withAdmin, (req, res) => {
+  const {
+    name
+  } = req.body;
+  if (!name) {
+    res.status(400).json({ error: 'Please provide all neccessary information needed to create an item' });
+    return;
+  }
+  models.Category.create({
+    name
+  }).then((createdCategory) => {
+    res.send(createdCategory);
+  });
+});
 
 module.exports = router;
