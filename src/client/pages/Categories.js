@@ -137,6 +137,7 @@ export default function Categories() {
                     data.splice(data.indexOf(oldData), 1);
                     return { ...prevState, data };
                   });
+                  axios.delete(`/api/categories/${oldData.id}`);
                 }, 600);
               }),
             }}

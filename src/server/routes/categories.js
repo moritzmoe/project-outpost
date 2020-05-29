@@ -55,4 +55,14 @@ router.post('/', withAdmin, (req, res) => {
   });
 });
 
+router.delete('/:id', withAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  models.Category.destroy({
+    where: {
+      id
+    }
+  });
+  res.sendStatus(200);
+});
+
 module.exports = router;
