@@ -2,7 +2,17 @@
 module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkInsert('Categories', [
-      { id: 1, name: 'Fette, Öle', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Fette, Öle', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Fisch, Meerestiere', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Fleisch, Geflügel, Eier', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Gemüse, Pilze', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Getreideprodukte', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Hülsenfrüchte, Samen, Nüsse', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Milch und Milchprodukte', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Obst', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Sonstiges, Gewürze, Fertiggerichte', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Getränke', createdAt: new Date(), updatedAt: new Date() }
+      /* { id: 1, name: 'Fette, Öle', createdAt: new Date(), updatedAt: new Date() },
       { id: 2, name: 'Fisch, Meerestiere', createdAt: new Date(), updatedAt: new Date() },
       { id: 3, name: 'Fleisch, Geflügel, Eier', createdAt: new Date(), updatedAt: new Date() },
       { id: 4, name: 'Gemüse, Pilze', createdAt: new Date(), updatedAt: new Date() },
@@ -10,14 +20,14 @@ module.exports = {
       { id: 6, name: 'Hülsenfrüchte, Samen, Nüsse', createdAt: new Date(), updatedAt: new Date() },
       { id: 7, name: 'Milch und Milchprodukte', createdAt: new Date(), updatedAt: new Date() },
       { id: 8, name: 'Obst', createdAt: new Date(), updatedAt: new Date() },
-      { id: 9, name: 'Sonstiges, Gewürze, Fertiggerichte', createdAt: new Date(), updatedAt: new Date() },
-      { id: 10, name: 'Getränke', createdAt: new Date(), updatedAt: new Date() }
+      { id: 9, name: 'Sonstiges, Gewürze, Fertiggerichte', createdAt: new Date(),
+      updatedAt: new Date() },
+      { id: 10, name: 'Getränke', createdAt: new Date(), updatedAt: new Date() } */
     ], {});
 
     const categories = await queryInterface.sequelize.query(
       'SELECT id from "Categories";'
     );
-
     const categoryRows = categories[0];
 
     return queryInterface.bulkInsert('SubCategories', [
