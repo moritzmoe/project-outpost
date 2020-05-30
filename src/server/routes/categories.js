@@ -17,7 +17,11 @@ const withAuth = require('../middleware/auth');
 router.get('/', withAuth, (req, res) => {
   models.Category.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt'] }
-  }).then(categories => res.send(categories));
+  }).then(categories => res.send(categories))
+    .catch((err) => {
+      console.log(`Internal Error while retrieving categories: ${err}`);
+      res.sendStatus(500);
+    });
 });
 
 /**
@@ -35,7 +39,11 @@ router.get('/subCats/:id', withAuth, (req, res) => {
       parentCat: id
     },
     attributes: { exclude: ['createdAt', 'updatedAt'] }
-  }).then(subCategories => res.send(subCategories));
+  }).then(subCategories => res.send(subCategories))
+    .catch((err) => {
+      console.log(`Inter Error while retrieving subcategories for category${id}: ${err}`);
+      res.sendStatus(500);
+    });
 });
 
 const withAdmin = require('../middleware/admin');
@@ -45,13 +53,16 @@ router.post('/', withAdmin, (req, res) => {
     name
   } = req.body;
   if (!name) {
-    res.status(400).json({ error: 'Please provide all neccessary information needed to create an item' });
+    res.status(400).json({ error: 'Please provide all necessary information needed to create an item' });
     return;
   }
   models.Category.create({
     name
   }).then((createdCategory) => {
     res.send(createdCategory);
+  }).catch((err) => {
+    console.log(`Internal error while creating new category: ${err}`);
+    res.sendStatus(500);
   });
 });
 
@@ -61,7 +72,11 @@ router.delete('/:id', withAdmin, (req, res) => {
     where: {
       id
     }
-  });
+  }).then(res.sendStatus(200))
+    .catch((err) => {
+      console.log(`Internal error while deleting category from database: ${err}`);
+      res.sendStatus();
+    });
   res.sendStatus(200);
 });
 
@@ -76,8 +91,12 @@ router.put('/:id', withAdmin, (req, res) => {
     where: {
       id
     }
+  }).then((updatedCat) => {
+    res.send(updatedCat);
+  }).catch((err) => {
+    console.log(`Internal error while updating category on database: ${err}`);
+    res.sendStatus(500);
   });
-  res.sendStatus(200);
 });
 
 module.exports = router;
