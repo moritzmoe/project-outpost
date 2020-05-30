@@ -48,11 +48,11 @@ export default function Items() {
     || navigator.msGetUserMedia);
 
   const handleClickOpen = () => {
-    navigator.getMedia({ video: true }, () => {
-      setOpenBarcode(true);
-    }, () => {
-      setOpenBarcodeTypeIn(true);
-    });
+    // navigator.getMedia({ video: true }, () => {
+    setOpenBarcode(true);
+    // }, () => {
+    //   setOpenBarcodeTypeIn(true);
+    // });
   };
 
   function onBarcodeScannerResult(scanResult) {
