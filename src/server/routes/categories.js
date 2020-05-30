@@ -75,9 +75,8 @@ router.delete('/:id', withAdmin, (req, res) => {
   }).then(res.sendStatus(200))
     .catch((err) => {
       console.log(`Internal error while deleting category from database: ${err}`);
-      res.sendStatus();
+      res.sendStatus(500);
     });
-  res.sendStatus(200);
 });
 
 router.put('/:id', withAdmin, (req, res) => {
