@@ -24,6 +24,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+import SubCategoryDialog from '../components/SubCategoryDialog';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -62,6 +64,10 @@ export default function Categories() {
   const setPageName = useSetStoreValue('pageName');
   const isAdmin = useStoreValue('isAdmin');
 
+  const [id, setId] = useState(0);
+  const [subCat, setSubCat] = useState([]);
+  const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
+
   const [state, setState] = React.useState({
     columns: [
       { title: 'ID', field: 'id', editable: 'never' },
@@ -83,7 +89,17 @@ export default function Categories() {
   }, []);
 
   const handleRowClick = (event, rowData) => {
-    console.log(rowData);
+    console.log('rowdata', rowData.id);
+    // axios.get(`/api/categories/subCats/${rowData.id}`).then((res) => {
+    //  console.log(res.data);
+    setId(parseInt(rowData.id, 10));
+    setOpenSubCategoryDialog(true);
+    // });
+  };
+
+  const handleClose = () => {
+    setId('');
+    setOpenSubCategoryDialog(false);
   };
 
   return (
@@ -154,6 +170,11 @@ export default function Categories() {
                 }, 600);
               }),
             }}
+          />
+          <SubCategoryDialog
+            isOpen={openSubCategoryDialog}
+            id={id}
+            handleClose={handleClose}
           />
         </Container>
       ) : ''}
