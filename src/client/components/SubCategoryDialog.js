@@ -49,7 +49,18 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
+const useStyles = makeStyles(theme => ({
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  },
+}));
+
 export default function SubCategoryDialog(props) {
+  const classes = useStyles();
+
   const {
     isOpen, id, catName, handleClose, handleSave, handleDelete
   } = props;
@@ -105,73 +116,87 @@ export default function SubCategoryDialog(props) {
 
   return (
     <div>
-      <Dialog open={isOpen} onClose={handleCloseClearState}>
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={isOpen}
+        onClose={handleCloseClearState}
+      >
         <DialogTitle id="form-dialog-title" />
-        <MaterialTable
-          icons={tableIcons}
-          title={`${catName}${id}`}
-          columns={state.columns}
-          data={state.data}
-          editable={{
-            onRowAdd: newData => new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                const { name } = newData;
-                axios.post('/api/categories', {
-                  name
-                }).then((res) => {
-                  if (res.status === 200) {
-                    const { newEntry } = res.data;
-                    setState((prevState) => {
-                      const data = [...prevState.data];
-                      data.push({ id: res.data.id, name: newData.name });
-                      return { ...prevState, data };
+        <Grid container>
+          <Grid item xs={1} align="right">
+            <IconButton className={classes.closeButton} onClick={handleCloseClearState}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }}>
+            <MaterialTable
+              icons={tableIcons}
+              title={`${catName}${id}`}
+              columns={state.columns}
+              data={state.data}
+              editable={{
+                onRowAdd: newData => new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                    const { name } = newData;
+                    axios.post('/api/categories', {
+                      name
+                    }).then((res) => {
+                      if (res.status === 200) {
+                        const { newEntry } = res.data;
+                        setState((prevState) => {
+                          const data = [...prevState.data];
+                          data.push({ id: res.data.id, name: newData.name });
+                          return { ...prevState, data };
+                        });
+                      }
+                    }).catch((err) => {
+                      console.log(err);
                     });
-                  }
-                }).catch((err) => {
-                  console.log(err);
-                });
-              }, 600);
-            }),
-            onRowUpdate: (newData, oldData) => new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                const { name } = newData;
-                axios.put(`/api/categories/${oldData.id}`, {
-                  name
-                }).then((res) => {
-                  if (res.status === 200) {
-                    if (oldData) {
-                      setState((prevState) => {
-                        const data = [...prevState.data];
-                        data[data.indexOf(oldData)] = newData;
-                        return { ...prevState, data };
-                      });
-                    }
-                  }
-                }).catch((err) => {
-                  console.log(err);
-                });
-              }, 600);
-            }),
-            onRowDelete: oldData => new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                axios.delete(`/api/categories/${oldData.id}`).then((res) => {
-                  if (res.status === 200) {
-                    setState((prevState) => {
-                      const data = [...prevState.data];
-                      data.splice(data.indexOf(oldData), 1);
-                      return { ...prevState, data };
+                  }, 600);
+                }),
+                onRowUpdate: (newData, oldData) => new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                    const { name } = newData;
+                    axios.put(`/api/categories/${oldData.id}`, {
+                      name
+                    }).then((res) => {
+                      if (res.status === 200) {
+                        if (oldData) {
+                          setState((prevState) => {
+                            const data = [...prevState.data];
+                            data[data.indexOf(oldData)] = newData;
+                            return { ...prevState, data };
+                          });
+                        }
+                      }
+                    }).catch((err) => {
+                      console.log(err);
                     });
-                  }
-                }).catch((err) => {
-                  console.log(err);
-                });
-              }, 600);
-            }),
-          }}
-        />
+                  }, 600);
+                }),
+                onRowDelete: oldData => new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                    axios.delete(`/api/categories/${oldData.id}`).then((res) => {
+                      if (res.status === 200) {
+                        setState((prevState) => {
+                          const data = [...prevState.data];
+                          data.splice(data.indexOf(oldData), 1);
+                          return { ...prevState, data };
+                        });
+                      }
+                    }).catch((err) => {
+                      console.log(err);
+                    });
+                  }, 600);
+                }),
+              }}
+            />
+          </Grid>
+        </Grid>
       </Dialog>
     </div>
   );
