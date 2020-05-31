@@ -65,6 +65,7 @@ export default function Categories() {
   const isAdmin = useStoreValue('isAdmin');
 
   const [id, setId] = useState(0);
+  const [catName, setCatName] = useState('');
   const [subCat, setSubCat] = useState([]);
   const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
 
@@ -89,17 +90,18 @@ export default function Categories() {
   }, []);
 
   const handleRowClick = (event, rowData) => {
-    console.log('rowdata', rowData.id);
     // axios.get(`/api/categories/subCats/${rowData.id}`).then((res) => {
     //  console.log(res.data);
     setId(parseInt(rowData.id, 10));
+    setCatName(rowData.name);
     setOpenSubCategoryDialog(true);
     // });
   };
 
   const handleClose = () => {
-    setId('');
     setOpenSubCategoryDialog(false);
+    setId('');
+    setCatName('');
   };
 
   return (
@@ -175,6 +177,7 @@ export default function Categories() {
           <SubCategoryDialog
             isOpen={openSubCategoryDialog}
             id={id}
+            catName={catName}
             handleClose={handleClose}
           />
         </Container>
