@@ -121,9 +121,10 @@ export default function Categories() {
                     name
                   }).then((res) => {
                     if (res.status === 200) {
+                      const { newEntry } = res.data;
                       setState((prevState) => {
                         const data = [...prevState.data];
-                        data.push(newData);
+                        data.push({ id: res.data.id, name: newData.name });
                         return { ...prevState, data };
                       });
                     }
