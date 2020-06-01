@@ -6,6 +6,8 @@ const models = require('../models');
 
 const withAuth = require('../middleware/auth');
 
+const withAdmin = require('../middleware/admin');
+
 /**
  * @api {get} /auth/categories Get Categories
  * @apiGroup Categories
@@ -46,14 +48,62 @@ router.get('/subCats/:id', withAuth, (req, res) => {
     });
 });
 
-const withAdmin = require('../middleware/admin');
+router.post('/subCats', withAdmin, (req, res) => {
+  const {
+    parentCat, name, co2
+  } = req.body;
+  if (!name || !parentCat || !co2) {
+    res.status(400).json({ error: 'Please provide all necessary information needed to create a new SubCategory' });
+    return;
+  }
+  models.SubCategory.create({
+    parentCat, name, co2
+  }).then((createdSubCategory) => {
+    res.send(createdSubCategory);
+  }).catch((err) => {
+    console.log(`Internal error while creating new category: ${err}`);
+    res.sendStatus(500);
+  });
+});
+
+router.delete('/subCats/:id', withAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  models.SubCategory.destroy({
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch((err) => {
+      console.log(`Internal error while deleting category from database: ${err}`);
+      res.sendStatus(500);
+    });
+});
+
+router.put('/subCats/:id', withAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const {
+    name, co2
+  } = req.body;
+  models.SubCategory.update({
+    name, co2
+  }, {
+    where: {
+      id
+    }
+  }).then((updatedSubCat) => {
+    res.send(updatedSubCat);
+  }).catch((err) => {
+    console.log(`Internal error while updating category on database: ${err}`);
+    res.sendStatus(500);
+  });
+});
 
 router.post('/', withAdmin, (req, res) => {
   const {
     name
   } = req.body;
   if (!name) {
-    res.status(400).json({ error: 'Please provide all necessary information needed to create an item' });
+    res.status(400).json({ error: 'Please provide all necessary information needed to create a new Category' });
     return;
   }
   models.Category.create({

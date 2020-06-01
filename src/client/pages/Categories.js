@@ -65,6 +65,7 @@ export default function Categories() {
   const isAdmin = useStoreValue('isAdmin');
 
   const [id, setId] = useState(0);
+  const [catName, setCatName] = useState('');
   const [subCat, setSubCat] = useState([]);
   const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
 
@@ -89,17 +90,18 @@ export default function Categories() {
   }, []);
 
   const handleRowClick = (event, rowData) => {
-    console.log('rowdata', rowData.id);
     // axios.get(`/api/categories/subCats/${rowData.id}`).then((res) => {
     //  console.log(res.data);
     setId(parseInt(rowData.id, 10));
+    setCatName(rowData.name);
     setOpenSubCategoryDialog(true);
     // });
   };
 
   const handleClose = () => {
-    setId('');
     setOpenSubCategoryDialog(false);
+    setId('');
+    setCatName('');
   };
 
   return (
@@ -116,14 +118,18 @@ export default function Categories() {
               onRowAdd: newData => new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  const { name } = newData;
-                  axios.post('/api/categories', {
-                    name
+                  const { parentCat, name, co2 } = newData;
+                  console.log('newdata', newData);
+                  axios.post('/api/categories/subCats', {
+                    parentCat,
+                    name,
+                    co2
                   }).then((res) => {
                     if (res.status === 200) {
+                      const { newEntry } = res.data;
                       setState((prevState) => {
                         const data = [...prevState.data];
-                        data.push(newData);
+                        data.push({ id: res.data.id, name: newData.name });
                         return { ...prevState, data };
                       });
                     }
@@ -174,6 +180,7 @@ export default function Categories() {
           <SubCategoryDialog
             isOpen={openSubCategoryDialog}
             id={id}
+            catName={catName}
             handleClose={handleClose}
           />
         </Container>
