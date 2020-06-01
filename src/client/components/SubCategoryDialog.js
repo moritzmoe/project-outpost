@@ -72,7 +72,7 @@ export default function SubCategoryDialog(props) {
   const [state, setState] = React.useState({
     columns: [
       { title: 'ID', field: 'id', editable: 'never' },
-      { title: 'ParentCat', field: 'parentCat' },
+      { title: 'ParentCat', field: 'parentCat', editable: 'never' },
       { title: 'Name', field: 'name' },
       { title: 'Co2', field: 'co2' },
     ],
@@ -105,7 +105,7 @@ export default function SubCategoryDialog(props) {
     setState({
       columns: [
         { title: 'ID', field: 'id', editable: 'never' },
-        { title: 'ParentCat', field: 'parentCat' },
+        { title: 'ParentCat', field: 'parentCat', editable: 'never' },
         { title: 'Name', field: 'name' },
         { title: 'Co2', field: 'co2' },
       ],
@@ -139,15 +139,18 @@ export default function SubCategoryDialog(props) {
                 onRowAdd: newData => new Promise((resolve) => {
                   setTimeout(() => {
                     resolve();
-                    const { name } = newData;
-                    axios.post('/api/categories', {
-                      name
+                    const { name, co2 } = newData;
+                    const parentCat = id;
+                    axios.post('/api/categories/subCats', {
+                      parentCat, name, co2
                     }).then((res) => {
                       if (res.status === 200) {
                         const { newEntry } = res.data;
                         setState((prevState) => {
                           const data = [...prevState.data];
-                          data.push({ id: res.data.id, name: newData.name });
+                          data.push({
+                            id: res.data.id, parentCat, name: newData.name, co2: newData.co2
+                          });
                           return { ...prevState, data };
                         });
                       }
@@ -159,9 +162,9 @@ export default function SubCategoryDialog(props) {
                 onRowUpdate: (newData, oldData) => new Promise((resolve) => {
                   setTimeout(() => {
                     resolve();
-                    const { name } = newData;
-                    axios.put(`/api/categories/${oldData.id}`, {
-                      name
+                    const { name, co2 } = newData;
+                    axios.put(`/api/categories/subCats/${oldData.id}`, {
+                      name, co2
                     }).then((res) => {
                       if (res.status === 200) {
                         if (oldData) {
@@ -180,7 +183,7 @@ export default function SubCategoryDialog(props) {
                 onRowDelete: oldData => new Promise((resolve) => {
                   setTimeout(() => {
                     resolve();
-                    axios.delete(`/api/categories/${oldData.id}`).then((res) => {
+                    axios.delete(`/api/categories/subCats/${oldData.id}`).then((res) => {
                       if (res.status === 200) {
                         setState((prevState) => {
                           const data = [...prevState.data];
