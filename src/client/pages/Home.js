@@ -110,7 +110,7 @@ export default function Home() {
           <Grid item xs={12}>
             <Grid container justify="center" spacing={2}>
               {purchases.map(value => (
-                <PurchaseCard purchase={value} openDetails={handlePurchaseDetails} />
+                <PurchaseCard key={value.id} purchase={value} openDetails={handlePurchaseDetails} />
               ))}
             </Grid>
           </Grid>

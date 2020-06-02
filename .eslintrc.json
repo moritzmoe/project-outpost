@@ -11,6 +11,8 @@
     "react/jsx-filename-extension": "off",
     "linebreak-style": "off",
     "no-unused-vars": "off",
-    "func-names": "off"
+    "func-names": "off",
+    "no-use-before-define": "off",
+    "no-param-reassign": "off"
   }
 }

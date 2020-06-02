@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const outputDirectory = 'dist';
 
@@ -57,6 +58,28 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico'
+    }),
+    new WebpackPwaManifest({
+      name: 'Outpost',
+      short_name: 'Outpost',
+      description: 'Show how consumers can make their behaviour more environmentally friendly.',
+      background_color: '#ffffff',
+      crossorigin: 'use-credentials',
+      icons: [
+        {
+          src: path.resolve('./public/icon.png'),
+          sizes: [96, 128, 192, 256, 384, 512]
+        },
+        {
+          src: path.resolve('./public/large-icon.png'),
+          size: '1024x1024'
+        },
+        {
+          src: path.resolve('./public/maskable-icon.png'),
+          size: '1024x1024',
+          purpose: 'maskable'
+        }
+      ]
     })
   ]
 };

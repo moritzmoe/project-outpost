@@ -11,7 +11,7 @@ export default function ItemList(props) {
     <div>
       <List dense>
         {items.map(value => (
-          <ListItem>
+          <ListItem key={value.id}>
             <ListItemText
               primary={value.name}
               secondary={value.barcode}
