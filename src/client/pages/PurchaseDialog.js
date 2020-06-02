@@ -13,7 +13,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import ScanBarcodeCard from '../components/ScanBarcodeCard';
 import ScanQRCodeCard from '../components/ScanQRCodeCard';
 import BarcodeScanner from '../components/BarcodeScanner';
-import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
+// import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
 
 
@@ -51,7 +51,7 @@ export default function PurchaseDialog(props) {
   const classes = useStyles();
   const { isOpen, handleClose } = props;
   const [purchaseId, setPurchaseId] = useState(0);
-  const [openBarcodeTypeIn, setOpenBarcodeTypeIn] = useState(false);
+  // const [openBarcodeTypeIn, setOpenBarcodeTypeIn] = useState(false);
   const [openBarcode, setOpenBarcode] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [items, setItems] = useState([]);
@@ -67,10 +67,11 @@ export default function PurchaseDialog(props) {
     setErrorMsg('');
   };
   // this is needed to detect if the users system has a camera
-  navigator.getMedia = (navigator.getUserMedia
+  /* navigator.getMedia = (navigator.getUserMedia
       || navigator.webkitGetUserMedia
       || navigator.mozGetUserMedia
       || navigator.msGetUserMedia);
+  */
 
   const handleBarcodeScan = () => {
     if (purchaseId === 0) {
@@ -78,11 +79,11 @@ export default function PurchaseDialog(props) {
         setPurchaseId(res.data.id);
       });
     }
-    navigator.getMedia({ video: true }, () => {
-      setOpenBarcode(true);
-    }, () => {
-      setOpenBarcodeTypeIn(true);
-    });
+    // navigator.getMedia({ video: true }, () => {
+    setOpenBarcode(true);
+    // }, () => {
+    //  setOpenBarcodeTypeIn(true);
+    // });
   };
 
   const discardPurchase = () => {
@@ -96,9 +97,10 @@ export default function PurchaseDialog(props) {
     setOpenBarcode(false);
   };
 
-  const handleBarcodeTypeInClose = () => {
+  /* const handleBarcodeTypeInClose = () => {
     setOpenBarcodeTypeIn(false);
   };
+  */
 
   const handleErrorClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -123,7 +125,7 @@ export default function PurchaseDialog(props) {
       setError(true);
     });
     handleBarcodeDialogClose();
-    handleBarcodeTypeInClose();
+    // handleBarcodeTypeInClose();
   };
 
   const nothing = () => {
@@ -184,11 +186,11 @@ export default function PurchaseDialog(props) {
           <BarcodeScanner callback={handleBarcodeInput} stopOnDetect stopOnClick />
         </DialogContent>
       </Dialog>
-      <BarcodeTypeInDialog
+      {/* <BarcodeTypeInDialog
         isOpen={openBarcodeTypeIn}
         barcodeTypeInResult={handleBarcodeInput}
         handleClose={handleBarcodeTypeInClose}
-      />
+      /> */ }
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
