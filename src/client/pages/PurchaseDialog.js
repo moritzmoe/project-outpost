@@ -5,17 +5,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Button, Dialog, ListItemText, ListItem, List, Divider,
   AppBar, Toolbar, IconButton, Typography, Slide, Container,
-  Grid, Paper, Box, DialogTitle, DialogContent, Snackbar
+  Grid, Paper, Box, DialogTitle, DialogContent, Snackbar, Fab,
+  TextField
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
 import MuiAlert from '@material-ui/lab/Alert';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import SearchIcon from '@material-ui/icons/Search';
 import ScanBarcodeCard from '../components/ScanBarcodeCard';
 import ScanQRCodeCard from '../components/ScanQRCodeCard';
 import BarcodeScanner from '../components/BarcodeScanner';
 // import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
-
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -28,7 +31,8 @@ const useStyles = makeStyles(theme => ({
   alignItemsAndJustifyContent: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: 100
   },
   co2Display: {
     display: 'flex',
@@ -38,6 +42,12 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     marginBottom: theme.spacing(2),
+  },
+  bottomControls: {
+    position: 'fixed',
+    bottom: theme.spacing(6),
+    right: theme.spacing(1),
+    left: theme.spacing(1)
   }
 }));
 
@@ -53,6 +63,7 @@ export default function PurchaseDialog(props) {
   const [purchaseId, setPurchaseId] = useState(0);
   // const [openBarcodeTypeIn, setOpenBarcodeTypeIn] = useState(false);
   const [openBarcode, setOpenBarcode] = useState(false);
+  const [barcode, setBarcode] = useState('');
   const [totalScore, setTotalScore] = useState(0);
   const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
@@ -84,6 +95,17 @@ export default function PurchaseDialog(props) {
     // }, () => {
     //  setOpenBarcodeTypeIn(true);
     // });
+  };
+
+  const handleBarcodeTypeInSubmit = (evt) => {
+    evt.preventDefault();
+    if (barcode.length !== 13) {
+      setError(true);
+      setErrorMsg('Currently only 13 Digit EAN Barcodes are supported.');
+      handleBarcodeDialogClose();
+      return;
+    }
+    handleBarcodeInput(barcode);
   };
 
   const discardPurchase = () => {
@@ -154,16 +176,19 @@ export default function PurchaseDialog(props) {
           </Toolbar>
         </AppBar>
         <Container spacing={2}>
-          <Grid container>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Typography variant="h4" className={classes.co2Display}>
-                Total:
-                {' '}
+              <Typography variant="h5" gutterBottom className={classes.co2Display}>
+                Purchase CO2:
+              </Typography>
+              <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
                 {totalScore}
                 {' '}
                 g
               </Typography>
             </Grid>
+          </Grid>
+          <Grid container>
             <Grid item xs={12}>
               <Grid container justify="center" spacing={2}>
                 {items.map(value => (
@@ -171,11 +196,43 @@ export default function PurchaseDialog(props) {
                 ))}
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <ScanBarcodeCard handleClick={handleBarcodeScan} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <ScanQRCodeCard />
+                </Grid> */}
+          </Grid>
+          <Grid container spacing={3} className={classes.bottomControls}>
+            <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddShoppingCartIcon />}
+                size="large"
+                onClick={handleBarcodeScan}
+              >
+                Scan Barcode
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<ShoppingCartIcon />}
+                size="large"
+              >
+                Scan QR-Code
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={12} className={classes.alignItemsAndJustifyContent}>
+              <Button
+                variant="contained"
+                startIcon={<SearchIcon />}
+                size="large"
+              >
+                Search
+              </Button>
             </Grid>
           </Grid>
         </Container>
@@ -183,7 +240,20 @@ export default function PurchaseDialog(props) {
       <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>
         <DialogTitle id="form-dialog-title">Scan Barcode</DialogTitle>
         <DialogContent>
-          <BarcodeScanner callback={handleBarcodeInput} stopOnDetect stopOnClick />
+          <Grid container spacing={1}>
+            <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
+              <BarcodeScanner callback={handleBarcodeInput} stopOnDetect stopOnClick />
+            </Grid>
+            <Grid item xs={12} sm={12} className={classes.alignItemsAndJustifyContent}>
+              <form on onSubmit={handleBarcodeTypeInSubmit}>
+                <TextField
+                  label="Barcode"
+                  variant="outlined"
+                  onChange={e => setBarcode(e.target.value)}
+                />
+              </form>
+            </Grid>
+          </Grid>
         </DialogContent>
       </Dialog>
       {/* <BarcodeTypeInDialog
