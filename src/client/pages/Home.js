@@ -68,7 +68,7 @@ export default function Home() {
   const setPageName = useSetStoreValue('pageName');
 
   useEffect(() => {
-    axios.get('/api/purchases').then((res) => {
+    axios.get('/api/purchases?expand=ITEMS').then((res) => {
       let totalScore = 0;
       res.data.map((purchase) => {
         purchase.Items.map((item) => {
