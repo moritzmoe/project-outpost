@@ -37,16 +37,20 @@ export default function PurchaseCard(props) {
     setCreatedDate(new Date(purchase.createdAt));
     let totalScore = 0;
     let itemNames = '';
-    if (purchase.Items.length >= 3) {
-      purchase.Items.slice(0, 3).map((item) => {
-        itemNames = itemNames.concat(`${item.name}, `);
-      });
-      itemNames = itemNames.substring(0, itemNames.length - 2);
+    if (purchase.Items.length > 0) {
+      if (purchase.Items.length >= 3) {
+        purchase.Items.slice(0, 3).map((item) => {
+          itemNames = itemNames.concat(`${item.name}, `);
+        });
+        itemNames = itemNames.substring(0, itemNames.length - 2);
+      } else {
+        itemNames = purchase.Items[0].name;
+      }
+      itemNames = itemNames.trim();
+      itemNames = itemNames.concat('...');
     } else {
-      itemNames = purchase.Items[0].name;
+      itemNames = 'No Items';
     }
-    itemNames = itemNames.trim();
-    itemNames = itemNames.concat('...');
     setFirstItems(itemNames);
     purchase.Items.map((item) => {
       totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
