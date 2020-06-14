@@ -7,6 +7,30 @@ const models = require('../models');
 const withAuth = require('../middleware/auth');
 
 
+function buildIncludeObj(expand) {
+  const includeObj = {
+    model: models.Item,
+    attributes: ['id', 'name', 'barcode', 'origin', 'score']
+  };
+  const subIncObjPackaging = {};
+  const subIncObjSubCat = {};
+  if (expand.includes('PACKAGING')) {
+    subIncObjPackaging.model = models.Packaging;
+    subIncObjPackaging.attributes = ['name'];
+    includeObj.include = [subIncObjPackaging];
+  }
+  if (expand.includes('SUBCATEGORY')) {
+    subIncObjSubCat.model = models.SubCategory;
+    subIncObjSubCat.attributes = ['name', 'id', 'parentCat'];
+    if (!includeObj.include) {
+      includeObj.include = [subIncObjSubCat];
+    } else {
+      includeObj.include.push(subIncObjSubCat);
+    }
+  }
+  return includeObj;
+}
+
 // endpoint to create a new purchase
 // purchase gets created for the user that sends the request
 // returns the purchase
@@ -29,54 +53,78 @@ router.get('/:id', withAuth, (req, res) => {
     res.status(400).json({ error: 'Please provide a purchase id' });
     return;
   }
-  models.Purchase.findOne({
-    where: {
-      id: purchaseId,
-      userId: req.userId
-    },
-    include: [{
-      model: models.Item,
-      attributes: ['id', 'name', 'barcode', 'origin'],
-      include: [
-        { model: models.Packaging, attributes: ['name'] },
-        { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
-      ]
-    }]
-  }).then((purchase) => {
-    if (!purchase) {
-      res.status(404).json({ error: 'Purchase not found' });
-    } else {
-      res.send(purchase);
-    }
-  }).catch((err) => {
-    console.log(`Internal error while retriving purchase:\n${err}`);
-  });
+  if (req.query.expand && req.query.expand.includes('ITEMS')) {
+    const includeObj = buildIncludeObj(req.query.expand);
+    models.Purchase.findOne({
+      where: {
+        id: purchaseId,
+        userId: req.userId
+      },
+      include: [includeObj]
+    }).then((purchase) => {
+      if (!purchase) {
+        res.status(404).json({ error: 'Purchase not found' });
+      } else {
+        res.send(purchase);
+      }
+    }).catch((err) => {
+      console.log(`Internal error while retriving purchase:\n${err}`);
+      res.sendStatus(500);
+    });
+  } else {
+    models.Purchase.findOne({
+      where: {
+        id: purchaseId,
+        userId: req.userId
+      }
+    }).then((purchase) => {
+      if (!purchase) {
+        res.status(404).json({ error: 'Purchase not found' });
+      } else {
+        res.send(purchase);
+      }
+    }).catch((err) => {
+      console.log(`Internal error while retriving purchase:\n${err}`);
+    });
+  }
 });
 
 // endpoint to retrieve all purchases of a user
 // user can only retrive his own purchases
 // return the purchase including all items in it.
 router.get('/', withAuth, (req, res) => {
-  models.Purchase.findAll({
-    where: {
-      userId: req.userId
-    },
-    order: [
-      ['updatedAt', 'DESC'],
-    ],
-    include: [{
-      model: models.Item,
-      attributes: ['id', 'name', 'barcode', 'origin', 'score'],
-      include: [
-        { model: models.Packaging, attributes: ['name'] },
-        { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
-      ]
-    }]
-  }).then((purchase) => {
-    res.send(purchase);
-  }).catch((err) => {
-    console.log(`Internal error while retriving purchase:\n${err}`);
-  });
+  if (req.query.expand && req.query.expand.includes('ITEMS')) {
+    const includeObj = buildIncludeObj(req.query.expand);
+    models.Purchase.findAll({
+      where: {
+        userId: req.userId
+      },
+      include: [includeObj]
+    }).then((purchases) => {
+      if (!purchases) {
+        res.status(404).json({ error: 'No Purchases found' });
+      } else {
+        res.send(purchases);
+      }
+    }).catch((err) => {
+      console.log(`Internal error while retriving purchases:\n${err}`);
+      res.sendStatus(500);
+    });
+  } else {
+    models.Purchase.findAll({
+      where: {
+        userId: req.userId
+      }
+    }).then((purchase) => {
+      if (!purchase) {
+        res.status(404).json({ error: 'Purchase not found' });
+      } else {
+        res.send(purchase);
+      }
+    }).catch((err) => {
+      console.log(`Internal error while retriving purchase:\n${err}`);
+    });
+  }
 });
 
 // endpoint to delete a purchase
