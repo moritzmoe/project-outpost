@@ -30,8 +30,8 @@ export default function PurchaseDetailDialog(props) {
     // const found = purchases.filter(item => item.id === id);
     // setItems(found[0].Items);
     // console.log(items);
-      axios.get(`/api/purchases/${id}`).then((res) => {
-        setItems(res.data);
+      axios.get(`/api/purchases/${id}?expand=ITEMS&expand=PACKAGING&expand=SUBCATEGORY`).then((res) => {
+        setItems(res.data.Items);
         console.log(res.data);
       });
     }
@@ -56,7 +56,7 @@ export default function PurchaseDetailDialog(props) {
             {id}
           </Grid>
           <Grid container justify="center" spacing={2}>
-            {items.map(value => (
+            { items.map(value => (
               <ItemCard item={value} openDetails={handleItemDetails} />
             ))}
           </Grid>
