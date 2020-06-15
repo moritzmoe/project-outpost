@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function PurchaseDetailDialog(props) {
   const classes = useStyles();
-  const [createdDate, setCreatedDate] = useState([]);
+  const [createdDate, setCreatedDate] = useState(new Date());
   const [items, setItems] = useState([]);
   const {
     isOpen, id, handleClose
@@ -34,7 +34,6 @@ export default function PurchaseDetailDialog(props) {
       axios.get(`/api/purchases/${id}?expand=ITEMS&expand=PACKAGING&expand=SUBCATEGORY`).then((res) => {
         setItems(res.data.Items);
         setCreatedDate(new Date(res.data.createdAt));
-        console.log(res.data);
       });
     }
   }, [isOpen]);
