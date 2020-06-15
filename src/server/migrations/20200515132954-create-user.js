@@ -24,10 +24,14 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false
     },
-    isAdmin: {
-      type: Sequelize.BOOLEAN,
+    role: {
+      type: Sequelize.INTEGER,
       allowNull: false,
-      defaultValue: false
+      foreignKey: true,
+      references: {
+        key: 'id',
+        model: 'Roles'
+      }
     },
     createdAt: {
       allowNull: false,
