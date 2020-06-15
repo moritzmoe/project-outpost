@@ -12,7 +12,7 @@ const withAdmin = function (req, res, next) {
     jwt.verify(token, secret, (err, decoded) => {
       if (err) {
         res.status(401).send('Unauthorized: Invalid token');
-      } else if (decoded.isAdmin) {
+      } else if (decoded.role === 'Admin') {
         req.userId = decoded.id;
         next();
       } else {
