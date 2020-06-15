@@ -59,7 +59,9 @@ export default function SignIn(props) {
         if (res.status === 200) {
           axios.get('/api/auth/user').then((response) => {
             setUserFirstname(response.data.firstname);
-            setIsAdmin(response.data.isAdmin);
+            if (response.data.Role.name === 'Admin') {
+              setIsAdmin(true);
+            }
           });
           RouterHistory.push('/');
           props.isLoggedIn(true);
