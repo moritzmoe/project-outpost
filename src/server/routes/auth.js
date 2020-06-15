@@ -41,11 +41,16 @@ function validateEmail(email) {
  */
 router.post('/', (req, res) => {
   const { email, password } = req.body;
-  models.User.findOne({ where: { email } }).then((user) => {
+  models.User.findOne({
+    where: { email },
+    include: [
+      { model: models.Role, attributes: ['name'] }
+    ]
+  }).then((user) => {
     if (user === null || !user.validPassword(password)) {
       res.status(401).json({ error: 'Invalid' });
     } else {
-      const payload = { id: user.id, isAdmin: user.isAdmin };
+      const payload = { id: user.id, role: user.Role.name };
       const token = jwt.sign(payload, secret, {
         expiresIn: 3600,
       });
@@ -99,28 +104,33 @@ router.post('/register', (req, res) => {
     res.status(400).json({ error: 'Invalid E-Mail!' });
     return;
   }
-  models.User.create({
-    email,
-    firstname,
-    lastname,
-    password,
-  })
-    .then((user) => {
-      res.status(200).json({
-        id: user.id,
-        email: user.email,
-        firstname: user.firstname,
-        lastname: user.lastname,
-      });
+  models.Role.findOne({
+    where: { name: 'User' }
+  }).then((fetchedRole) => {
+    models.User.create({
+      email,
+      firstname,
+      lastname,
+      password,
+      role: fetchedRole.id
     })
-    .catch((err) => {
-      console.log(`Error while registering user:${err}`);
-      if (err.name === 'SequelizeUniqueConstraintError') {
-        res.status(400).json({ error: 'E-Mail already taken!' });
-      } else {
-        res.status(400).json({ error: 'Registration failed!' });
-      }
-    });
+      .then((user) => {
+        res.status(200).json({
+          id: user.id,
+          email: user.email,
+          firstname: user.firstname,
+          lastname: user.lastname,
+        });
+      })
+      .catch((err) => {
+        console.log(`Error while registering user:${err}`);
+        if (err.name === 'SequelizeUniqueConstraintError') {
+          res.status(400).json({ error: 'E-Mail already taken!' });
+        } else {
+          res.status(400).json({ error: 'Registration failed!' });
+        }
+      });
+  });
 });
 
 /**
@@ -151,7 +161,7 @@ router.get('/checkAdmin', withAdmin, (req, res) => {
  * @apiSuccess (200) {String} email Email of user.
  * @apiSuccess (200) {String} firstname Firstname of user.
  * @apiSuccess (200) {String} lastname Lastname of user.
- * @apiSuccess (200) {Boolean} isAdmin True if user is admin.
+ * @apiSuccess (200) {Boolean} Role.name Name of the users role.
  * @apiSuccessExample {json} Success-Response:
  *  HTTP/1.1 200 OK
  *  {
@@ -159,12 +169,19 @@ router.get('/checkAdmin', withAdmin, (req, res) => {
  *    "email": "test@test.de",
  *    "firstname": "test",
  *    "lastname": "test",
- *    "isAdmin": true
+ *    "Role": {
+ *      "name": "Admin"
+ *     }
  *  }
  */
 router.get('/user', withAuth, (req, res) => {
   models.User.findOne({
-    attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+    include: [
+      { model: models.Role, attributes: ['name'] }
+    ],
+    attributes: {
+      exclude: ['password', 'createdAt', 'updatedAt', 'role']
+    },
     where: { id: req.userId },
   }).then(user => res.json(user));
 });
