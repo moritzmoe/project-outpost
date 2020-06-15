@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function PurchaseDetailDialog(props) {
   const classes = useStyles();
+  const [createdDate, setCreatedDate] = useState([]);
   const [items, setItems] = useState([]);
   const {
     isOpen, id, handleClose
@@ -32,6 +33,7 @@ export default function PurchaseDetailDialog(props) {
     // console.log(items);
       axios.get(`/api/purchases/${id}?expand=ITEMS&expand=PACKAGING&expand=SUBCATEGORY`).then((res) => {
         setItems(res.data.Items);
+        setCreatedDate(new Date(res.data.createdAt));
         console.log(res.data);
       });
     }
@@ -50,23 +52,71 @@ export default function PurchaseDetailDialog(props) {
         open={isOpen}
         onClose={handleClose}
       >
-        <DialogTitle id="form-dialog-title" />
-        <Grid container>
-          <Grid item xs={1} align="right">
-            {id}
+        <DialogTitle id="form-dialog-title">
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography variant="h5">
+                Einkauf vom:
+                {' '}
+              </Typography>
+              <Typography variant="h5" component="h2">
+                {createdDate.getDate()}
+                .
+                {createdDate.getMonth() + 1}
+                .
+                {createdDate.getFullYear()}
+              </Typography>
+              <Typography variant="body2" component="h2">
+                {createdDate.getHours()}
+                :
+                {(createdDate.getMinutes() < 10 ? '0' : '') + createdDate.getMinutes()}
+                {' '}
+                h
+              </Typography>
+            </Grid>
+            <Grid item xs={5} align="right">
+              <Typography variant="h4" color="primary">
+                {id}
+                {'g'}
+              </Typography>
+            </Grid>
+            <Grid item xs={1} align="right">
+              <IconButton className={classes.closeButton} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Grid>
           </Grid>
-          <Grid container justify="center" spacing={2}>
-            { items.map(value => (
-              <ItemCard item={value} openDetails={handleItemDetails} />
-            ))}
+
+          <Grid container>
+            <Grid item xs={5}>
+              <Typography color="textSecondary" variant="body2">
+                ID:
+              </Typography>
+            </Grid>
+            <Grid item xs={7}>
+              <Typography color="textSecondary" variant="body2">
+                {id}
+                <br />
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={1} align="right">
-            <IconButton className={classes.closeButton} onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
+
+        </DialogTitle>
+        <DialogContent>
+          <Grid container>
+            <Grid container justify="center" spacing={2}>
+              { items.map(value => (
+                <ItemCard item={value} openDetails={handleItemDetails} />
+              ))}
+            </Grid>
+            <Grid item xs={1} align="right">
+              <IconButton className={classes.closeButton} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
           </Grid>
-          <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
-        </Grid>
+        </DialogContent>
       </Dialog>
     </div>
   );
