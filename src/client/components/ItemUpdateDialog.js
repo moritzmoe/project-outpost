@@ -39,7 +39,7 @@ export default function ItemUpdateDialog(props) {
   const classes = useStyles();
 
   const {
-    isOpen, id, handleClose, handleSave, handleDelete
+    isOpen, id, handleClose, handleSave, handleDelete, noInput
   } = props;
 
   const [barcode, setBarcode] = useState('');
@@ -61,6 +61,7 @@ export default function ItemUpdateDialog(props) {
   const [idToDelete, setIdToDelete] = useState(0);
   const [nameToDelete, setNameToDelete] = useState('');
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [inputDisabled, setInputDisabled] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/items/${id}`).then((res) => {
@@ -77,6 +78,9 @@ export default function ItemUpdateDialog(props) {
       axios.get(`/api/categories/subCats/${res.data[0].SubCategory.parentCat}`).then((response) => {
         setSubcategories(response.data);
       });
+      console.log(noInput);
+      setInputDisabled(noInput);
+      // console.log(inputDisabled);
     });
   }, [isOpen]);
 
@@ -192,6 +196,7 @@ export default function ItemUpdateDialog(props) {
         <form onSubmit={handleItemChange}>
           <DialogContent>
             <TextField
+              disabled={inputDisabled}
               error={barcodeErr}
               helperText={barcodeErrMsg}
               value={barcode}
@@ -203,6 +208,7 @@ export default function ItemUpdateDialog(props) {
               onChange={e => setBarcode(e.target.value)}
             />
             <TextField
+              disabled={inputDisabled}
               value={name}
               fullWidth
               required
@@ -211,6 +217,7 @@ export default function ItemUpdateDialog(props) {
               onChange={e => setName(e.target.value)}
             />
             <TextField
+              disabled={inputDisabled}
               value={weight}
               required
               margin="dense"
@@ -222,6 +229,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Category</InputLabel>
               <Select
+                disabled={inputDisabled}
                 id="category-select"
                 value={categoryId}
                 onChange={handleCategoryPick}
@@ -234,6 +242,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown} disabled={!categoryId}>
               <InputLabel>Subcategory</InputLabel>
               <Select
+                disabled={inputDisabled}
                 id="subCat-select"
                 value={subCategoryId}
                 onChange={handleSubCategoryPick}
@@ -246,6 +255,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Packaging </InputLabel>
               <Select
+                disabled={inputDisabled}
                 id="pack-select"
                 value={packagingId}
                 onChange={handlePackagingPick}
@@ -258,6 +268,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Origin </InputLabel>
               <Select
+                disabled={inputDisabled}
                 id="origin-select"
                 value={originId}
                 onChange={handleOriginPick}
@@ -270,6 +281,7 @@ export default function ItemUpdateDialog(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              disabled={inputDisabled}
               size="small"
               variant="contained"
               color="primary"
@@ -280,6 +292,7 @@ export default function ItemUpdateDialog(props) {
               Delete
             </Button>
             <Button
+              disabled={inputDisabled}
               type="submit"
               size="small"
               variant="contained"
@@ -320,5 +333,6 @@ ItemUpdateDialog.propTypes = {
   id: PropTypes.number.isRequired,
   handleSave: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired
+  handleDelete: PropTypes.func.isRequired,
+  noInput: PropTypes.bool.isRequired
 };

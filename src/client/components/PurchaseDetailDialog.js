@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import ItemCard from './ItemCard';
+import ItemUpdateDialog from './ItemUpdateDialog';
 
 const useStyles = makeStyles(theme => ({
   closeButton: {
@@ -18,28 +19,45 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const convertCo2ToScore = 67;
+
 export default function PurchaseDetailDialog(props) {
   const classes = useStyles();
   const [createdDate, setCreatedDate] = useState(new Date());
   const [items, setItems] = useState([]);
+  const [totalPurchaseScore, setTotalPurchaseScore] = useState(0);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [itemId, setItemId] = useState(0);
   const {
     isOpen, id, handleClose
   } = props;
 
   useEffect(() => {
     if (isOpen) {
-    // const found = purchases.filter(item => item.id === id);
-    // setItems(found[0].Items);
-    // console.log(items);
       axios.get(`/api/purchases/${id}?expand=ITEMS&expand=PACKAGING&expand=SUBCATEGORY`).then((res) => {
         setItems(res.data.Items);
         setCreatedDate(new Date(res.data.createdAt));
+        let totalScore = 0;
+        res.data.Items.map((item) => {
+          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+        });
+        setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
       });
     }
   }, [isOpen]);
 
-  const handleItemDetails = () => {
-    console.log('NTBD');
+  const handleItemDetails = (passedId) => {
+    axios.get(`/api/items/${passedId}`).then((res) => {
+      setItemId(res.data[0].id);
+      setOpenUpdate(true);
+    });
+  };
+
+  const handleItemsChange = () => {
+  };
+
+  const handleDetailClose = () => {
+    setOpenUpdate(false);
   };
 
 
@@ -57,8 +75,6 @@ export default function PurchaseDetailDialog(props) {
               <Typography variant="h5">
                 Einkauf vom:
                 {' '}
-              </Typography>
-              <Typography variant="h5" component="h2">
                 {createdDate.getDate()}
                 .
                 {createdDate.getMonth() + 1}
@@ -75,8 +91,8 @@ export default function PurchaseDetailDialog(props) {
             </Grid>
             <Grid item xs={5} align="right">
               <Typography variant="h4" color="primary">
-                {id}
-                {'g'}
+                {totalPurchaseScore}
+                {' Points'}
               </Typography>
             </Grid>
             <Grid item xs={1} align="right">
@@ -90,12 +106,8 @@ export default function PurchaseDetailDialog(props) {
             <Grid item xs={5}>
               <Typography color="textSecondary" variant="body2">
                 ID:
-              </Typography>
-            </Grid>
-            <Grid item xs={7}>
-              <Typography color="textSecondary" variant="body2">
+                {' '}
                 {id}
-                <br />
               </Typography>
             </Grid>
           </Grid>
@@ -114,6 +126,14 @@ export default function PurchaseDetailDialog(props) {
               </IconButton>
             </Grid>
             <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
+            <ItemUpdateDialog
+              isOpen={openUpdate}
+              id={itemId}
+              handleClose={handleDetailClose}
+              handleSave={handleItemsChange}
+              handleDelete={handleItemsChange}
+              noInput
+            />
           </Grid>
         </DialogContent>
       </Dialog>
