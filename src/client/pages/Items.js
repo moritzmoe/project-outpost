@@ -142,6 +142,7 @@ export default function Items() {
             handleClose={handleClose}
             handleSave={handleItemsChange}
             handleDelete={handleItemsChange}
+            noInput={false}
           />
         </Container>
       ) : ''}

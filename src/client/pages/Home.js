@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/jsx-closing-tag-location */
@@ -16,6 +17,8 @@ import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import PurchaseDialog from './PurchaseDialog';
 import PurchaseCard from '../components/PurchaseCard';
+
+import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
 
 const data = [
   { name: 'Group A', value: 50 },
@@ -36,6 +39,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   }
 }));
+
+const convertCo2ToScore = 67;
 
 class SimplePieChart extends React.Component {
   render() {
@@ -64,6 +69,9 @@ export default function Home() {
   const classes = useStyles();
   const [score, setScore] = useState(0);
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
+  const [purchaseDetail, setPurchaseDetail] = useState();
+  const [idDetail, setIdDetail] = useState(0);
+  const [purchaseDetailDialogOpen, setPurchaseDetailDialogOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const setPageName = useSetStoreValue('pageName');
 
@@ -75,7 +83,7 @@ export default function Home() {
           totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
         });
       });
-      setScore(totalScore / 1000);
+      setScore(Math.floor(totalScore / convertCo2ToScore));
       setPurchases(res.data);
     });
     setPageName('Home');
@@ -89,7 +97,27 @@ export default function Home() {
     setPurchaseDialogOpen(true);
   };
 
+  const handlePurchaseDetailDialogClose = () => {
+    setPurchaseDetailDialogOpen(false);
+  };
+
   const handlePurchaseDetails = (id) => {
+    setIdDetail(id);
+    // purchases.map((purchase) => {
+    //  // console.log(purchase.id, id);
+    // console.log(purchase.id === id);
+
+    //  if (purchase.id === id) {
+    //    setPurchaseDetail(purchase);
+    // console.log(purchase);
+    //  }
+    // });
+    // const found = purchases.filter(item => item.id === id);
+    // setPurchaseDetail({ input: found[0] }, () => {
+    //  setPurchaseDetail(found[0]);
+    //  console.log(purchaseDetail);
+    setPurchaseDetailDialogOpen(true);
+    // });
     console.log(`Purchase Details for ${id} called.\n Still needs to be implemented`);
   };
 
@@ -99,12 +127,12 @@ export default function Home() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h5" gutterBottom className={classes.co2Display}>
-              Your total CO2:
+              Your total Score:
             </Typography>
             <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              kg
+              Score
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -112,6 +140,7 @@ export default function Home() {
               {purchases.map(value => (
                 <PurchaseCard key={value.id} purchase={value} openDetails={handlePurchaseDetails} />
               ))}
+              <PurchaseDetailDialog isOpen={purchaseDetailDialogOpen} id={idDetail} handleClose={handlePurchaseDetailDialogClose} />
             </Grid>
           </Grid>
         </Grid>

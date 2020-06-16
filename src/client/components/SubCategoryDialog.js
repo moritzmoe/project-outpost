@@ -62,7 +62,7 @@ export default function SubCategoryDialog(props) {
   const classes = useStyles();
 
   const {
-    isOpen, id, catName, handleClose, handleSave, handleDelete
+    isOpen, id, catName, handleClose// , handleSave, handleDelete
   } = props;
 
   // const [name, setName] = useState('');
