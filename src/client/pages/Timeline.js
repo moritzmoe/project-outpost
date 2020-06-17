@@ -56,7 +56,7 @@ export default function Timeline() {
   }, [purchaseDialogOpen]);
 
   const getPurchases = (datefrom, dateuntil) => {
-    axios.get(`/api/purchases/time/${datefrom}/${dateuntil}?expand=ITEMS`).then((res) => {
+    axios.get(`/api/purchases/?startDate=${datefrom}&endDate=${dateuntil}&expand=ITEMS`).then((res) => {
       let totalScore = 0;
       let allPurchases = 0;
       res.data.map((purchase) => {

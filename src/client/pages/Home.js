@@ -79,7 +79,7 @@ export default function Home() {
   useEffect(() => {
     const dateFrom = new Date(new Date().setDate(new Date().getDate() - 7));
     const dateUntil = new Date();
-    axios.get(`/api/purchases/time/${dateFrom}/${dateUntil}?expand=ITEMS`).then((res) => {
+    axios.get(`/api/purchases/?startDate=${dateFrom}&endDate=${dateUntil}&expand=ITEMS`).then((res) => {
       let totalScore = 0;
       res.data.map((purchase) => {
         purchase.Items.map((item) => {
