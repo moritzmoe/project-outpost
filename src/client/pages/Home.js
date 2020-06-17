@@ -77,8 +77,9 @@ export default function Home() {
   const setPageName = useSetStoreValue('pageName');
 
   useEffect(() => {
-    const sevenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 7));
-    axios.get(`/api/purchases/time/${sevenDaysAgo}?expand=ITEMS`).then((res) => {
+    const dateFrom = new Date(new Date().setDate(new Date().getDate() - 7));
+    const dateUntil = new Date();
+    axios.get(`/api/purchases/time/${dateFrom}/${dateUntil}?expand=ITEMS`).then((res) => {
       let totalScore = 0;
       res.data.map((purchase) => {
         purchase.Items.map((item) => {

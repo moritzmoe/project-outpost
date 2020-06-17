@@ -131,9 +131,10 @@ router.get('/', withAuth, (req, res) => {
 // endpoint to retrieve all purchases of a user between now and a date that is parsed
 // user can only retrive his own purchases
 // return the purchase including all items in it.
-router.get('/time/:date', withAuth, (req, res) => {
-  const date = Date.parse(String(req.params.date));
-  if (!date) {
+router.get('/time/:dateFrom/:dateUntil', withAuth, (req, res) => {
+  const dateFrom = Date.parse(String(req.params.dateFrom));
+  const dateUntil = Date.parse(String(req.params.dateUntil));
+  if (!dateFrom || !dateUntil) {
     res.status(400).json({ error: 'Please provide a date' });
     return;
   }
@@ -143,8 +144,8 @@ router.get('/time/:date', withAuth, (req, res) => {
       where: {
         userId: req.userId,
         createdAt: {
-          [Op.lt]: new Date(),
-          [Op.gt]: date
+          [Op.lte]: dateUntil,
+          [Op.gte]: dateFrom
         },
       },
       include: [includeObj]
@@ -163,8 +164,8 @@ router.get('/time/:date', withAuth, (req, res) => {
       where: {
         userId: req.userId,
         createdAt: {
-          [Op.lt]: new Date(),
-          [Op.gt]: date
+          [Op.lte]: dateUntil,
+          [Op.gte]: dateFrom
         },
       }
     }).then((purchase) => {

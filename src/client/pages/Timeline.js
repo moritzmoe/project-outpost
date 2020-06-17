@@ -9,10 +9,18 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import PurchaseDialog from './PurchaseDialog';
 import PurchaseCard from '../components/PurchaseCard';
 
 import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
+
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -38,10 +46,17 @@ export default function Timeline() {
   const [purchaseDetailDialogOpen, setPurchaseDetailDialogOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const [countPurchases, setCountPurchases] = useState(0);
+  const [dateFrom, setDateFrom] = React.useState(new Date(new Date().setDate(new Date().getDate() - 28)));
+  const [dateUntil, setDateUntil] = React.useState(new Date());
   const setPageName = useSetStoreValue('pageName');
 
   useEffect(() => {
-    axios.get('/api/purchases?expand=ITEMS').then((res) => {
+    getPurchases(dateFrom, dateUntil);
+    setPageName('Timeline');
+  }, [purchaseDialogOpen]);
+
+  const getPurchases = (datefrom, dateuntil) => {
+    axios.get(`/api/purchases/time/${datefrom}/${dateuntil}?expand=ITEMS`).then((res) => {
       let totalScore = 0;
       let allPurchases = 0;
       res.data.map((purchase) => {
@@ -59,8 +74,7 @@ export default function Timeline() {
       setPurchases(purchasesSorted);
       setCountPurchases(allPurchases);
     });
-    setPageName('Timeline');
-  }, [purchaseDialogOpen]);
+  };
 
   const handlePurchaseDialogClose = () => {
     setPurchaseDialogOpen(false);
@@ -76,22 +90,19 @@ export default function Timeline() {
 
   const handlePurchaseDetails = (id) => {
     setIdDetail(id);
-    // purchases.map((purchase) => {
-    //  // console.log(purchase.id, id);
-    // console.log(purchase.id === id);
-
-    //  if (purchase.id === id) {
-    //    setPurchaseDetail(purchase);
-    // console.log(purchase);
-    //  }
-    // });
-    // const found = purchases.filter(item => item.id === id);
-    // setPurchaseDetail({ input: found[0] }, () => {
-    //  setPurchaseDetail(found[0]);
-    //  console.log(purchaseDetail);
     setPurchaseDetailDialogOpen(true);
     // });
     console.log(`Purchase Details for ${id} called.\n Still needs to be implemented`);
+  };
+
+  const handleDateFromChange = (datefrom) => {
+    getPurchases(datefrom, dateUntil);
+    setDateFrom(datefrom);
+  };
+
+  const handleDateUntilChange = (dateuntil) => {
+    getPurchases(dateFrom, dateuntil);
+    setDateUntil(dateuntil);
   };
 
   return (
@@ -108,6 +119,32 @@ export default function Timeline() {
               Score / Purchase
             </Typography>
           </Grid>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container justify="space-evenly">
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                label="Purchases from"
+                format="dd/MM/yyyy"
+                value={dateFrom}
+                onChange={handleDateFromChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog2"
+                label="Until"
+                format="dd/MM/yyyy"
+                value={dateUntil}
+                onChange={handleDateUntilChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+          </MuiPickersUtilsProvider>
           <Grid item xs={12}>
             <Grid container justify="center" spacing={2}>
               {purchases.map(value => (
