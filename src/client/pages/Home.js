@@ -86,7 +86,12 @@ export default function Home() {
         });
       });
       setScore(Math.floor(totalScore / convertCo2ToScore));
-      setPurchases(res.data);
+      const purchasesSorted = res.data.sort((a, b) => {
+        const dateA = new Date(a.createdAt); const
+          dateB = new Date(b.createdAt);
+        return dateB - dateA;
+      });
+      setPurchases(purchasesSorted);
     });
     setPageName('Home');
   }, [purchaseDialogOpen]);

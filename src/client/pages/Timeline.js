@@ -51,7 +51,12 @@ export default function Timeline() {
         });
       });
       setScore(Math.floor((totalScore / convertCo2ToScore) / allPurchases));
-      setPurchases(res.data);
+      const purchasesSorted = res.data.sort((a, b) => {
+        const dateA = new Date(a.createdAt); const
+          dateB = new Date(b.createdAt);
+        return dateB - dateA;
+      });
+      setPurchases(purchasesSorted);
       setCountPurchases(allPurchases);
     });
     setPageName('Timeline');
