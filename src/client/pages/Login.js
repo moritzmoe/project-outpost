@@ -50,6 +50,7 @@ export default function SignIn(props) {
 
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
+  const setIsOwner = useSetStoreValue('isOwner', false);
   const setPageName = useSetStoreValue('pageName');
 
   const handleSubmit = (evt) => {
@@ -61,6 +62,9 @@ export default function SignIn(props) {
             setUserFirstname(response.data.firstname);
             if (response.data.Role.name === 'Admin') {
               setIsAdmin(true);
+            } else if (response.data.Role.name === 'Owner') {
+              setIsAdmin(true);
+              setIsOwner(true);
             }
           });
           RouterHistory.push('/');
