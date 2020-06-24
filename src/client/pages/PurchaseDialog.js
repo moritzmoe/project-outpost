@@ -19,6 +19,7 @@ import ScanQRCodeCard from '../components/ScanQRCodeCard';
 import BarcodeScanner from '../components/BarcodeScanner';
 // import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
+import ItemSearchDialog from '../components/ItemSearchDialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -68,6 +69,7 @@ export default function PurchaseDialog(props) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [openItemSearch, setOpenItemSearch] = useState(false);
 
   const clearStateAndHandleClose = () => {
     setPurchaseId(0);
@@ -83,6 +85,14 @@ export default function PurchaseDialog(props) {
       || navigator.mozGetUserMedia
       || navigator.msGetUserMedia);
   */
+
+  const handleSearch = () => {
+    setOpenItemSearch(true);
+  };
+
+  const handleItemSearchClose = () => {
+    setOpenItemSearch(false);
+  };
 
   const handleBarcodeScan = () => {
     if (purchaseId === 0) {
@@ -230,9 +240,11 @@ export default function PurchaseDialog(props) {
                 variant="contained"
                 startIcon={<SearchIcon />}
                 size="large"
+                onClick={handleSearch}
               >
                 Search
               </Button>
+              <ItemSearchDialog isOpen={openItemSearch} handleClose={handleItemSearchClose}>  </ItemSearchDialog>
             </Grid>
           </Grid>
         </Container>
