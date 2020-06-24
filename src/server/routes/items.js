@@ -133,21 +133,26 @@ router.delete('/:id', withAdmin, (req, res) => {
 router.put('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const {
-    name, subCategoryId, barcode, packaging, origin, score
+    name, weight, subCategoryId, packagingId, originId, score, barcode
   } = req.body;
   models.Item.update({
     name,
+    weight,
     categoryId: subCategoryId,
-    barcode,
-    packaging,
-    origin,
+    packaging: packagingId,
+    origin: originId,
     score,
+    barcode,
     lastUpdatedBy: req.userId,
   }, {
     where: {
       id
     }
+  }).then((updatedItem) => {
+    res.send(updatedItem);
+  }).catch((err) => {
+    console.log(`Internal error while updating category on database: ${err}`);
+    res.sendStatus(500);
   });
-  res.sendStatus(200);
 });
 module.exports = router;

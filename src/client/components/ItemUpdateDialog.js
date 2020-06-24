@@ -78,9 +78,7 @@ export default function ItemUpdateDialog(props) {
       axios.get(`/api/categories/subCats/${res.data[0].SubCategory.parentCat}`).then((response) => {
         setSubcategories(response.data);
       });
-      console.log(noInput);
       setInputDisabled(noInput);
-      // console.log(inputDisabled);
     });
   }, [isOpen]);
 
@@ -98,7 +96,7 @@ export default function ItemUpdateDialog(props) {
       return;
     }
     axios.put(`/api/items/${id}`, {
-      name, subCategoryId, barcode, packaging, origin, score
+      name, weight, subCategoryId, packagingId, originId, score, barcode
     }).then((res) => {
       if (res.status === 200) {
         handleSave();
@@ -132,7 +130,7 @@ export default function ItemUpdateDialog(props) {
   };
 
   const handlePackagingPick = (evt) => {
-    setPackaging(evt.target.value);
+    setPackagingId(evt.target.value);
   };
 
   const handleCategoryPick = (evt) => {
