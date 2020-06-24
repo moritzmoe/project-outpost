@@ -118,12 +118,9 @@ export default function Categories() {
               onRowAdd: newData => new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  const { parentCat, name, co2 } = newData;
-                  console.log('newdata', newData);
-                  axios.post('/api/categories/subCats', {
-                    parentCat,
-                    name,
-                    co2
+                  const { name } = newData;
+                  axios.post('/api/categories', {
+                    name
                   }).then((res) => {
                     if (res.status === 200) {
                       const { newEntry } = res.data;

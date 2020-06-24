@@ -61,7 +61,7 @@ export default function ItemUpdateDialog(props) {
   const [idToDelete, setIdToDelete] = useState(0);
   const [nameToDelete, setNameToDelete] = useState('');
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const [inputDisabled, setInputDisabled] = useState(false);
+  const [inputDisabled, setInputDisabled] = useState(true);
 
   useEffect(() => {
     axios.get(`/api/items/${id}`).then((res) => {
