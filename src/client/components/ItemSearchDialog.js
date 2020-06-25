@@ -84,11 +84,11 @@ export default function ItemSearchDialog(props) {
     axios.get(`/api/items?limit=${rowsPerPage}&offset=0&q=${query}`, { cancelToken: cancel.token, })
       .then((res) => {
         setItems(res.data);
-        console.log('Res.data:', res.data);
+        /* console.log('Res.data:', res.data);
         axios.get(`/api/items/totalQueryCount?q=${query}`, { cancelToken: cancel.token })
           .then((response) => {
             setTotalQueryCount(parseInt(response.data, 10));
-          });
+          }); */
       })
       .catch((error) => {
         console.log(error);
