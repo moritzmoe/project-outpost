@@ -17,6 +17,7 @@ router.get('/', withAdmin, (req, res) => {
       ],
       limit: req.query.limit,
       offset: req.query.offset,
+      include: [models.Packaging, models.SubCategory, models.Origin],
       where: {
         [Op.or]: [
           {

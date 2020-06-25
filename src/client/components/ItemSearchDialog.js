@@ -25,15 +25,23 @@ const useStyles = makeStyles(theme => ({
 export default function ItemSearchDialog(props) {
   const classes = useStyles();
   const [items, setItems] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [totalQueryCount, setTotalQueryCount] = useState(0);
+
+  let cancel = '';
 
   const {
     isOpen, handleClose// , handleSave, handleDelete
   } = props;
 
+  useEffect(() => {
+    console.log('initial', items);
+  }, [isOpen]);
 
   useEffect(() => {
-
-  }, [isOpen]);
+    fetchSearchResults(searchQuery);
+  }, [searchQuery]);
 
   const handleItemDetails = () => {
     console.log('Coming Soon');
@@ -43,6 +51,7 @@ export default function ItemSearchDialog(props) {
     handleClose();
   };
 
+  /*
   const handleSearch = (e) => {
     e.preventDefault();
     const itemId = document.getElementById('itemSearchField').value;
@@ -51,6 +60,35 @@ export default function ItemSearchDialog(props) {
       console.log(res.data[0]);
     });
   };
+  */
+
+  const handleSearchInputChange = (evt) => {
+    evt.preventDefault();
+    const query = evt.target.value;
+    setSearchQuery(query);
+  };
+
+  const fetchSearchResults = (query) => {
+    if (cancel) {
+      cancel.cancel();
+    }
+    console.log('Query:', query);
+    cancel = axios.CancelToken.source();
+    axios.get(`/api/items?limit=${rowsPerPage}&offset=0&q=${query}`, { cancelToken: cancel.token, })
+      .then((res) => {
+        setItems(res.data);
+        console.log('Res.data:', res.data);
+        axios.get(`/api/items/totalQueryCount?q=${query}`, { cancelToken: cancel.token })
+          .then((response) => {
+            setTotalQueryCount(parseInt(response.data, 10));
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log('Items:', items);
+  };
+
 
   return (
     <div>
@@ -67,7 +105,7 @@ export default function ItemSearchDialog(props) {
               <CloseIcon />
             </IconButton>
           </Grid>
-          <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSearch}>
+          <form className={classes.root} noValidate autoComplete="off" onChange={handleSearchInputChange}>
             <TextField id="itemSearchField" label="Suchen" variant="outlined" />
           </form>
           <Grid container justify="center" spacing={2}>
