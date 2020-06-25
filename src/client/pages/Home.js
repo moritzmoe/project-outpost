@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
+import { date } from 'date-fns/locale/af';
 import PurchaseDialog from './PurchaseDialog';
 import PurchaseCard from '../components/PurchaseCard';
 
@@ -76,7 +77,9 @@ export default function Home() {
   const setPageName = useSetStoreValue('pageName');
 
   useEffect(() => {
-    axios.get('/api/purchases?expand=ITEMS').then((res) => {
+    const dateFrom = new Date(new Date().setDate(new Date().getDate() - 7));
+    const dateUntil = new Date();
+    axios.get(`/api/purchases/?startDate=${dateFrom}&endDate=${dateUntil}&expand=ITEMS`).then((res) => {
       let totalScore = 0;
       res.data.map((purchase) => {
         purchase.Items.map((item) => {
@@ -84,7 +87,12 @@ export default function Home() {
         });
       });
       setScore(Math.floor(totalScore / convertCo2ToScore));
-      setPurchases(res.data);
+      const purchasesSorted = res.data.sort((a, b) => {
+        const dateA = new Date(a.createdAt); const
+          dateB = new Date(b.createdAt);
+        return dateB - dateA;
+      });
+      setPurchases(purchasesSorted);
     });
     setPageName('Home');
   }, [purchaseDialogOpen]);
@@ -127,12 +135,12 @@ export default function Home() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h5" gutterBottom className={classes.co2Display}>
-              Your total Score:
+              Your total Score of the last 7 days:
             </Typography>
             <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              Score
+              / 700 Score
             </Typography>
           </Grid>
           <Grid item xs={12}>

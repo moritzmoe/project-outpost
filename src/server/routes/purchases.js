@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
+const { Op } = require('sequelize');
 const models = require('../models');
 
 const withAuth = require('../middleware/auth');
@@ -92,12 +93,66 @@ router.get('/:id', withAuth, (req, res) => {
 // endpoint to retrieve all purchases of a user
 // user can only retrive his own purchases
 // return the purchase including all items in it.
+// router.get('/', withAuth, (req, res) => {
+//   if (req.query.expand && req.query.expand.includes('ITEMS')) {
+//     const includeObj = buildIncludeObj(req.query.expand);
+//     models.Purchase.findAll({
+//       where: {
+//         userId: req.userId
+//       },
+//       include: [includeObj]
+//     }).then((purchases) => {
+//       if (!purchases) {
+//         res.status(404).json({ error: 'No Purchases found' });
+//       } else {
+//         res.send(purchases);
+//       }
+//     }).catch((err) => {
+//       console.log(`Internal error while retriving purchases:\n${err}`);
+//       res.sendStatus(500);
+//     });
+//   } else {
+//     models.Purchase.findAll({
+//       where: {
+//         userId: req.userId
+//       }
+//     }).then((purchase) => {
+//       if (!purchase) {
+//         res.status(404).json({ error: 'Purchase not found' });
+//       } else {
+//         res.send(purchase);
+//       }
+//     }).catch((err) => {
+//       console.log(`Internal error while retriving purchase:\n${err}`);
+//     });
+//   }
+// });
+
+// endpoint to retrieve all purchases of a user between now and a date that is parsed
+// user can only retrive his own purchases
+// return the purchase including all items in it.
 router.get('/', withAuth, (req, res) => {
+  let dateFrom = Date.parse(String(req.query.startDate));
+  let dateUntil = Date.parse(String(req.query.endDate));
+  if (!dateFrom) {
+    dateFrom = new Date(new Date().setDate(new Date().getDate() - 28));
+  }
+  if (!dateUntil) {
+    dateUntil = new Date();
+  }
+  if (!dateFrom && !dateUntil) {
+    res.status(400).json({ error: 'Please provide a start and end date' });
+    return;
+  }
   if (req.query.expand && req.query.expand.includes('ITEMS')) {
     const includeObj = buildIncludeObj(req.query.expand);
     models.Purchase.findAll({
       where: {
-        userId: req.userId
+        userId: req.userId,
+        createdAt: {
+          [Op.lte]: dateUntil,
+          [Op.gte]: dateFrom
+        },
       },
       include: [includeObj]
     }).then((purchases) => {
@@ -113,7 +168,11 @@ router.get('/', withAuth, (req, res) => {
   } else {
     models.Purchase.findAll({
       where: {
-        userId: req.userId
+        userId: req.userId,
+        createdAt: {
+          [Op.lte]: dateUntil,
+          [Op.gte]: dateFrom
+        },
       }
     }).then((purchase) => {
       if (!purchase) {

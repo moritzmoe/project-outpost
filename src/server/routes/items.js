@@ -3,12 +3,48 @@ const express = require('express');
 
 const router = express.Router();
 
+const { Op } = require('sequelize');
 const models = require('../models');
 
 const withAdmin = require('../middleware/admin');
 
 
 router.get('/', withAdmin, (req, res) => {
+  if (req.query.q) {
+    models.Item.findAll({
+      order: [
+        ['updatedAt', 'DESC'],
+      ],
+      limit: req.query.limit,
+      offset: req.query.offset,
+      include: [models.Packaging, models.SubCategory, models.Origin],
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+        ]
+      },
+      // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    }).then(items => res.send(items))
+      .catch(err => console.log(err));
+  } else {
+    models.Item.findAll({
+      order: [
+        ['updatedAt', 'DESC'],
+      ],
+      limit: req.query.limit,
+      offset: req.query.offset,
+      include: [models.Packaging, models.SubCategory, models.Origin]
+      // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    }).then((items) => {
+      res.send(items);
+    }).catch(err => console.log(err));
+  }
+
+  /*
   models.Item.findAll({
     order: [
       ['updatedAt', 'DESC'],
@@ -19,6 +55,7 @@ router.get('/', withAdmin, (req, res) => {
   }).then((items) => {
     res.send(items);
   }).catch(err => console.log(err));
+*/
 });
 
 router.get('/:id', withAdmin, (req, res) => {
@@ -133,21 +170,68 @@ router.delete('/:id', withAdmin, (req, res) => {
 router.put('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const {
-    name, subCategoryId, barcode, packaging, origin, score
+    name, weight, subCategoryId, packagingId, originId, barcode
   } = req.body;
-  models.Item.update({
-    name,
-    categoryId: subCategoryId,
-    barcode,
-    packaging,
-    origin,
-    score,
-    lastUpdatedBy: req.userId,
-  }, {
+  models.SubCategory.findOne({
     where: {
-      id
+      id: subCategoryId
     }
+  }).then((categoryVal) => {
+    if (!categoryVal) {
+      res.status(404).json({ error: 'category not found' });
+      return;
+    }
+    models.Packaging.findOne({
+      where: {
+        id: packagingId
+      }
+    }).then((packagingVal) => {
+      if (!packagingVal) {
+        res.status(404).json({ error: 'packaging not found' });
+        return;
+      }
+      models.Origin.findOne({
+        where: {
+          id: originId
+        }
+      }).then((originVal) => {
+        if (!originVal) {
+          res.status(404).json({ error: 'origin not found' });
+          return;
+        }
+        const score = Math.floor(packagingVal.co2
+          + originVal.co2 + (weight * (categoryVal.co2 / 1000)));
+        models.Item.update({
+          name,
+          weight,
+          categoryId: subCategoryId,
+          packaging: packagingId,
+          origin: originId,
+          score,
+          barcode,
+          lastUpdatedBy: req.userId,
+        }, {
+          where: {
+            id
+          }
+        }).then((updatedItem) => {
+          res.send(updatedItem);
+        }).catch((err) => {
+          console.log(`Internal error while creating new item:\n${err}`);
+          res.sendStatus(500);
+        });
+      }).catch((err) => {
+        console.log(`Internal error while retriving origin:\n${err}`);
+        res.sendStatus(500);
+      });
+    }).catch((err) => {
+      console.log(`Internal error while retriving packaging:\n${err}`);
+      res.sendStatus(500);
+    });
+  }).catch((err) => {
+    console.log(`Internal error while retriving subcategory:\n${err}`);
+    res.sendStatus(500);
   });
-  res.sendStatus(200);
 });
+
 module.exports = router;
