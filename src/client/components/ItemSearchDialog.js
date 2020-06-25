@@ -20,14 +20,15 @@ const useStyles = makeStyles(theme => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500]
   },
+  bottomSpacing: {
+    bottom: theme.spacing(2)
+  },
 }));
 
 export default function ItemSearchDialog(props) {
   const classes = useStyles();
   const [items, setItems] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const [totalQueryCount, setTotalQueryCount] = useState(0);
 
   let cancel = '';
 
@@ -36,7 +37,7 @@ export default function ItemSearchDialog(props) {
   } = props;
 
   useEffect(() => {
-    console.log('initial', items);
+    fetchSearchResults(searchQuery);
   }, [isOpen]);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function ItemSearchDialog(props) {
     console.log(id);
     items.map((item) => {
       if (item.id === id) {
-        barcode = item.barcode;
+        ({ barcode } = item);
       }
     });
     itemClick(barcode);
@@ -56,6 +57,8 @@ export default function ItemSearchDialog(props) {
 
   const handleCloseClearState = () => {
     handleClose();
+    setSearchQuery('');
+    setItems([]);
   };
 
   /*
@@ -81,7 +84,7 @@ export default function ItemSearchDialog(props) {
     }
     console.log('Query:', query);
     cancel = axios.CancelToken.source();
-    axios.get(`/api/items?limit=${rowsPerPage}&offset=0&q=${query}`, { cancelToken: cancel.token, })
+    axios.get(`/api/items?limit=5&offset=0&q=${query}`, { cancelToken: cancel.token, })
       .then((res) => {
         setItems(res.data);
         /* console.log('Res.data:', res.data);
@@ -107,15 +110,19 @@ export default function ItemSearchDialog(props) {
       >
         <DialogTitle id="form-dialog-title" />
         <Grid container>
-          <Grid item xs={1} align="right">
+          <Grid item xs={12} align="right">
             <IconButton className={classes.closeButton} onClick={handleCloseClearState}>
               <CloseIcon />
             </IconButton>
           </Grid>
-          <form className={classes.root} noValidate autoComplete="off" onChange={handleSearchInputChange}>
-            <TextField id="itemSearchField" label="Suchen" variant="outlined" />
-          </form>
-          <Grid container justify="center" spacing={2}>
+          <Grid container justify="center" spacing={3}>
+            <Grid item>
+              <form className={classes.root} noValidate autoComplete="off" onChange={handleSearchInputChange}>
+                <TextField id="itemSearchField" className={classes.bottomSpacing} label="Suchen" variant="outlined" />
+              </form>
+            </Grid>
+          </Grid>
+          <Grid container justify="center" className={classes.bottomSpacing} spacing={2}>
             {items.map(value => (
               <ItemCard item={value} openDetails={handleItemClick} />
             ))}
