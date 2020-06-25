@@ -19,6 +19,8 @@ import ScanQRCodeCard from '../components/ScanQRCodeCard';
 import BarcodeScanner from '../components/BarcodeScanner';
 // import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
+import ItemSearchDialog from '../components/ItemSearchDialog';
+import ItemUpdateDialog from '../components/ItemUpdateDialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -68,6 +70,9 @@ export default function PurchaseDialog(props) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [openItemSearch, setOpenItemSearch] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [itemId, setItemId] = useState(0);
 
   const clearStateAndHandleClose = () => {
     setPurchaseId(0);
@@ -83,6 +88,36 @@ export default function PurchaseDialog(props) {
       || navigator.mozGetUserMedia
       || navigator.msGetUserMedia);
   */
+
+  const handleSearchOpen = () => {
+    if (purchaseId === 0) {
+      axios.post('/api/purchases').then((res) => {
+        setPurchaseId(res.data.id);
+      });
+    }
+    setOpenItemSearch(true);
+  };
+
+  const handleItemSearchClose = () => {
+    setOpenItemSearch(false);
+  };
+
+  const handleSearchInput = (data) => {
+    axios.post(`/api/purchases/item/${purchaseId}`, {
+      barcode: data
+    }).then((res) => {
+      let score = 0;
+      res.data.Items.map((item) => {
+        score = parseInt(totalScore, 10) + parseInt(item.score, 10);
+      });
+      setTotalScore(score);
+      setItems(res.data.Items);
+    }).catch((err) => {
+      setErrorMsg(err.response.data.error);
+      setError(true);
+    });
+    handleItemSearchClose();
+  };
 
   const handleBarcodeScan = () => {
     if (purchaseId === 0) {
@@ -150,8 +185,19 @@ export default function PurchaseDialog(props) {
     // handleBarcodeTypeInClose();
   };
 
-  const nothing = () => {
-    console.log('Item Detail for User is still needed');
+  const handleItemDetails = (passedId) => {
+    console.log('passedId', passedId);
+    axios.get(`/api/items/${passedId}`).then((res) => {
+      setItemId(res.data[0].id);
+      setOpenUpdate(true);
+    });
+  };
+
+  const handleItemsChange = () => {
+  };
+
+  const handleDetailClose = () => {
+    setOpenUpdate(false);
   };
 
   return (
@@ -192,7 +238,7 @@ export default function PurchaseDialog(props) {
             <Grid item xs={12}>
               <Grid container justify="center" spacing={2}>
                 {items.map(value => (
-                  <ItemCard item={value} openDetails={nothing} />
+                  <ItemCard item={value} openDetails={handleItemDetails} />
                 ))}
               </Grid>
             </Grid>
@@ -230,9 +276,23 @@ export default function PurchaseDialog(props) {
                 variant="contained"
                 startIcon={<SearchIcon />}
                 size="large"
+                onClick={handleSearchOpen}
               >
                 Search
               </Button>
+              <ItemSearchDialog
+                isOpen={openItemSearch}
+                itemClick={handleSearchInput}
+                handleClose={handleItemSearchClose}
+              />
+              <ItemUpdateDialog
+                isOpen={openUpdate}
+                id={itemId}
+                handleClose={handleDetailClose}
+                handleSave={handleItemsChange}
+                handleDelete={handleItemsChange}
+                noInput
+              />
             </Grid>
           </Grid>
         </Container>
