@@ -280,7 +280,11 @@ export default function PurchaseDialog(props) {
               >
                 Search
               </Button>
-              <ItemSearchDialog isOpen={openItemSearch} itemClick={handleSearchInput} handleClose={handleItemSearchClose}>  </ItemSearchDialog>
+              <ItemSearchDialog
+                isOpen={openItemSearch}
+                itemClick={handleSearchInput}
+                handleClose={handleItemSearchClose}
+              />
               <ItemUpdateDialog
                 isOpen={openUpdate}
                 id={itemId}
