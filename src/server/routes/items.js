@@ -3,12 +3,47 @@ const express = require('express');
 
 const router = express.Router();
 
+const { Op } = require('sequelize');
 const models = require('../models');
 
 const withAdmin = require('../middleware/admin');
 
 
 router.get('/', withAdmin, (req, res) => {
+  if (req.query.q) {
+    models.Item.findAll({
+      order: [
+        ['updatedAt', 'DESC'],
+      ],
+      limit: req.query.limit,
+      offset: req.query.offset,
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+        ]
+      },
+      // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    }).then(items => res.send(items))
+      .catch(err => console.log(err));
+  } else {
+    models.Item.findAll({
+      order: [
+        ['updatedAt', 'DESC'],
+      ],
+      limit: req.query.limit,
+      offset: req.query.offset,
+      include: [models.Packaging, models.SubCategory, models.Origin]
+      // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    }).then((items) => {
+      res.send(items);
+    }).catch(err => console.log(err));
+  }
+
+  /*
   models.Item.findAll({
     order: [
       ['updatedAt', 'DESC'],
@@ -19,6 +54,7 @@ router.get('/', withAdmin, (req, res) => {
   }).then((items) => {
     res.send(items);
   }).catch(err => console.log(err));
+*/
 });
 
 router.get('/:id', withAdmin, (req, res) => {
