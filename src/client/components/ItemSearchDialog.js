@@ -32,7 +32,7 @@ export default function ItemSearchDialog(props) {
   let cancel = '';
 
   const {
-    isOpen, handleClose// , handleSave, handleDelete
+    isOpen, itemClick, handleClose// , handleSave, handleDelete
   } = props;
 
   useEffect(() => {
@@ -43,8 +43,15 @@ export default function ItemSearchDialog(props) {
     fetchSearchResults(searchQuery);
   }, [searchQuery]);
 
-  const handleItemDetails = () => {
-    console.log('Coming Soon');
+  const handleItemClick = (id) => {
+    let barcode;
+    console.log(id);
+    items.map((item) => {
+      if (item.id === id) {
+        barcode = item.barcode;
+      }
+    });
+    itemClick(barcode);
   };
 
   const handleCloseClearState = () => {
@@ -110,7 +117,7 @@ export default function ItemSearchDialog(props) {
           </form>
           <Grid container justify="center" spacing={2}>
             {items.map(value => (
-              <ItemCard item={value} openDetails={handleItemDetails} />
+              <ItemCard item={value} openDetails={handleItemClick} />
             ))}
           </Grid>
         </Grid>
@@ -121,5 +128,6 @@ export default function ItemSearchDialog(props) {
 
 ItemSearchDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  itemClick: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
