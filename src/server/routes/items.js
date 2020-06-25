@@ -133,26 +133,68 @@ router.delete('/:id', withAdmin, (req, res) => {
 router.put('/:id', withAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const {
-    name, weight, subCategoryId, packagingId, originId, score, barcode
+    name, weight, subCategoryId, packagingId, originId, barcode
   } = req.body;
-  models.Item.update({
-    name,
-    weight,
-    categoryId: subCategoryId,
-    packaging: packagingId,
-    origin: originId,
-    score,
-    barcode,
-    lastUpdatedBy: req.userId,
-  }, {
+  models.SubCategory.findOne({
     where: {
-      id
+      id: subCategoryId
     }
-  }).then((updatedItem) => {
-    res.send(updatedItem);
+  }).then((categoryVal) => {
+    if (!categoryVal) {
+      res.status(404).json({ error: 'category not found' });
+      return;
+    }
+    models.Packaging.findOne({
+      where: {
+        id: packagingId
+      }
+    }).then((packagingVal) => {
+      if (!packagingVal) {
+        res.status(404).json({ error: 'packaging not found' });
+        return;
+      }
+      models.Origin.findOne({
+        where: {
+          id: originId
+        }
+      }).then((originVal) => {
+        if (!originVal) {
+          res.status(404).json({ error: 'origin not found' });
+          return;
+        }
+        const score = Math.floor(packagingVal.co2
+          + originVal.co2 + (weight * (categoryVal.co2 / 1000)));
+        models.Item.update({
+          name,
+          weight,
+          categoryId: subCategoryId,
+          packaging: packagingId,
+          origin: originId,
+          score,
+          barcode,
+          lastUpdatedBy: req.userId,
+        }, {
+          where: {
+            id
+          }
+        }).then((updatedItem) => {
+          res.send(updatedItem);
+        }).catch((err) => {
+          console.log(`Internal error while creating new item:\n${err}`);
+          res.sendStatus(500);
+        });
+      }).catch((err) => {
+        console.log(`Internal error while retriving origin:\n${err}`);
+        res.sendStatus(500);
+      });
+    }).catch((err) => {
+      console.log(`Internal error while retriving packaging:\n${err}`);
+      res.sendStatus(500);
+    });
   }).catch((err) => {
-    console.log(`Internal error while updating category on database: ${err}`);
+    console.log(`Internal error while retriving subcategory:\n${err}`);
     res.sendStatus(500);
   });
 });
+
 module.exports = router;
