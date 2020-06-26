@@ -13,7 +13,31 @@ module.exports = {
     { name: 'Cremo Butter', weight: 250, categoryId: 1, barcode: '7610434511145', packaging: 15, origin: 1, score: 2425, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
     { name: 'Apfelmus Golden Delicious', weight: 355, categoryId: 113, barcode: '4388844003170', packaging: 17, origin: 1, score: 303, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
     { name: 'Kelloggs Choco Krispies', weight: 700, categoryId: 151, barcode: '5050083122811', packaging: 16, origin: 1, score: 1320, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
-    { name: 'Cachew Erdnuss Mix', weight: 200, categoryId: 88, barcode: '4004980530102', packaging: 6, origin: 1, score: 364, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() }
+    { name: 'Cachew Erdnuss Mix', weight: 200, categoryId: 88, barcode: '4004980530102', packaging: 6, origin: 1, score: 364, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Gut & Günstig Senf süß', weight: 250, categoryId: 151, barcode: '4311596477517', packaging: 17, origin: 1, score: 590, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Ja! Weizenmehl Typ 405', weight: 1000, categoryId: 83, barcode: '4388840014309', packaging: 15, origin: 1, score: 465, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'nöm PRO Kirschjoghurt', weight: 180, categoryId: 100, barcode: '9019100234308', packaging: 1, origin: 2, score: 771, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Gold Ochsen Original 0,5l', weight: 500, categoryId: 155, barcode: '4103030111015', packaging: 6, origin: 1, score: 380, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Waldquelle Himbeere', weight: 1000, categoryId: 154, barcode: '9001521001867', packaging: 10, origin: 2, score: 780, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Himbeeren', weight: 125, categoryId: 126, barcode: '8717496041685', packaging: 4, origin: 2, score: 540, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'ja! Frikadellenbällchen', weight: 500, categoryId: 15, barcode: '4388840222728', packaging: 4, origin: 1, score: 1540, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Ettes - Aufstrich Aubergine', weight: 135, categoryId: 27, barcode: '4260524580020', packaging: 17, origin: 1, score: 254, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Bonduelle Goldmais', weight: 300, categoryId: 45, barcode: '3083680073608', packaging: 6, origin: 2, score: 690, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Delikatess Rotkohl', weight: 250, categoryId: 53, barcode: '4300175162333', packaging: 17, origin: 1, score: 455, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'San Lucar Cherry Tomaten', weight: 350, categoryId: 61, barcode: '8430631143845', packaging: 19, origin: 2, score: 539, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'GC Stangenspargel', weight: 1000, categoryId: 57, barcode: '4009884400650', packaging: 13, origin: 1, score: 780, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'ja! Haferflocken zart', weight: 1000, categoryId: 72, barcode: '4388844031715', packaging: 15, origin: 1, score: 485, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Dittmann Oliven Schwarz', weight: 155, categoryId: 133, barcode: '4002239420907', packaging: 17, origin: 2, score: 539, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Gilde Champignons', weight: 425, categoryId: 32, barcode: '4009418204075', packaging: 6, origin: 1, score: 1313, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Hortamira Biopaprika', weight: 500, categoryId: 46, barcode: '4327475060695', packaging: 1, origin: 1, score: 565, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Alnatura Bio Blattspinat', weight: 450, categoryId: 58, barcode: '4104420112148', packaging: 13, origin: 1, score: 483, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Libbys Ananas', weight: 350, categoryId: 111, barcode: '7612500001239', packaging: 6, origin: 2, score: 928, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Ackergold Kartoffeln', weight: 1500, categoryId: 40, barcode: '4311527648696', packaging: 14, origin: 1, score: 710, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Hohes C O-Saft', weight: 1000, categoryId: 154, barcode: '4001497651306', packaging: 5, origin: 1, score: 695, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'Diamant Puderzucker', weight: 250, categoryId: 147, barcode: '4008381178000', packaging: 16, origin: 1, score: 292, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'ja! Speisequark', weight: 500, categoryId: 106, barcode: '4388840216826', packaging: 4, origin: 1, score: 1990, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() },
+    { name: 'G&G Vollkorntoast', weight: 500, categoryId: 80, barcode: '4311596476268', packaging: 1, origin: 1, score: 475, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date() }
+
   ], {}),
 
   down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Users', null, {})
