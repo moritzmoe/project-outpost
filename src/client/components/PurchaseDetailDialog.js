@@ -51,12 +51,6 @@ export default function PurchaseDetailDialog(props) {
         setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
         setItemRecScore(sortedItems[0].score);
         setItemRecSubcategory(sortedItems[0].SubCategory.id);
-        console.log('score', sortedItems[0].score);
-        console.log('cat', sortedItems[0].SubCategory.id);
-        axios.get(`/api/recommendations/?score=${sortedItems[0].score}&subCategory=${sortedItems[0].SubCategory.id}`).then((res2) => {
-          console.log(res2.data);
-          setItemRec(res2.data);
-        });
       });
     }
   }, [isOpen]);
@@ -132,28 +126,6 @@ export default function PurchaseDetailDialog(props) {
           <Grid container>
             <Grid container justify="center" spacing={2}>
               { items.map(value => (
-                <ItemCard item={value} openDetails={handleItemDetails} />
-              ))}
-            </Grid>
-            <Grid item xs={1} align="right">
-              <IconButton className={classes.closeButton} onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
-            <ItemUpdateDialog
-              isOpen={openUpdate}
-              id={itemId}
-              handleClose={handleDetailClose}
-              handleSave={handleItemsChange}
-              handleDelete={handleItemsChange}
-              noInput
-            />
-          </Grid>
-          <Grid container>
-            <Typography>Unsere Empfehlung:</Typography>
-            <Grid container justify="center" spacing={2}>
-              { itemRec.map(value => (
                 <ItemCard item={value} openDetails={handleItemDetails} />
               ))}
             </Grid>

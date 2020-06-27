@@ -80,7 +80,6 @@ export default function Home() {
   const [purchaseDetail, setPurchaseDetail] = useState();
   const [idDetail, setIdDetail] = useState(0);
   const [purchaseDetailDialogOpen, setPurchaseDetailDialogOpen] = useState(false);
-  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const setPageName = useSetStoreValue('pageName');
 
@@ -115,14 +114,6 @@ export default function Home() {
 
   const handlePurchaseDetailDialogClose = () => {
     setPurchaseDetailDialogOpen(false);
-  };
-
-  const handleInfoDialogClose = () => {
-    setInfoDialogOpen(false);
-  };
-
-  const handleInformationDialogOpen = () => {
-    setInfoDialogOpen(true);
   };
 
   const handlePurchaseDetails = (id) => {
@@ -175,12 +166,7 @@ export default function Home() {
           <AddIcon />
           Add Purchase
         </Fab>
-        <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleInformationDialogOpen}>
-          <InfoIcon />
-          Information
-        </Fab>
         <PurchaseDialog isOpen={purchaseDialogOpen} handleClose={handlePurchaseDialogClose} />
-        <InformationDialog isOpen={infoDialogOpen} handleClose={handleInfoDialogClose} />
       </Container>
     </div>
   );

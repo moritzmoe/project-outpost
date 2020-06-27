@@ -29,6 +29,10 @@ import StorageIcon from '@material-ui/icons/Storage';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import Ballot from '@material-ui/icons/Ballot';
 
+import { Fab } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
+import InformationDialog from './InformationDialog';
+
 import RouterHistory from '../Tools/RouterHistory';
 
 
@@ -72,6 +76,7 @@ export default function Navigation(props) {
   const pageName = useStoreValue('pageName', 'Project Outpost');
   const userFirstname = useStoreValue('userFirstname');
   const isAdmin = useStoreValue('isAdmin');
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   useEffect(() => {
     console.log('Navigation did mount');
@@ -89,6 +94,15 @@ export default function Navigation(props) {
     }
     setOpen(bool);
   };
+
+  const handleInformationDialogOpen = () => {
+    setInfoDialogOpen(true);
+  };
+
+  const handleInfoDialogClose = () => {
+    setInfoDialogOpen(false);
+  };
+
 
   const sideList = () => (
     <div
@@ -168,6 +182,10 @@ export default function Navigation(props) {
           <Typography variant="h6" className={classes.title}>
             {pageName}
           </Typography>
+          <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleInformationDialogOpen}>
+            <InfoIcon />
+          </Fab>
+          <InformationDialog isOpen={infoDialogOpen} handleClose={handleInfoDialogClose} />
         </Toolbar>
       </AppBar>
       { props.loggedIn ? (
