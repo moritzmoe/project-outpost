@@ -33,6 +33,8 @@ export default function PurchaseCard(props) {
   const [totalCO2, setTotalCO2] = useState(0);
   const [firstItems, setFirstItems] = useState('');
 
+  const convertCo2ToScore = 67;
+
   useEffect(() => {
     setCreatedDate(new Date(purchase.createdAt));
     let totalScore = 0;
@@ -85,7 +87,7 @@ export default function PurchaseCard(props) {
                 </Grid>
                 <Grid item xs={6} align="right">
                   <Typography variant="h4" align="right" color="primary">
-                    {totalCO2}
+                    {(Math.floor(totalCO2 / convertCo2ToScore))}
                     {' '}
                     g
                   </Typography>

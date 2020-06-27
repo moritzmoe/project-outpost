@@ -74,6 +74,8 @@ export default function PurchaseDialog(props) {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [itemId, setItemId] = useState(0);
 
+  const convertCo2ToScore = 67;
+
   const clearStateAndHandleClose = () => {
     setPurchaseId(0);
     setItems([]);
@@ -228,9 +230,8 @@ export default function PurchaseDialog(props) {
                 Purchase CO2:
               </Typography>
               <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
-                {totalScore}
+                {(Math.floor(totalScore / convertCo2ToScore))}
                 {' '}
-                g
               </Typography>
             </Grid>
           </Grid>

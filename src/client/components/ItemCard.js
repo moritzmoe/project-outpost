@@ -18,6 +18,7 @@ export default function ItemCard(props) {
   const classes = useStyles();
 
   const { item, openDetails } = props;
+  const convertCo2ToScore = 67;
 
   return (
     <div>
@@ -42,9 +43,8 @@ export default function ItemCard(props) {
                 </Grid>
                 <Grid item xs={5} align="right">
                   <Typography variant="h4" align="right" color="primary">
-                    {item.score}
+                    {(Math.floor(item.score / convertCo2ToScore))}
                     {' '}
-                    g
                   </Typography>
                 </Grid>
               </Grid>

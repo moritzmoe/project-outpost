@@ -63,6 +63,8 @@ export default function ItemUpdateDialog(props) {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(true);
 
+  const convertCo2ToScore = 67;
+
   useEffect(() => {
     axios.get(`/api/items/${id}`).then((res) => {
       setBarcode(res.data[0].barcode);
@@ -158,8 +160,8 @@ export default function ItemUpdateDialog(props) {
             </Grid>
             <Grid item xs={5} align="right">
               <Typography variant="h4" color="primary">
-                {score}
-                {'g'}
+                {(Math.floor(score / convertCo2ToScore))}
+                {}
               </Typography>
             </Grid>
             <Grid item xs={1} align="right">
