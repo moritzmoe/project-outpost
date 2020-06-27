@@ -89,7 +89,6 @@ export default function PurchaseCard(props) {
                   <Typography variant="h4" align="right" color="primary">
                     {(Math.floor(totalCO2 / convertCo2ToScore))}
                     {' '}
-                    g
                   </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.alignItemsAndJustifyContent}>

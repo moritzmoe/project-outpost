@@ -14,12 +14,14 @@ import {
   Container, Typography, Fab, Grid
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import InfoIcon from '@material-ui/icons/Info';
 import axios from 'axios';
 import { date } from 'date-fns/locale/af';
 import PurchaseDialog from './PurchaseDialog';
 import PurchaseCard from '../components/PurchaseCard';
 
 import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
+import InformationDialog from '../components/InformationDialog';
 
 const data = [
   { name: 'Group A', value: 50 },
@@ -29,10 +31,15 @@ const data = [
 const COLORS = ['#ff726f', '#00C49F', '#FFBB28'];
 
 const useStyles = makeStyles(theme => ({
-  fab: {
+  fabAdd: {
     position: 'fixed',
     bottom: theme.spacing(4),
     right: theme.spacing(3),
+  },
+  fabInfo: {
+    position: 'fixed',
+    bottom: theme.spacing(4),
+    left: theme.spacing(3),
   },
   co2Display: {
     display: 'flex',
@@ -73,6 +80,7 @@ export default function Home() {
   const [purchaseDetail, setPurchaseDetail] = useState();
   const [idDetail, setIdDetail] = useState(0);
   const [purchaseDetailDialogOpen, setPurchaseDetailDialogOpen] = useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const setPageName = useSetStoreValue('pageName');
 
@@ -106,7 +114,15 @@ export default function Home() {
   };
 
   const handlePurchaseDetailDialogClose = () => {
-    setPurchaseDetailDialogOpen(false);
+    setPurchaseDialogOpen(true);
+  };
+
+  const handleInfoDialogClose = () => {
+    setInfoDialogOpen(false);
+  };
+
+  const handleInformationDialogOpen = () => {
+    setInfoDialogOpen(true);
   };
 
   const handlePurchaseDetails = (id) => {
@@ -155,11 +171,16 @@ export default function Home() {
 
         {/* <SimplePieChart /> */}
 
-        <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handlePurchaseDialogOpen}>
+        <Fab color="primary" aria-label="add" className={classes.fabAdd} variant="extended" onClick={handlePurchaseDialogOpen}>
           <AddIcon />
           Add Purchase
         </Fab>
+        <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleInformationDialogOpen}>
+          <InfoIcon />
+          Information
+        </Fab>
         <PurchaseDialog isOpen={purchaseDialogOpen} handleClose={handlePurchaseDialogClose} />
+        <InformationDialog isOpen={infoDialogOpen} handleClose={handleInfoDialogClose} />
       </Container>
     </div>
   );

@@ -113,6 +113,7 @@ export default function PurchaseDialog(props) {
         score = parseInt(totalScore, 10) + parseInt(item.score, 10);
       });
       setTotalScore(score);
+      console.log(score);
       setItems(res.data.Items);
     }).catch((err) => {
       setErrorMsg(err.response.data.error);
