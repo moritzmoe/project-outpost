@@ -26,7 +26,7 @@ router.get('/', withAuth, (req, res) => {
     where: {
       // categoryId: req.subCategory,
       categoryId: subCategory,
-      score: { [Op.lte]: score },
+      score: { [Op.lt]: score },
     },
     include: [
       { model: models.Packaging, attributes: ['name'] },

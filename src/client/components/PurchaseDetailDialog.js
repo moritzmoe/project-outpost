@@ -28,6 +28,10 @@ export default function PurchaseDetailDialog(props) {
   const [totalPurchaseScore, setTotalPurchaseScore] = useState(0);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [itemId, setItemId] = useState(0);
+  const [itemRec, setItemRec] = useState([]);
+  const [itemRecScore, setItemRecScore] = useState(0);
+  const [itemRecSubCategory, setItemRecSubcategory] = useState(0);
+
   const {
     isOpen, id, handleClose
   } = props;
@@ -35,13 +39,24 @@ export default function PurchaseDetailDialog(props) {
   useEffect(() => {
     if (isOpen) {
       axios.get(`/api/purchases/${id}?expand=ITEMS&expand=PACKAGING&expand=SUBCATEGORY`).then((res) => {
-        setItems(res.data.Items);
+        const sortedItems = res.data.Items;
+        sortedItems.sort((a, b) => ((a.score > b.score) ? -1 : 1));
+        setItems(sortedItems);
         setCreatedDate(new Date(res.data.createdAt));
         let totalScore = 0;
         res.data.Items.map((item) => {
           totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+          console.log(item.score);
         });
         setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
+        setItemRecScore(sortedItems[0].score);
+        setItemRecSubcategory(sortedItems[0].SubCategory.id);
+        console.log('score', sortedItems[0].score);
+        console.log('cat', sortedItems[0].SubCategory.id);
+        axios.get(`/api/recommendations/?score=${sortedItems[0].score}&subCategory=${sortedItems[0].SubCategory.id}`).then((res2) => {
+          console.log(res2.data);
+          setItemRec(res2.data);
+        });
       });
     }
   }, [isOpen]);
@@ -115,7 +130,6 @@ export default function PurchaseDetailDialog(props) {
         </DialogTitle>
         <DialogContent>
           <Grid container>
-            <Typography>Dein Einkauf:</Typography>
             <Grid container justify="center" spacing={2}>
               { items.map(value => (
                 <ItemCard item={value} openDetails={handleItemDetails} />
@@ -139,7 +153,7 @@ export default function PurchaseDetailDialog(props) {
           <Grid container>
             <Typography>Unsere Empfehlung:</Typography>
             <Grid container justify="center" spacing={2}>
-              { items.map(value => (
+              { itemRec.map(value => (
                 <ItemCard item={value} openDetails={handleItemDetails} />
               ))}
             </Grid>
