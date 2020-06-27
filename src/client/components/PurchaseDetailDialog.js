@@ -115,6 +115,29 @@ export default function PurchaseDetailDialog(props) {
         </DialogTitle>
         <DialogContent>
           <Grid container>
+            <Typography>Dein Einkauf:</Typography>
+            <Grid container justify="center" spacing={2}>
+              { items.map(value => (
+                <ItemCard item={value} openDetails={handleItemDetails} />
+              ))}
+            </Grid>
+            <Grid item xs={1} align="right">
+              <IconButton className={classes.closeButton} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
+            <ItemUpdateDialog
+              isOpen={openUpdate}
+              id={itemId}
+              handleClose={handleDetailClose}
+              handleSave={handleItemsChange}
+              handleDelete={handleItemsChange}
+              noInput
+            />
+          </Grid>
+          <Grid container>
+            <Typography>Unsere Empfehlung:</Typography>
             <Grid container justify="center" spacing={2}>
               { items.map(value => (
                 <ItemCard item={value} openDetails={handleItemDetails} />

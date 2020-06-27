@@ -114,7 +114,7 @@ export default function Home() {
   };
 
   const handlePurchaseDetailDialogClose = () => {
-    setPurchaseDialogOpen(true);
+    setPurchaseDetailDialogOpen(false);
   };
 
   const handleInfoDialogClose = () => {
