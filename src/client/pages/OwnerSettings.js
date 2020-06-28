@@ -38,7 +38,7 @@ export default function Settings() {
   const setPageName = useSetStoreValue('pageName');
   const [co2ConvertInput, setCo2ConvertInput] = useState(0);
   const co2Convert = useStoreValue('co2Convert');
-  const [message, setMessage] = useState('heyhey');
+  const [message, setMessage] = useState('');
   const [openMessage, setOpenMessage] = useState(false);
   const [openError, setOpenError] = useState(false);
 

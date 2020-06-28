@@ -46,7 +46,7 @@ export default function Settings() {
   const userFirstname = useStoreValue('userFirstname');
   const userLastname = useStoreValue('userLastname');
   const userEmail = useStoreValue('userEmail');
-  const [message, setMessage] = useState('heyhey');
+  const [message, setMessage] = useState('');
   const [openMessage, setOpenMessage] = useState(false);
   const [openError, setOpenError] = useState(false);
 

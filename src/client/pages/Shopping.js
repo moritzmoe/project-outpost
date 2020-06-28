@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import { useSetStoreValue } from 'react-context-hook';
 import {
-  Grid, TextField, Dialog, DialogTitle, DialogContent, Button, IconButton, Fab
+  Grid, TextField, Dialog, DialogTitle, DialogContent, Button, IconButton, Fab, Snackbar
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
+import MuiAlert from '@material-ui/lab/Alert';
 import BarcodeScanner from '../components/BarcodeScanner';
 import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
@@ -34,6 +35,9 @@ const useStyles = makeStyles(theme => ({
 
 let cancel = '';
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 export default function Shopping() {
   const [result, setResult] = useState('');
   const classes = useStyles();
@@ -48,6 +52,9 @@ export default function Shopping() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [addProductSwitch, setAddProductSwitch] = useState(false);
   const [id, setId] = useState(0);
+  const [message, setMessage] = useState('');
+  const [openMessage, setOpenMessage] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const setPageName = useSetStoreValue('pageName');
 
@@ -118,6 +125,7 @@ export default function Shopping() {
   };
 
   const handleBarcodeScan = () => {
+    setAddProductSwitch(false);
     setOpenBarcode(true);
   };
 
@@ -133,10 +141,21 @@ export default function Shopping() {
   };
 
   const handleItemsChange = () => {
-    axios.get('/api/items').then((res) => {
-      setItems(res.data);
-      handleClose();
-    });
+    setSearchFieldText(barcode);
+    const query = barcode;
+    setSearchQuery(query);
+    setMessage('Änderung war erfolgreich');
+    setOpenMessage(true);
+    handleClose();
+  };
+
+  const handleMessageClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenMessage(false);
+    setOpenError(false);
+    setMessage('');
   };
 
   return (
@@ -154,7 +173,7 @@ export default function Shopping() {
         </Grid>
         <Grid container justify="center" className={classes.bottomSpacing} spacing={2}>
           {items.map(value => (
-            <ItemCard item={value} openDetails={handleItemClick} />
+            <ItemCard item={value} openDetails={handleItemClick} openRec />
           ))}
         </Grid>
       </Grid>
@@ -216,6 +235,35 @@ export default function Shopping() {
         <AddIcon />
         Produkt
       </Fab>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={openMessage}
+        autoHideDuration={6000}
+        className={classes.message}
+        onClose={handleMessageClose}
+      >
+        <Alert onClose={handleMessageClose} severity="success">
+          {message}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={openError}
+        autoHideDuration={6000}
+        className={classes.message}
+        onClose={handleMessageClose}
+      >
+        <Alert onClose={handleMessageClose} severity="error">
+          {message}
+        </Alert>
+      </Snackbar>
     </Container>
+
   );
 }
