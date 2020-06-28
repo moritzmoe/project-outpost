@@ -84,7 +84,6 @@ export default function Home() {
   const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
-    console.log(convertCo2ToScore);
     const dateFrom = new Date(new Date().setDate(new Date().getDate() - 7));
     const dateUntil = new Date();
     axios.get(`/api/purchases/?startDate=${dateFrom}&endDate=${dateUntil}&expand=ITEMS`).then((res) => {

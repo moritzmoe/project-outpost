@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { withStore, useSetStoreValue } from 'react-context-hook';
+import { withStore, useSetStoreValue, useStoreValue } from 'react-context-hook';
 import axios from 'axios';
 import Navigation from './components/Navigation';
 import Login from './pages/Login';
@@ -49,6 +49,8 @@ function App() {
   const classes = useStyles();
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
+  const setIsOwner = useSetStoreValue('isOwner', false);
+  const isAdmin = useStoreValue('isAdmin');
   const setCo2Convert = useSetStoreValue('co2Convert');
   const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
   const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
@@ -62,12 +64,14 @@ function App() {
       if (res.status === 200) {
         setloggedIn(true);
         axios.get('/api/auth/user').then((response) => {
-          setUserFirstname(response.data.firstname);
-          setIsAdmin(response.data.isAdmin);
+          if (response.data.Role.name === 'Admin') setIsAdmin(true);
+          if (response.data.Role.name === 'Owner') setIsOwner(true);
+
           setUserFirstname(response.data.firstname);
           setUserId(response.data.id);
           setUserLastname(response.data.lastname);
           setUserEmail(response.data.email);
+          console.log(response.data);
         });
       }
     });
@@ -77,14 +81,6 @@ function App() {
           setloggedIn(true);
         }
       });
-    axios.get('/api/auth/user').then((response) => {
-      setUserFirstname(response.data.firstname);
-      setIsAdmin(response.data.isAdmin);
-      setUserFirstname(response.data.firstname);
-      setUserId(response.data.id);
-      setUserLastname(response.data.lastname);
-      setUserEmail(response.data.email);
-    });
   }, []);
 
   const isLoggedIn = (logIn) => {
