@@ -22,7 +22,7 @@ export default function ItemCard(props) {
   const [openRecommendation, setOpenRecommendation] = useState(false);
   const convertCo2ToScore = useStoreValue('co2Convert');
 
-  const { item, openDetails } = props;
+  const { item, openDetails, openRec } = props;
   let clickHelp = true;
 
   const handleRecClick = () => {
@@ -69,21 +69,21 @@ export default function ItemCard(props) {
                     {item.Packaging.name}
                   </Typography>
                 </Grid>
-
-                <Grid item xs={7}>
-                  <Fab
-                    color="primary"
-                    aria-label="info"
-                    className={classes.fabInfo}
-                    variant="extended"
-                    onClick={handleRecClick}
-                    onMouseEnter={handleHoverButton}
-                    onFocus={handleHoverButton}
-                  >
-                    <EcoIcon />
-                  </Fab>
-                </Grid>
-
+                { openRec ? (
+                  <Grid item xs={7}>
+                    <Fab
+                      color="primary"
+                      aria-label="info"
+                      className={classes.fabInfo}
+                      variant="extended"
+                      onClick={handleRecClick}
+                      onMouseEnter={handleHoverButton}
+                      onFocus={handleHoverButton}
+                    >
+                      <EcoIcon />
+                    </Fab>
+                  </Grid>
+                ) : ''}
                 <Grid item xs={5} align="right">
                   <Typography variant="h4" align="right" color="primary">
                     {(Math.floor(item.score / convertCo2ToScore))}
@@ -100,7 +100,12 @@ export default function ItemCard(props) {
   );
 }
 
+ItemCard.defaultProps = {
+  openRec: false
+};
+
 ItemCard.propTypes = {
   item: PropTypes.object.isRequired,
-  openDetails: PropTypes.func.isRequired
+  openDetails: PropTypes.func.isRequired,
+  openRec: PropTypes.bool
 };

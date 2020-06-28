@@ -81,7 +81,7 @@ export default function Navigation(props) {
   const isOwner = useStoreValue('isOwner');
   const setIsOwner = useSetStoreValue('isOwner');
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
-  console.log(isAdmin);
+
   useEffect(() => {
     console.log('Navigation did mount');
   }, []);

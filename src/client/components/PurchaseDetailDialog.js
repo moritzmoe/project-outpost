@@ -126,7 +126,7 @@ export default function PurchaseDetailDialog(props) {
           <Grid container>
             <Grid container justify="center" spacing={2}>
               { items.map(value => (
-                <ItemCard item={value} openDetails={handleItemDetails} />
+                <ItemCard item={value} openDetails={handleItemDetails} openRec />
               ))}
             </Grid>
             <Grid item xs={1} align="right">

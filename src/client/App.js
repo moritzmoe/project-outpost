@@ -50,7 +50,6 @@ function App() {
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
   const setIsOwner = useSetStoreValue('isOwner', false);
-  const isAdmin = useStoreValue('isAdmin');
   const setCo2Convert = useSetStoreValue('co2Convert');
   const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
   const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
@@ -71,7 +70,6 @@ function App() {
           setUserId(response.data.id);
           setUserLastname(response.data.lastname);
           setUserEmail(response.data.email);
-          console.log(response.data);
         });
       }
     });
