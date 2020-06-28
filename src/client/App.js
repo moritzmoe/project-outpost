@@ -48,6 +48,11 @@ function App() {
   const classes = useStyles();
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
+  const setCo2Convert = useSetStoreValue('co2Convert');
+  const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
+  const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
+  const setUserId = useSetStoreValue('userId', 'Not logged in');
+  setCo2Convert(67);
 
   useEffect(() => {
     axios.get('/api/auth/checkToken').then((res) => {
@@ -56,6 +61,10 @@ function App() {
         axios.get('/api/auth/user').then((response) => {
           setUserFirstname(response.data.firstname);
           setIsAdmin(response.data.isAdmin);
+          setUserFirstname(response.data.firstname);
+          setUserId(response.data.id);
+          setUserLastname(response.data.lastname);
+          setUserEmail(response.data.email);
         });
       }
     });
@@ -65,6 +74,14 @@ function App() {
           setloggedIn(true);
         }
       });
+    axios.get('/api/auth/user').then((response) => {
+      setUserFirstname(response.data.firstname);
+      setIsAdmin(response.data.isAdmin);
+      setUserFirstname(response.data.firstname);
+      setUserId(response.data.id);
+      setUserLastname(response.data.lastname);
+      setUserEmail(response.data.email);
+    });
   }, []);
 
   const isLoggedIn = (logIn) => {

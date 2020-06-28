@@ -5,7 +5,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
 import React, { useState, useEffect } from 'react';
-import { useSetStoreValue } from 'react-context-hook';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
   PieChart, Pie, Cell
 } from 'recharts';
@@ -48,7 +48,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const convertCo2ToScore = 67;
 
 class SimplePieChart extends React.Component {
   render() {
@@ -82,8 +81,10 @@ export default function Home() {
   const [purchaseDetailDialogOpen, setPurchaseDetailDialogOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const setPageName = useSetStoreValue('pageName');
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
+    console.log(convertCo2ToScore);
     const dateFrom = new Date(new Date().setDate(new Date().getDate() - 7));
     const dateUntil = new Date();
     axios.get(`/api/purchases/?startDate=${dateFrom}&endDate=${dateUntil}&expand=ITEMS`).then((res) => {

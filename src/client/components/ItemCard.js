@@ -1,6 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
   makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography
 } from '@material-ui/core';
@@ -19,10 +20,10 @@ const useStyles = makeStyles(theme => ({
 export default function ItemCard(props) {
   const classes = useStyles();
   const [openRecommendation, setOpenRecommendation] = useState(false);
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   const { item, openDetails } = props;
   let clickHelp = true;
-  const convertCo2ToScore = 67;
 
   const handleRecClick = () => {
     setOpenRecommendation(true);

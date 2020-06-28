@@ -10,6 +10,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 
 const useStyles = makeStyles(theme => ({
   deleteButton: {
@@ -63,7 +64,7 @@ export default function ItemUpdateDialog(props) {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(true);
 
-  const convertCo2ToScore = 67;
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
     axios.get(`/api/items/${id}`).then((res) => {

@@ -6,6 +6,7 @@ import {
   makeStyles, Grid, Card, CardActionArea, CardContent,
   Typography, List, ListItem, ListItemText, IconButton
 } from '@material-ui/core';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import ItemList from './ItemList';
 
 
@@ -33,7 +34,7 @@ export default function PurchaseCard(props) {
   const [totalCO2, setTotalCO2] = useState(0);
   const [firstItems, setFirstItems] = useState('');
 
-  const convertCo2ToScore = 67;
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
     setCreatedDate(new Date(purchase.createdAt));

@@ -7,6 +7,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import ItemCard from './ItemCard';
 import ItemUpdateDialog from './ItemUpdateDialog';
 
@@ -19,7 +20,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const convertCo2ToScore = 67;
 
 export default function RecommendationDialog(props) {
   const classes = useStyles();
@@ -27,6 +27,7 @@ export default function RecommendationDialog(props) {
   const [itemId, setItemId] = useState(0);
   const [itemRec, setItemRec] = useState([]);
   const [items, setItems] = useState([]);
+  const convertCo2ToScore = useStoreValue('co2Convert');
   const {
     isOpen, id, handleClose
   } = props;

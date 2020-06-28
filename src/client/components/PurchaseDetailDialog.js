@@ -7,6 +7,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import ItemCard from './ItemCard';
 import ItemUpdateDialog from './ItemUpdateDialog';
 
@@ -19,8 +20,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const convertCo2ToScore = 67;
-
 export default function PurchaseDetailDialog(props) {
   const classes = useStyles();
   const [createdDate, setCreatedDate] = useState(new Date());
@@ -31,6 +30,7 @@ export default function PurchaseDetailDialog(props) {
   const [itemRec, setItemRec] = useState([]);
   const [itemRecScore, setItemRecScore] = useState(0);
   const [itemRecSubCategory, setItemRecSubcategory] = useState(0);
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   const {
     isOpen, id, handleClose
