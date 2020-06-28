@@ -52,9 +52,12 @@ function App() {
   const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
   const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
   const setUserId = useSetStoreValue('userId', 'Not logged in');
-  setCo2Convert(67);
 
   useEffect(() => {
+    axios.get('/api/constants?id=1').then((response) => {
+      setCo2Convert(response.data.value);
+      console.log(response.data.value);
+    });
     axios.get('/api/auth/checkToken').then((res) => {
       if (res.status === 200) {
         setloggedIn(true);
