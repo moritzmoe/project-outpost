@@ -25,6 +25,11 @@ router.get('/', withAdmin, (req, res) => {
               [Op.like]: `%${req.query.q}%`
             }
           },
+          {
+            barcode: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
         ]
       },
       // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
