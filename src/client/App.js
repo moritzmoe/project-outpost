@@ -64,7 +64,7 @@ function App() {
         setloggedIn(true);
         axios.get('/api/auth/user').then((response) => {
           if (response.data.Role.name === 'Admin') setIsAdmin(true);
-          if (response.data.Role.name === 'Owner') setIsOwner(true);
+          if (response.data.Role.name === 'Owner') { setIsOwner(true); setIsAdmin(true); }
 
           setUserFirstname(response.data.firstname);
           setUserId(response.data.id);
