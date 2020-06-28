@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
-  makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography
+  makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography, Button
 } from '@material-ui/core';
 import EcoIcon from '@material-ui/icons/Eco';
 import RecommendationDialog from './RecommendationDialog';
@@ -26,15 +26,13 @@ export default function ItemCard(props) {
   let clickHelp = true;
 
   const handleRecClick = () => {
-    setOpenRecommendation(true);
-  };
-
-  const handleHoverButton = () => {
     clickHelp = false;
+    setOpenRecommendation(true);
   };
 
   const handleHoverCard = () => {
     clickHelp = true;
+    console.log(clickHelp);
   };
 
   const handleClick = () => {
@@ -71,17 +69,15 @@ export default function ItemCard(props) {
                 </Grid>
                 { openRec ? (
                   <Grid item xs={7}>
-                    <Fab
+                    <Button
                       color="primary"
                       aria-label="info"
                       className={classes.fabInfo}
-                      variant="extended"
+                      variant="outlined"
                       onClick={handleRecClick}
-                      onMouseEnter={handleHoverButton}
-                      onFocus={handleHoverButton}
                     >
                       <EcoIcon />
-                    </Fab>
+                    </Button>
                   </Grid>
                 ) : ''}
                 <Grid item xs={5} align="right">
