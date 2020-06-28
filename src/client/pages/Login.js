@@ -53,6 +53,9 @@ export default function SignIn(props) {
   const setIsOwner = useSetStoreValue('isOwner', false);
   const setPageName = useSetStoreValue('pageName');
   const setCo2Convert = useSetStoreValue('co2Convert');
+  const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
+  const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
+  const setUserId = useSetStoreValue('userId', 'Not logged in');
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -65,6 +68,9 @@ export default function SignIn(props) {
         if (res.status === 200) {
           axios.get('/api/auth/user').then((response) => {
             setUserFirstname(response.data.firstname);
+            setUserId(response.data.id);
+            setUserLastname(response.data.lastname);
+            setUserEmail(response.data.email);
             if (response.data.Role.name === 'Admin') {
               setIsAdmin(true);
             } else if (response.data.Role.name === 'Owner') {

@@ -9,11 +9,16 @@ import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 import axios from 'axios';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
 import {
-  Container, Typography, Fab, Grid, TextField
+  Container, Typography, Fab, Grid, TextField, Snackbar
 } from '@material-ui/core';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles(theme => ({
   closeButton: {
@@ -33,6 +38,9 @@ export default function Settings() {
   const setPageName = useSetStoreValue('pageName');
   const [co2ConvertInput, setCo2ConvertInput] = useState(0);
   const co2Convert = useStoreValue('co2Convert');
+  const [message, setMessage] = useState('heyhey');
+  const [openMessage, setOpenMessage] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
     setPageName('Owner Settings');
@@ -44,16 +52,30 @@ export default function Settings() {
   };
 
   const handleCo2ConvertSave = () => {
-    axios.post(`/api/constants/changeCo2Convert?id=${1}&content=${co2ConvertInput}`).then((res) => {
-      if (res.status === 200) {
-        window.alert('Co2 Umrechnungsfaktor wurde geändert');
-      }
-    }).catch((err) => {
-      console.log(err);
-      window.alert('Etwas ist schiefgelaufen');
-    });
+    if (!(co2ConvertInput === '')) {
+      axios.post(`/api/constants/changeCo2Convert?id=${1}&content=${co2ConvertInput}`).then((res) => {
+        if (res.status === 200) {
+          setMessage('Co2 Umrechnungsfaktor wurde geändert');
+          setOpenMessage(true);
+        }
+      }).catch((err) => {
+        console.log(err);
+        setMessage('Etwas ist schiefgelaufen');
+        setOpenError(true);
+      });
+    } else {
+      setMessage('Bitte gebe einen Dividor ein');
+      setOpenError(true);
+    }
   };
-
+  const handleMessageClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenMessage(false);
+    setOpenError(false);
+    setMessage('');
+  };
 
   return (
     <div>
@@ -76,6 +98,34 @@ export default function Settings() {
         </Grid>
         {' '}
       </Container>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={openMessage}
+        autoHideDuration={6000}
+        className={classes.message}
+        onClose={handleMessageClose}
+      >
+        <Alert onClose={handleMessageClose} severity="success">
+          {message}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={openError}
+        autoHideDuration={6000}
+        className={classes.message}
+        onClose={handleMessageClose}
+      >
+        <Alert onClose={handleMessageClose} severity="error">
+          {message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

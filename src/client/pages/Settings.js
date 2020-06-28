@@ -9,10 +9,11 @@ import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 import axios from 'axios';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
 import {
-  Container, Typography, Fab, Grid, TextField
+  Container, Typography, Fab, Grid, TextField, Snackbar
 } from '@material-ui/core';
 
 
@@ -26,8 +27,14 @@ const useStyles = makeStyles(theme => ({
   bottomSpacing: {
     bottom: theme.spacing(2)
   },
+  message: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function Settings() {
   const classes = useStyles();
@@ -39,9 +46,13 @@ export default function Settings() {
   const userFirstname = useStoreValue('userFirstname');
   const userLastname = useStoreValue('userLastname');
   const userEmail = useStoreValue('userEmail');
+  const [message, setMessage] = useState('heyhey');
+  const [openMessage, setOpenMessage] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
     setPageName('Settings');
+    console.log(userFirstname, userLastname, userEmail, userId);
   }, []);
 
   const handleFirstnameInput = (input) => {
@@ -58,36 +69,66 @@ export default function Settings() {
   };
 
   const handleFirstnameSave = () => {
-    axios.post(`/api/users/changeFirstname?id=${userId}&content=${firstNameInput}`).then((res) => {
-      if (res.status === 200) {
-        window.alert('Vorname erfolgreich geändert');
-      }
-    }).catch((err) => {
-      console.log(err);
-      window.alert('Etwas ist schiefgelaufen');
-    });
+    if (!(firstNameInput === '')) {
+      axios.post(`/api/users/changeFirstname?id=${userId}&content=${firstNameInput}`).then((res) => {
+        if (res.status === 200) {
+          setMessage('Vorname erfolgreich geändert');
+          setOpenMessage(true);
+        }
+      }).catch((err) => {
+        console.log(err);
+        setMessage('Etwas ist schiefgelaufen');
+        setOpenError(true);
+      });
+    } else {
+      setMessage('Bitte gebe einen Vornamen ein');
+      setOpenError(true);
+    }
   };
 
   const handleLastnameSave = () => {
-    axios.post(`/api/users/changeLastname?id=${userId}&content=${lastnameInput}`).then((res) => {
-      if (res.status === 200) {
-        window.alert('Nachname erfolgreich geändert');
-      }
-    }).catch((err) => {
-      console.log(err);
-      window.alert('Etwas ist schiefgelaufen');
-    });
+    if (!(lastnameInput === '')) {
+      axios.post(`/api/users/changeLastname?id=${userId}&content=${lastnameInput}`).then((res) => {
+        if (res.status === 200) {
+          setMessage('Nachname erfolgreich geändert');
+          setOpenMessage(true);
+        }
+      }).catch((err) => {
+        console.log(err);
+        setMessage('Etwas ist schiefgelaufen');
+        setOpenError(true);
+      });
+    } else {
+      setMessage('Bitte gebe einen Nachnamen ein');
+      setOpenError(true);
+    }
   };
 
   const handleEmailSave = () => {
-    axios.post(`/api/users/changeEmail?id=${userId}&content=${emailInput}`).then((res) => {
-      if (res.status === 200) {
-        window.alert('E-mail Adresse erfolgreich geändert');
-      }
-    }).catch((err) => {
-      console.log(err);
-      window.alert('Etwas ist schiefgelaufen');
-    });
+    if (!(emailInput === '')) {
+      axios.post(`/api/users/changeEmail?id=${userId}&content=${emailInput}`).then((res) => {
+        if (res.status === 200) {
+          setMessage('E-mail Adresse erfolgreich geändert');
+          setOpenMessage(true);
+        }
+      }).catch((err) => {
+        console.log(err);
+        setMessage('Etwas ist schiefgelaufen');
+        setOpenError(true);
+      });
+    } else {
+      setMessage('Bitte gebe eine E-Mail Adresse ein');
+      setOpenError(true);
+    }
+  };
+
+  const handleMessageClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenMessage(false);
+    setOpenError(false);
+    setMessage('');
   };
 
 
@@ -139,6 +180,34 @@ export default function Settings() {
           </Fab>
         </Grid>
       </Container>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={openMessage}
+        autoHideDuration={6000}
+        className={classes.message}
+        onClose={handleMessageClose}
+      >
+        <Alert onClose={handleMessageClose} severity="success">
+          {message}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={openError}
+        autoHideDuration={6000}
+        className={classes.message}
+        onClose={handleMessageClose}
+      >
+        <Alert onClose={handleMessageClose} severity="error">
+          {message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
