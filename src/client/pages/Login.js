@@ -52,9 +52,14 @@ export default function SignIn(props) {
   const setIsAdmin = useSetStoreValue('isAdmin', false);
   const setIsOwner = useSetStoreValue('isOwner', false);
   const setPageName = useSetStoreValue('pageName');
+  const setCo2Convert = useSetStoreValue('co2Convert');
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    axios.get('/api/constants?id=1').then((response) => {
+      setCo2Convert(response.data.value);
+      console.log(response.data.value);
+    });
     axios.post('/api/auth', { email, password })
       .then((res) => {
         if (res.status === 200) {

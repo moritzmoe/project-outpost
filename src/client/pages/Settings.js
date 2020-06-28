@@ -15,7 +15,6 @@ import {
   Container, Typography, Fab, Grid, TextField
 } from '@material-ui/core';
 
-const convertCo2ToScore = 67;
 
 const useStyles = makeStyles(theme => ({
   closeButton: {

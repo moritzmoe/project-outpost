@@ -9,7 +9,7 @@ const withAuth = require('../middleware/auth');
 
 const withAdmin = require('../middleware/admin');
 
-router.get('/', withAuth, (req, res) => {
+router.get('/', (req, res) => {
   const id = parseInt(req.query.id, 10);
   if (!id) {
     res.status(400).json({ error: 'Please provide an id' });
@@ -20,6 +20,19 @@ router.get('/', withAuth, (req, res) => {
     },
     // attributes: ['id', 'name', 'barcode', 'origin', 'score'],
   }).then(item => res.send(item));
+});
+
+router.post('/changeCo2Convert', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.Constant.update({
+    value: content
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
 });
 
 module.exports = router;

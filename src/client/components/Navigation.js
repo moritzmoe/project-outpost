@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
-import { useStoreValue } from 'react-context-hook';
+import { useStoreValue, useSetStoreValue } from 'react-context-hook';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -76,6 +76,10 @@ export default function Navigation(props) {
   const pageName = useStoreValue('pageName', 'Project Outpost');
   const userFirstname = useStoreValue('userFirstname');
   const isAdmin = useStoreValue('isAdmin');
+  const setIsAdmin = useSetStoreValue('isAdmin');
+
+  const isOwner = useStoreValue('isOwner');
+  const setIsOwner = useSetStoreValue('isOwner');
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -85,6 +89,8 @@ export default function Navigation(props) {
   const logout = () => {
     setSelected('Login');
     props.isLoggedIn(false);
+    setIsAdmin(false);
+    setIsOwner(false);
     RouterHistory.push('/login');
   };
 
@@ -152,6 +158,17 @@ export default function Navigation(props) {
             <ListItem button onClick={() => { setSelected('Category Management'); RouterHistory.push('/categories'); }} selected={selected === 'Category Management'} key="Categories">
               <ListItemIcon><Ballot /></ListItemIcon>
               <ListItemText primary="Category Management" />
+            </ListItem>
+          </List>
+        </>
+      ) : ''}
+      { isOwner ? (
+        <>
+          <Divider />
+          <List subheader={<ListSubheader>You are an Owner:</ListSubheader>}>
+            <ListItem button onClick={() => { setSelected('Owner Settings'); RouterHistory.push('/ownersettings'); }} selected={selected === 'Owner Settings'} key="OwnerSettings">
+              <ListItemIcon><StorageIcon /></ListItemIcon>
+              <ListItemText primary="Owner Settings" />
             </ListItem>
           </List>
         </>

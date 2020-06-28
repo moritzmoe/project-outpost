@@ -19,6 +19,7 @@ import Items from './pages/Items';
 import Users from './pages/Users';
 import Categories from './pages/Categories';
 import Settings from './pages/Settings';
+import OwnerSettings from './pages/OwnerSettings';
 
 
 const theme = createMuiTheme({
@@ -56,7 +57,6 @@ function App() {
   useEffect(() => {
     axios.get('/api/constants?id=1').then((response) => {
       setCo2Convert(response.data.value);
-      console.log(response.data.value);
     });
     axios.get('/api/auth/checkToken').then((res) => {
       if (res.status === 200) {
@@ -112,6 +112,7 @@ function App() {
               <Route path="/users" component={withAuth(() => <Users />)} />
               <Route path="/categories" component={withAuth(() => <Categories />)} />
               <Route path="/settings" component={withAuth(() => <Settings />)} />
+              <Route path="/ownersettings" component={withAuth(() => <OwnerSettings />)} />
             </Switch>
           </div>
         </ThemeProvider>
