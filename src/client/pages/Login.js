@@ -49,6 +49,9 @@ export default function SignIn(props) {
   const [wrong, setWrong] = useState(false);
 
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
+  const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
+  const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
+  const setUserId = useSetStoreValue('userId', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
   const setIsOwner = useSetStoreValue('isOwner', false);
   const setPageName = useSetStoreValue('pageName');
@@ -60,6 +63,9 @@ export default function SignIn(props) {
         if (res.status === 200) {
           axios.get('/api/auth/user').then((response) => {
             setUserFirstname(response.data.firstname);
+            setUserId(response.data.id);
+            setUserLastname(response.data.lastname);
+            setUserEmail(response.data.email);
             if (response.data.Role.name === 'Admin') {
               setIsAdmin(true);
             } else if (response.data.Role.name === 'Owner') {

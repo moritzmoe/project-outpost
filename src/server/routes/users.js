@@ -6,6 +6,7 @@ const router = express.Router();
 const models = require('../models');
 const withAdmin = require('../middleware/admin');
 const withOwner = require('../middleware/owner');
+const withAuth = require('../middleware/auth');
 
 router.get('/', withAdmin, (req, res) => {
   if (req.query.q) {
@@ -81,6 +82,45 @@ router.post('/changeRole', withOwner, (req, res) => {
   console.log(roleId);
   models.User.update({
     role: roleId
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
+});
+
+router.post('/changeFirstname', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.User.update({
+    firstname: content
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
+});
+
+router.post('/changeLastname', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.User.update({
+    lastname: content
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
+});
+
+router.post('/changeEmail', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.User.update({
+    email: content
   }, {
     where: {
       id

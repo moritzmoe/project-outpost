@@ -18,6 +18,7 @@ import Shopping from './pages/Shopping';
 import Items from './pages/Items';
 import Users from './pages/Users';
 import Categories from './pages/Categories';
+import Settings from './pages/Settings';
 
 
 const theme = createMuiTheme({
@@ -90,6 +91,7 @@ function App() {
               <Route path="/shopping" component={withAuth(() => <Shopping />)} />
               <Route path="/users" component={withAuth(() => <Users />)} />
               <Route path="/categories" component={withAuth(() => <Categories />)} />
+              <Route path="/settings" component={withAuth(() => <Settings />)} />
             </Switch>
           </div>
         </ThemeProvider>
