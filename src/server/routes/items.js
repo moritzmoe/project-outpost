@@ -133,6 +133,7 @@ router.post('/', withAdmin, (req, res) => {
               packaging,
               origin,
               score,
+              approved: 1,
               createdBy: req.userId,
               lastUpdatedBy: req.userId,
             }).then((createdItem) => {
