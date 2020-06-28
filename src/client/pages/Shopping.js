@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import BarcodeScanner from '../components/BarcodeScanner';
 import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
+import ItemUpdateDialog from '../components/ItemUpdateDialog';
 
 const useStyles = makeStyles(theme => ({
   bottomSpacing: {
@@ -46,6 +47,7 @@ export default function Shopping() {
   const [openCreate, setOpenCreate] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [addProductSwitch, setAddProductSwitch] = useState(false);
+  const [id, setId] = useState(0);
 
   const setPageName = useSetStoreValue('pageName');
 
@@ -65,7 +67,9 @@ export default function Shopping() {
     setSearchQuery(query);
   };
 
-  const handleItemClick = (id) => {
+  const handleItemClick = (idOfClick) => {
+    setId(idOfClick);
+    setOpenUpdate(true);
   };
 
   const fetchSearchResults = (query) => {
@@ -181,6 +185,14 @@ export default function Shopping() {
         handleClose={handleClose}
         handleItemCreated={handleItemsChange}
         barcode={barcode}
+      />
+      <ItemUpdateDialog
+        isOpen={openUpdate}
+        id={id}
+        handleClose={handleClose}
+        handleSave={handleItemsChange}
+        handleDelete={handleItemsChange}
+        noInput
       />
       <Fab
         color="primary"
