@@ -63,7 +63,7 @@ export default function Settings() {
         </Grid>
         <Grid container justify="space-between" spacing={3}>
           <Grid item xs={5}>
-            <Typography variant="h6">Co2 Umrechnungsfaktor:</Typography>
+            <Typography variant="h6">Co2 / Score Divisor:</Typography>
           </Grid>
           <Grid item>
             <form className={classes.root} noValidate autoComplete="off" onChange={handleCo2ConvertInput}>
