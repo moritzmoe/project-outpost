@@ -89,7 +89,7 @@ export default function Settings() {
           </Grid>
           <Grid item>
             <form className={classes.root} noValidate autoComplete="off" onChange={handleCo2ConvertInput}>
-              <TextField type="number" id="itemSearchField" className={classes.bottomSpacing} label="Vorname" variant="outlined" defaultValue={co2Convert} />
+              <TextField type="number" id="itemSearchField" className={classes.bottomSpacing} label="Co2 Dividor" variant="outlined" defaultValue={co2Convert} />
             </form>
           </Grid>
           <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleCo2ConvertSave}>
