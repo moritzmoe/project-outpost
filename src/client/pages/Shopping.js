@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import { useSetStoreValue } from 'react-context-hook';
 import {
-  Grid, TextField, Dialog, DialogTitle, DialogContent, Button, IconButton, Fab, Snackbar
+  Grid, TextField, Dialog, DialogTitle, DialogContent, Button, IconButton, Fab, Snackbar, Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -141,10 +141,7 @@ export default function Shopping() {
   };
 
   const handleItemsChange = () => {
-    setSearchFieldText(barcode);
-    const query = barcode;
-    setSearchQuery(query);
-    setMessage('Änderung war erfolgreich');
+    setMessage('Produkt wurde eingereicht und wird überprüft');
     setOpenMessage(true);
     handleClose();
   };
@@ -163,7 +160,7 @@ export default function Shopping() {
       <Grid container justify="space-between" spacing={3}>
         <Grid item />
       </Grid>
-      <Grid item xs={12} align="right">
+      <Grid item xs={12}>
         <Grid container justify="center" spacing={3}>
           <Grid item>
             <form className={classes.root} noValidate autoComplete="off" onChange={handleSearchInputChange}>
@@ -175,6 +172,11 @@ export default function Shopping() {
           {items.map(value => (
             <ItemCard item={value} openDetails={handleItemClick} openRec />
           ))}
+          {!items.length ? (
+            <Grid item>
+              <Typography>Keine Produkte gefunden</Typography>
+            </Grid>
+          ) : ''}
         </Grid>
       </Grid>
       <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>

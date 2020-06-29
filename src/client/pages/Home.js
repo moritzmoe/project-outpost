@@ -155,6 +155,11 @@ export default function Home() {
               {purchases.map(value => (
                 <PurchaseCard key={value.id} purchase={value} openDetails={handlePurchaseDetails} />
               ))}
+              {!purchases.length ? (
+                <Grid item>
+                  <Typography>Keine Einkäufe gefunden</Typography>
+                </Grid>
+              ) : ''}
               <PurchaseDetailDialog isOpen={purchaseDetailDialogOpen} id={idDetail} handleClose={handlePurchaseDetailDialogClose} />
             </Grid>
           </Grid>

@@ -150,6 +150,11 @@ export default function Timeline() {
               {purchases.map(value => (
                 <PurchaseCard key={value.id} purchase={value} openDetails={handlePurchaseDetails} />
               ))}
+              {!purchases.length ? (
+                <Grid item>
+                  <Typography>Keine Einkäufe gefunden</Typography>
+                </Grid>
+              ) : ''}
               <PurchaseDetailDialog isOpen={purchaseDetailDialogOpen} id={idDetail} handleClose={handlePurchaseDetailDialogClose} />
             </Grid>
           </Grid>

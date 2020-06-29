@@ -59,6 +59,10 @@ const useStyles = makeStyles(theme => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500]
   },
+  text: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function Alert(props) {
@@ -284,6 +288,11 @@ export default function PurchaseDialog(props) {
                 {items.map(value => (
                   <ItemCard item={value} openDetails={handleItemDetails} />
                 ))}
+                {!items.length ? (
+                  <Grid item>
+                    <Typography>Keine Produkte hinzugefügt</Typography>
+                  </Grid>
+                ) : ''}
               </Grid>
             </Grid>
             {/* <Grid item xs={12} sm={6}>
@@ -373,17 +382,24 @@ export default function PurchaseDialog(props) {
               <CloseIcon />
             </IconButton>
           </Grid>
-          <Typography color="primary">Leider wurde dieses Produkt nicht gefunden. </Typography>
-          <Typography>Du kannst für diesen Einkauf ein neues Produkt erstellen, dieses wird von unserem Team überprüft und dann für Zukünftige Einkäufe und andere Nutzer freigeschaltet.</Typography>
-          <Button variant="outlined" color="primary" onClick={handleCreateOpen}>
-            Neues Produkt
-          </Button>
-          <Button variant="outlined" onClick={handleBarcodeScan}>
-            Nochmal Scannen
-          </Button>
-          <Button variant="outlined" onClick={handleConfirmDialogClose}>
-            Abbrechen
-          </Button>
+          <Typography variant="h5" color="primary">Leider wurde dieses Produkt nicht gefunden </Typography>
+          <Typography className={classes.text}>Du kannst für diesen Einkauf ein neues Produkt erstellen, dieses wird von unserem Team überprüft und dann für Zukünftige Einkäufe und andere Nutzer freigeschaltet.</Typography>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
+            <Button variant="outlined" color="primary" onClick={handleCreateOpen}>
+              Neues Produkt
+            </Button>
+            <Button variant="outlined" onClick={handleBarcodeScan}>
+              Nochmal Scannen
+            </Button>
+            <Button variant="outlined" onClick={handleConfirmDialogClose}>
+              Abbrechen
+            </Button>
+          </Grid>
         </DialogContent>
       </Dialog>
       {/* <BarcodeTypeInDialog
