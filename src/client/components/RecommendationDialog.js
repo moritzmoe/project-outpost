@@ -65,7 +65,6 @@ export default function RecommendationDialog(props) {
     <div>
       <Dialog
         fullWidth
-        maxWidth="md"
         open={isOpen}
         onClose={handleRecClose}
       >
@@ -76,56 +75,53 @@ export default function RecommendationDialog(props) {
               <CloseIcon />
             </IconButton>
           </Grid>
-          <Grid container justify="center" spacing={3} />
         </Grid>
-        <Grid item xs={10} align="center">
-          <DialogContent>
-            <Grid container>
-              <Typography variant="h5" color="primary">Dein Einkauf:</Typography>
-              <Grid container justify="center" spacing={2}>
-                { items.map(value => (
-                  <ItemCard item={value} openDetails={handleItemDetails} />
-                ))}
-              </Grid>
-              <Grid item xs={1} align="right">
-                <IconButton className={classes.closeButton} onClick={handleClose}>
-                  <CloseIcon />
-                </IconButton>
-              </Grid>
-              <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
-              <ItemUpdateDialog
-                isOpen={openUpdate}
-                id={itemId}
-                handleClose={handleDetailClose}
-                handleSave={handleItemsChange}
-                handleDelete={handleItemsChange}
-                noInput
-              />
+        <DialogContent>
+          <Grid container>
+            <Typography variant="h5" color="primary">Dein Einkauf:</Typography>
+            <Grid container justify="center" spacing={2}>
+              { items.map(value => (
+                <ItemCard item={value} openDetails={handleItemDetails} />
+              ))}
             </Grid>
-            <Grid container>
-              <Typography variant="h5" color="primary">Unsere Empfehlung:</Typography>
-              <Grid container justify="center" spacing={2}>
-                { itemRec.map(value => (
-                  <ItemCard item={value} openDetails={handleItemDetails} />
-                ))}
-              </Grid>
-              <Grid item xs={1} align="right">
-                <IconButton className={classes.closeButton} onClick={handleClose}>
-                  <CloseIcon />
-                </IconButton>
-              </Grid>
-              <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
-              <ItemUpdateDialog
-                isOpen={openUpdate}
-                id={itemId}
-                handleClose={handleDetailClose}
-                handleSave={handleItemsChange}
-                handleDelete={handleItemsChange}
-                noInput
-              />
+            <Grid item xs={1} align="right">
+              <IconButton className={classes.closeButton} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
             </Grid>
-          </DialogContent>
-        </Grid>
+            <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
+            <ItemUpdateDialog
+              isOpen={openUpdate}
+              id={itemId}
+              handleClose={handleDetailClose}
+              handleSave={handleItemsChange}
+              handleDelete={handleItemsChange}
+              noInput
+            />
+          </Grid>
+          <Grid container>
+            <Typography variant="h5" color="primary">Unsere Empfehlung:</Typography>
+            <Grid container justify="center" spacing={2}>
+              { itemRec.map(value => (
+                <ItemCard item={value} openDetails={handleItemDetails} />
+              ))}
+            </Grid>
+            <Grid item xs={1} align="right">
+              <IconButton className={classes.closeButton} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
+            <ItemUpdateDialog
+              isOpen={openUpdate}
+              id={itemId}
+              handleClose={handleDetailClose}
+              handleSave={handleItemsChange}
+              handleDelete={handleItemsChange}
+              noInput
+            />
+          </Grid>
+        </DialogContent>
       </Dialog>
     </div>
   );

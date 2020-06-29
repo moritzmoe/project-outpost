@@ -303,7 +303,7 @@ export default function ItemUpdateDialog(props) {
               className={classes.button}
               startIcon={<EditIcon />}
             >
-              Änderungen speichern
+              Speichern
             </Button>
           </DialogActions>
         </form>
