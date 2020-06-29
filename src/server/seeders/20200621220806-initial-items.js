@@ -52,7 +52,10 @@ module.exports = {
     { name: 'Hohes C O-Saft', weight: 1000, categoryId: 154, barcode: '4001497651306', packaging: 5, origin: 1, score: 695, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 1 },
     { name: 'Diamant Puderzucker', weight: 250, categoryId: 147, barcode: '4008381178000', packaging: 16, origin: 1, score: 292, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 1 },
     { name: 'ja! Speisequark', weight: 500, categoryId: 106, barcode: '4388840216826', packaging: 4, origin: 1, score: 1990, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 1 },
-    { name: 'G&G Vollkorntoast', weight: 500, categoryId: 80, barcode: '4311596476268', packaging: 1, origin: 1, score: 475, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 1 }
+    { name: 'G&G Vollkorntoast', weight: 500, categoryId: 80, barcode: '4311596476268', packaging: 1, origin: 1, score: 475, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 1 },
+
+    { name: 'Jens & Vincents Brotaufstrich', weight: 500, categoryId: 80, barcode: '4311596476200', packaging: 1, origin: 1, score: 475, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 0 },
+    { name: 'Max & Moritz Kekse', weight: 500, categoryId: 80, barcode: '4311534576268', packaging: 1, origin: 1, score: 475, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 0 }
 
   ], {}),
 
