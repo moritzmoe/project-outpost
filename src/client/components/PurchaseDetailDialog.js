@@ -111,16 +111,6 @@ export default function PurchaseDetailDialog(props) {
             </Grid>
           </Grid>
 
-          <Grid container>
-            <Grid item xs={5}>
-              <Typography color="textSecondary" variant="body2">
-                ID:
-                {' '}
-                {id}
-              </Typography>
-            </Grid>
-          </Grid>
-
         </DialogTitle>
         <DialogContent>
           <Grid container>
