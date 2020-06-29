@@ -19,8 +19,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const convertCo2ToScore = 67;
-
 export default function InformationDialog(props) {
   const classes = useStyles();
   const {
