@@ -159,7 +159,7 @@ export default function SignIn(props) {
         <Grid container justify="flex-end">
           <Grid item>
             <Link href="/signup" onClick={(evt) => { evt.preventDefault(); RouterHistory.push('/signup'); }} variant="body2">
-              Don&apos;t have an Account? Sign up
+              Kein Account? Sign up
             </Link>
           </Grid>
         </Grid>
@@ -174,7 +174,7 @@ export default function SignIn(props) {
           className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
-            Wrong E-Mail or Password
+            Falsche E-Mail or Password
           </Alert>
         </Snackbar>
       </div>

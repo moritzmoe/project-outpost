@@ -128,7 +128,7 @@ export default function Users() {
         <form noValidate autoComplete="off">
           <TextField
             id="outlined-basic"
-            label="Search by E-Mail or Lastname"
+            label="Suche E-Mail oder Nachname"
             variant="outlined"
             className={classes.search}
             onChange={handleSearchInputChange}

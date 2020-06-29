@@ -112,7 +112,7 @@ export default function ItemCreationDialog(props) {
           <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Please provide the following information to add an item to the database:
+              Bitte gib die folgenden Informationen ein:
             </DialogContentText>
             <TextField
               error={barcodeErr}
@@ -144,7 +144,7 @@ export default function ItemCreationDialog(props) {
               onChange={e => setWeight(e.target.value)}
             />
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>Kategorie</InputLabel>
               <Select
                 id="category-select"
                 value={categoryId}
@@ -156,7 +156,7 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown} disabled={!categoryId}>
-              <InputLabel>Subcategory</InputLabel>
+              <InputLabel>Unterkategorie</InputLabel>
               <Select
                 id="subCat-select"
                 value={subCategoryId}
@@ -168,7 +168,7 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging </InputLabel>
+              <InputLabel>Verpackung </InputLabel>
               <Select
                 id="pack-select"
                 value={packagingId}
@@ -180,7 +180,7 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Origin </InputLabel>
+              <InputLabel>Herkunft </InputLabel>
               <Select
                 id="origin-select"
                 value={originId}
@@ -194,10 +194,10 @@ export default function ItemCreationDialog(props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={clearStateHandleClose} color="primary">
-              Cancel
+              Abbrechen
             </Button>
             <Button type="submit" color="primary">
-              Add Item
+              Produkt hinzufügen
             </Button>
           </DialogActions>
         </form>

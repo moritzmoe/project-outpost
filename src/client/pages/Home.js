@@ -141,13 +141,13 @@ export default function Home() {
       <Container>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom className={classes.co2Display}>
-              Your total Score of the last 7 days:
+            <Typography justify="center" variant="h5" gutterBottom className={classes.co2Display}>
+              Co2 Punkte der letzten 7 Tage:
             </Typography>
             <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              / 700 Score
+              / 700 Punkte
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -169,7 +169,7 @@ export default function Home() {
 
         <Fab color="primary" aria-label="add" className={classes.fabAdd} variant="extended" onClick={handlePurchaseDialogOpen}>
           <AddIcon />
-          Add Purchase
+          Einkauf hinzufügen
         </Fab>
         <PurchaseDialog isOpen={purchaseDialogOpen} handleClose={handlePurchaseDialogClose} />
       </Container>

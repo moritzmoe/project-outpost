@@ -263,10 +263,10 @@ export default function PurchaseDialog(props) {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Purchase
+              Einkauf
             </Typography>
             <Button autoFocus color="inherit" onClick={clearStateAndHandleClose}>
-              save
+              Speichern
             </Button>
           </Toolbar>
         </AppBar>
@@ -274,7 +274,7 @@ export default function PurchaseDialog(props) {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Typography variant="h5" gutterBottom className={classes.co2Display}>
-                Purchase CO2:
+                CO2 Punkte:
               </Typography>
               <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
                 {(Math.floor(totalScore / convertCo2ToScore))}
@@ -331,7 +331,7 @@ export default function PurchaseDialog(props) {
                 size="large"
                 onClick={handleSearchOpen}
               >
-                Search
+                Suche
               </Button>
               <ItemSearchDialog
                 isOpen={openItemSearch}

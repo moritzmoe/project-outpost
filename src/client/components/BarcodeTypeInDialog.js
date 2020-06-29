@@ -31,10 +31,10 @@ export default function BarcodeTypeInDialog(props) {
     <div>
       <Dialog open={isOpen} onClose={handleClose}>
         <form on onSubmit={handleSubmit}>
-          <DialogTitle id="form-dialog-title">Type in Barcode</DialogTitle>
+          <DialogTitle id="form-dialog-title">Barcode eingeben</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Could not detect camera.
+              Kamera konnte nicht gefunden werden
             </DialogContentText>
             <TextField
               error={barcodeErr}
@@ -48,10 +48,10 @@ export default function BarcodeTypeInDialog(props) {
             />
             <DialogActions>
               <Button onClick={handleClose} color="primary">
-                Cancel
+                Abbrechen
               </Button>
               <Button type="submit" color="primary">
-                Add Item
+                Produkt hinzufügen
               </Button>
             </DialogActions>
           </DialogContent>

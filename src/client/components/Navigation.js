@@ -146,7 +146,7 @@ export default function Navigation(props) {
       { isAdmin ? (
         <>
           <Divider />
-          <List subheader={<ListSubheader>You are an Administrator:</ListSubheader>}>
+          <List subheader={<ListSubheader>Du bist ein Administrator:</ListSubheader>}>
             <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
               <ListItemIcon><StorageIcon /></ListItemIcon>
               <ListItemText primary="Item Database" />
@@ -165,7 +165,7 @@ export default function Navigation(props) {
       { isOwner ? (
         <>
           <Divider />
-          <List subheader={<ListSubheader>You are an Owner:</ListSubheader>}>
+          <List subheader={<ListSubheader>Du bist ein Owner:</ListSubheader>}>
             <ListItem button onClick={() => { setSelected('Owner Settings'); RouterHistory.push('/ownersettings'); }} selected={selected === 'Owner Settings'} key="OwnerSettings">
               <ListItemIcon><StorageIcon /></ListItemIcon>
               <ListItemText primary="Owner Settings" />
