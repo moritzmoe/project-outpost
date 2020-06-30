@@ -91,6 +91,9 @@ export default function PurchaseDialog(props) {
   const convertCo2ToScore = useStoreValue('co2Convert');
 
   const clearStateAndHandleClose = () => {
+    if (items.length === 0) {
+      axios.delete(`/api/purchases/${purchaseId}`);
+    }
     setPurchaseId(0);
     setItems([]);
     setTotalScore(0);
@@ -311,7 +314,7 @@ export default function PurchaseDialog(props) {
                 size="large"
                 onClick={handleBarcodeScan}
               >
-                Scan Barcode
+                Barcode scannen
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
@@ -321,7 +324,7 @@ export default function PurchaseDialog(props) {
                 startIcon={<ShoppingCartIcon />}
                 size="large"
               >
-                Scan QR-Code
+                QR-Code scannen
               </Button>
             </Grid>
             <Grid item xs={12} sm={12} className={classes.alignItemsAndJustifyContent}>
