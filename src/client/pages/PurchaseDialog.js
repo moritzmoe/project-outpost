@@ -189,6 +189,7 @@ export default function PurchaseDialog(props) {
   };
 
   const handleBarcodeInput = (data) => {
+    setBarcode(data);
     axios.post(`/api/purchases/item/${purchaseId}`, {
       barcode: data
     }).then((res) => {

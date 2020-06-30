@@ -117,7 +117,8 @@ export default function Shopping() {
     evt.preventDefault();
     if (barcode.length !== 13) {
       setError(true);
-      setErrorMsg('Currently only 13 Digit EAN Barcodes are supported.');
+      setMessage('Currently only 13 Digit EAN Barcodes are supported.');
+      setOpenError(true);
       handleBarcodeDialogClose();
       return;
     }
