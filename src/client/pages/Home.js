@@ -142,12 +142,15 @@ export default function Home() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography justify="center" variant="h5" gutterBottom className={classes.co2Display}>
-              Co2 Punkte der letzten 7 Tage:
+              CO2 der letzten 7 Tage:
             </Typography>
             <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              / 700 Punkte
+              / 700
+            </Typography>
+            <Typography variant="h5" gutterBottom className={classes.co2Display}>
+              Punkte
             </Typography>
           </Grid>
           <Grid item xs={12}>
