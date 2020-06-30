@@ -1,4 +1,4 @@
--- get all subcategories with their parent cat names
+-- get all subcategories with their parent cat names OUTDATED
 SELECT sc.id, sc.name AS subcategory, c.name AS parentcategory
 FROM "SubCatgories"  AS sc
 INNER JOIN "Categories" AS c
@@ -18,7 +18,7 @@ DROP TABLE "Users" CASCADE;
 DROP TABLE "Roles" CASCADE;
 DROP TABLE "SequelizeMeta" CASCADE;
 
---overview of all items
+--overview of all items OUTDATED
 SELECT "Item"."barcode", "Item"."name", "Item"."weight", "Item"."score",
     "SubCategory"."name" AS "SubCategory", "SubCategory"."co2" AS "SubCategory.co2", 
     "Packaging"."name" AS "Packaging", "Packaging"."co2" AS "Packaging.co2", 
@@ -29,7 +29,7 @@ FROM "Items" AS "Item"
     LEFT OUTER JOIN "Origins" AS "Origin" ON "Item"."origin" = "Origin"."id" 
 ORDER BY "Item"."updatedAt" DESC;
 
---overview of all purchases
+--overview of all purchases OUTDATED
 SELECT 
 "Purchase"."id" AS "purchase.id", 
 "Purchase->User"."email" AS "user.email",
@@ -46,4 +46,5 @@ LEFT OUTER JOIN "SubCategories" AS "Items->SubCategory" ON "Items"."categoryId" 
 LEFT OUTER JOIN "Origins" AS "Items->Origin" ON "Items"."origin" = "Items->Origin"."id"
 LEFT OUTER JOIN "Users" AS "Purchase->User" ON "Purchase"."userId" = "Purchase->User"."id"
 ORDER BY "Purchase"."updatedAt" DESC;
+
     
