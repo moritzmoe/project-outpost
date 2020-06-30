@@ -64,6 +64,10 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.dark,
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
+  },
+  infoButton: {
+    position: 'absolute',
+    right: theme.spacing(2)
   }
 }));
 
@@ -199,9 +203,9 @@ export default function Navigation(props) {
           <Typography variant="h6" className={classes.title}>
             {pageName}
           </Typography>
-          <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleInformationDialogOpen}>
+          <IconButton aria-label="info" color="inherit" className={classes.infoButton} variant="extended" onClick={handleInformationDialogOpen}>
             <InfoIcon />
-          </Fab>
+          </IconButton>
           <InformationDialog isOpen={infoDialogOpen} handleClose={handleInfoDialogClose} />
         </Toolbar>
       </AppBar>
