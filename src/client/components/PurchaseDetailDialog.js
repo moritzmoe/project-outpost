@@ -101,7 +101,7 @@ export default function PurchaseDetailDialog(props) {
             <Grid item xs={5} align="right">
               <Typography variant="h4" color="primary">
                 {totalPurchaseScore}
-                {' Points'}
+                {' Punkte'}
               </Typography>
             </Grid>
             <Grid item xs={1} align="right">
