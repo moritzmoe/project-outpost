@@ -109,7 +109,7 @@ export default function ItemCreationDialog(props) {
     <div>
       <Dialog open={isOpen} onClose={clearStateHandleClose} aria-labelledby="form-dialog-title">
         <form onSubmit={handleItemCreate}>
-          <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
+          <DialogTitle id="form-dialog-title">Produkt hinzufügen</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Bitte gib die folgenden Informationen ein:
