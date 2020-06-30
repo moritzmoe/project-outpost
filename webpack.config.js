@@ -63,7 +63,7 @@ module.exports = {
       name: 'Outpost',
       short_name: 'Outpost',
       description: 'Show how consumers can make their behaviour more environmentally friendly.',
-      background_color: '#009688',
+      background_color: '#FFFFFF',
       crossorigin: 'use-credentials',
       icons: [
         {
