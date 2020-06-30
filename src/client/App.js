@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { withStore, useSetStoreValue } from 'react-context-hook';
+import { withStore, useSetStoreValue, useStoreValue } from 'react-context-hook';
 import axios from 'axios';
 import Navigation from './components/Navigation';
 import Login from './pages/Login';
@@ -18,6 +18,8 @@ import Shopping from './pages/Shopping';
 import Items from './pages/Items';
 import Users from './pages/Users';
 import Categories from './pages/Categories';
+import Settings from './pages/Settings';
+import OwnerSettings from './pages/OwnerSettings';
 
 
 const theme = createMuiTheme({
@@ -47,14 +49,27 @@ function App() {
   const classes = useStyles();
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
+  const setIsOwner = useSetStoreValue('isOwner', false);
+  const setCo2Convert = useSetStoreValue('co2Convert');
+  const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
+  const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
+  const setUserId = useSetStoreValue('userId', 'Not logged in');
 
   useEffect(() => {
+    axios.get('/api/constants?id=1').then((response) => {
+      setCo2Convert(response.data.value);
+    });
     axios.get('/api/auth/checkToken').then((res) => {
       if (res.status === 200) {
         setloggedIn(true);
         axios.get('/api/auth/user').then((response) => {
+          if (response.data.Role.name === 'Admin') setIsAdmin(true);
+          if (response.data.Role.name === 'Owner') { setIsOwner(true); setIsAdmin(true); }
+
           setUserFirstname(response.data.firstname);
-          setIsAdmin(response.data.isAdmin);
+          setUserId(response.data.id);
+          setUserLastname(response.data.lastname);
+          setUserEmail(response.data.email);
         });
       }
     });
@@ -90,6 +105,8 @@ function App() {
               <Route path="/shopping" component={withAuth(() => <Shopping />)} />
               <Route path="/users" component={withAuth(() => <Users />)} />
               <Route path="/categories" component={withAuth(() => <Categories />)} />
+              <Route path="/settings" component={withAuth(() => <Settings />)} />
+              <Route path="/ownersettings" component={withAuth(() => <OwnerSettings />)} />
             </Switch>
           </div>
         </ThemeProvider>

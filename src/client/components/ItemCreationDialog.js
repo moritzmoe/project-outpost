@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 
 const useStyles = makeStyles(theme => ({
   scoreText: {
@@ -41,11 +42,16 @@ export default function ItemCreationDialog(props) {
   const [origin, setOrigin] = useState([]);
   const [barcodeErr, setBarcodeErr] = useState(false);
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
+  const isAdmin = useStoreValue('isAdmin');
+  const [needApproval, setNeedApproval] = useState(0);
 
   useEffect(() => {
     axios.get('/api/categories').then((res) => { setCategories(res.data); });
     axios.get('/api/packaging').then((res) => { setPackaging(res.data); });
     axios.get('/api/origins').then((res) => { setOrigin(res.data); });
+    if (isAdmin) setNeedApproval(1);
+    console.log('isadmin', isAdmin);
+    console.log('approval', needApproval);
   }, []);
 
   const handleCategoryPick = (evt) => {
@@ -86,7 +92,7 @@ export default function ItemCreationDialog(props) {
       return;
     }
     axios.post('/api/items', {
-      name, weight, categoryId: subCategoryId, barcode, packaging: packagingId, origin: originId
+      name, weight, categoryId: subCategoryId, barcode, packaging: packagingId, origin: originId, approved: needApproval
     }).then((res) => {
       if (res.status === 200) {
         clearState();
@@ -106,7 +112,7 @@ export default function ItemCreationDialog(props) {
           <DialogTitle id="form-dialog-title">Add Item</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Please provide the following information to add an item to the database:
+              Bitte gib die folgenden Informationen ein:
             </DialogContentText>
             <TextField
               error={barcodeErr}
@@ -138,7 +144,7 @@ export default function ItemCreationDialog(props) {
               onChange={e => setWeight(e.target.value)}
             />
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>Kategorie</InputLabel>
               <Select
                 id="category-select"
                 value={categoryId}
@@ -150,7 +156,7 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown} disabled={!categoryId}>
-              <InputLabel>Subcategory</InputLabel>
+              <InputLabel>Unterkategorie</InputLabel>
               <Select
                 id="subCat-select"
                 value={subCategoryId}
@@ -162,7 +168,7 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging </InputLabel>
+              <InputLabel>Verpackung </InputLabel>
               <Select
                 id="pack-select"
                 value={packagingId}
@@ -174,7 +180,7 @@ export default function ItemCreationDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Origin </InputLabel>
+              <InputLabel>Herkunft </InputLabel>
               <Select
                 id="origin-select"
                 value={originId}
@@ -188,10 +194,10 @@ export default function ItemCreationDialog(props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={clearStateHandleClose} color="primary">
-              Cancel
+              Abbrechen
             </Button>
             <Button type="submit" color="primary">
-              Add Item
+              Produkt hinzufügen
             </Button>
           </DialogActions>
         </form>

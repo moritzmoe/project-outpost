@@ -10,6 +10,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 
 const useStyles = makeStyles(theme => ({
   deleteButton: {
@@ -62,6 +63,8 @@ export default function ItemUpdateDialog(props) {
   const [nameToDelete, setNameToDelete] = useState('');
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(true);
+
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
     axios.get(`/api/items/${id}`).then((res) => {
@@ -158,8 +161,8 @@ export default function ItemUpdateDialog(props) {
             </Grid>
             <Grid item xs={5} align="right">
               <Typography variant="h4" color="primary">
-                {score}
-                {'g'}
+                {(Math.floor(score / convertCo2ToScore))}
+                {}
               </Typography>
             </Grid>
             <Grid item xs={1} align="right">
@@ -168,28 +171,30 @@ export default function ItemUpdateDialog(props) {
               </IconButton>
             </Grid>
           </Grid>
+          {!inputDisabled ? (
+            <Grid container>
+              <Grid item xs={5}>
 
-          <Grid container>
-            <Grid item xs={5}>
-              <Typography color="textSecondary" variant="body2">
-                ID:
-                <br />
-                Created:
-                <br />
-                Last changed:
-              </Typography>
-            </Grid>
-            <Grid item xs={7}>
-              <Typography color="textSecondary" variant="body2">
-                {id}
-                <br />
-                {createdBy}
-                <br />
-                {lastUpdatedBy}
-              </Typography>
-            </Grid>
-          </Grid>
+                <Typography color="textSecondary" variant="body2">
+                  ID:
+                  <br />
+                  Erstellt von:
+                  <br />
+                  Letzte Änderung:
+                </Typography>
 
+              </Grid>
+              <Grid item xs={7}>
+                <Typography color="textSecondary" variant="body2">
+                  {id}
+                  <br />
+                  {createdBy}
+                  <br />
+                  {lastUpdatedBy}
+                </Typography>
+              </Grid>
+            </Grid>
+          ) : ''}
         </DialogTitle>
         <form onSubmit={handleItemChange}>
           <DialogContent>
@@ -225,7 +230,7 @@ export default function ItemUpdateDialog(props) {
               onChange={e => setWeight(e.target.value)}
             />
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>Kategorie</InputLabel>
               <Select
                 disabled={inputDisabled}
                 id="category-select"
@@ -238,7 +243,7 @@ export default function ItemUpdateDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown} disabled={!categoryId}>
-              <InputLabel>Subcategory</InputLabel>
+              <InputLabel>Unterkategorie</InputLabel>
               <Select
                 disabled={inputDisabled}
                 id="subCat-select"
@@ -251,7 +256,7 @@ export default function ItemUpdateDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Packaging </InputLabel>
+              <InputLabel>Verpackung </InputLabel>
               <Select
                 disabled={inputDisabled}
                 id="pack-select"
@@ -264,7 +269,7 @@ export default function ItemUpdateDialog(props) {
               </Select>
             </FormControl>
             <FormControl required fullWidth className={classes.dropDown}>
-              <InputLabel>Origin </InputLabel>
+              <InputLabel>Herkunft </InputLabel>
               <Select
                 disabled={inputDisabled}
                 id="origin-select"
@@ -287,7 +292,7 @@ export default function ItemUpdateDialog(props) {
               startIcon={<DeleteIcon />}
               onClick={() => handleDeleteAlertOpen(id, name)}
             >
-              Delete
+              Löschen
             </Button>
             <Button
               disabled={inputDisabled}
@@ -298,7 +303,7 @@ export default function ItemUpdateDialog(props) {
               className={classes.button}
               startIcon={<EditIcon />}
             >
-              Save Changes
+              Speichern
             </Button>
           </DialogActions>
         </form>
@@ -308,17 +313,17 @@ export default function ItemUpdateDialog(props) {
         onClose={handleDeleteAlertClose}
       >
         <DialogTitle id="alert-dialog-title">
-          Delete
+          Löschen
           {' '}
           {nameToDelete}
           ?
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleDeleteAlertClose} color="primary">
-            Abort
+            Abbrechen
           </Button>
           <Button onClick={handleItemDelete} color="primary" autoFocus>
-            Delete
+            Löschen
           </Button>
         </DialogActions>
       </Dialog>

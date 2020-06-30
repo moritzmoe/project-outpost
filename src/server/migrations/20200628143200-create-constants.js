@@ -1,36 +1,38 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Constants', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    email: {
-      type: Sequelize.STRING,
-      unique: true,
-      allowNull: false
-    },
-    firstname: {
+    name: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    lastname: {
-      type: Sequelize.STRING,
+    value: {
+      type: Sequelize.INTEGER,
       allowNull: false
     },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    role: {
+    createdBy: {
       type: Sequelize.INTEGER,
       allowNull: false,
       foreignKey: true,
+      onUpdate: 'CASCADE',
       references: {
         key: 'id',
-        model: 'Roles'
+        model: 'Users'
+      }
+    },
+    lastUpdatedBy: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      foreignKey: true,
+      onUpdate: 'CASCADE',
+      references: {
+        key: 'id',
+        model: 'Users'
       }
     },
     createdAt: {
@@ -42,5 +44,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Users')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Constants')
 };

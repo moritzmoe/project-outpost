@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     barcode: DataTypes.STRING,
     packaging: DataTypes.INTEGER,
     origin: DataTypes.INTEGER,
-    score: DataTypes.INTEGER
+    score: DataTypes.INTEGER,
+    approved: DataTypes.INTEGER,
   }, {});
   Item.associate = function (models) {
     models.Item.belongsToMany(models.Purchase, {

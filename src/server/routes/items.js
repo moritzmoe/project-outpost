@@ -7,6 +7,7 @@ const { Op } = require('sequelize');
 const models = require('../models');
 
 const withAdmin = require('../middleware/admin');
+const withAuth = require('../middleware/auth');
 
 
 router.get('/', withAdmin, (req, res) => {
@@ -19,9 +20,15 @@ router.get('/', withAdmin, (req, res) => {
       offset: req.query.offset,
       include: [models.Packaging, models.SubCategory, models.Origin],
       where: {
+        approved: 1,
         [Op.or]: [
           {
             name: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+          {
+            barcode: {
               [Op.like]: `%${req.query.q}%`
             }
           },
@@ -32,6 +39,50 @@ router.get('/', withAdmin, (req, res) => {
       .catch(err => console.log(err));
   } else {
     models.Item.findAll({
+      where: { approved: 1 },
+      order: [
+        ['updatedAt', 'DESC'],
+      ],
+      limit: req.query.limit,
+      offset: req.query.offset,
+      include: [models.Packaging, models.SubCategory, models.Origin]
+      // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    }).then((items) => {
+      res.send(items);
+    }).catch(err => console.log(err));
+  }
+});
+
+router.get('/approved/', (req, res) => {
+  if (req.query.q) {
+    models.Item.findAll({
+      order: [
+        ['updatedAt', 'DESC'],
+      ],
+      limit: req.query.limit,
+      offset: req.query.offset,
+      include: [models.Packaging, models.SubCategory, models.Origin],
+      where: {
+        approved: 0,
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+          {
+            barcode: {
+              [Op.like]: `%${req.query.q}%`
+            }
+          },
+        ]
+      },
+      // attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    }).then(items => res.send(items))
+      .catch(err => console.log(err));
+  } else {
+    models.Item.findAll({
+      where: { approved: 0 },
       order: [
         ['updatedAt', 'DESC'],
       ],
@@ -75,12 +126,14 @@ router.get('/:id', withAdmin, (req, res) => {
 });
 
 
-router.post('/', withAdmin, (req, res) => {
+router.post('/', withAuth, (req, res) => {
   const {
-    name, weight, categoryId, barcode, packaging, origin
+    name, weight, categoryId, barcode, packaging, origin, approved
   } = req.body;
   if (!name || !weight || !categoryId || !barcode || !packaging || !origin) {
-    res.status(400).json({ error: 'Please provide all neccessary information needed to create an item' });
+    res.status(400).json({
+      error: 'Please provide all neccessary information needed to create an item'
+    });
     return;
   }
   models.Item.findOne({
@@ -128,6 +181,7 @@ router.post('/', withAdmin, (req, res) => {
               packaging,
               origin,
               score,
+              approved,
               createdBy: req.userId,
               lastUpdatedBy: req.userId,
             }).then((createdItem) => {
@@ -208,6 +262,7 @@ router.put('/:id', withAdmin, (req, res) => {
           packaging: packagingId,
           origin: originId,
           score,
+          approved: 1,
           barcode,
           lastUpdatedBy: req.userId,
         }, {

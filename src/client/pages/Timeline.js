@@ -111,12 +111,12 @@ export default function Timeline() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h5" gutterBottom className={classes.co2Display}>
-              Average overall Score:
+              Durchschnittlich:
             </Typography>
-            <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
+            <Typography justify="center" variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              Score / Purchase
+              Punkte / Einkauf
             </Typography>
           </Grid>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -124,7 +124,7 @@ export default function Timeline() {
               <KeyboardDatePicker
                 margin="normal"
                 id="date-picker-dialog"
-                label="Purchases from"
+                label="Einkäufe von"
                 format="dd/MM/yyyy"
                 value={dateFrom}
                 onChange={handleDateFromChange}
@@ -135,7 +135,7 @@ export default function Timeline() {
               <KeyboardDatePicker
                 margin="normal"
                 id="date-picker-dialog2"
-                label="Until"
+                label="Bis"
                 format="dd/MM/yyyy"
                 value={dateUntil}
                 onChange={handleDateUntilChange}
@@ -150,6 +150,11 @@ export default function Timeline() {
               {purchases.map(value => (
                 <PurchaseCard key={value.id} purchase={value} openDetails={handlePurchaseDetails} />
               ))}
+              {!purchases.length ? (
+                <Grid item>
+                  <Typography>Keine Einkäufe gefunden</Typography>
+                </Grid>
+              ) : ''}
               <PurchaseDetailDialog isOpen={purchaseDetailDialogOpen} id={idDetail} handleClose={handlePurchaseDetailDialogClose} />
             </Grid>
           </Grid>
@@ -159,7 +164,7 @@ export default function Timeline() {
 
         <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handlePurchaseDialogOpen}>
           <AddIcon />
-          Add Purchase
+          Einkauf hinzufügen
         </Fab>
         <PurchaseDialog isOpen={purchaseDialogOpen} handleClose={handlePurchaseDialogClose} />
       </Container>

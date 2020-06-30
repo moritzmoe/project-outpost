@@ -17,6 +17,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -41,6 +43,7 @@ export default function Users() {
   const [totalQueryCount, setTotalQueryCount] = useState(0);
   const setPageName = useSetStoreValue('pageName');
   const isAdmin = useStoreValue('isAdmin');
+  const isOwner = useStoreValue('isOwner');
 
   let cancel = '';
 
@@ -71,8 +74,9 @@ export default function Users() {
     });
   }, []);
 
-  const handleAdminChange = (id) => {
-    axios.post('/api/users/changeAdmin', { id })
+  const handleRoleChange = (evt, id) => {
+    const roleId = evt.target.value;
+    axios.post('/api/users/changeRole', { id, roleId })
       .then((res) => {
         if (res.status === 200) {
           if (!searchQuery) {
@@ -124,7 +128,7 @@ export default function Users() {
         <form noValidate autoComplete="off">
           <TextField
             id="outlined-basic"
-            label="Search by E-Mail or Lastname"
+            label="Suche E-Mail oder Nachname"
             variant="outlined"
             className={classes.search}
             onChange={handleSearchInputChange}
@@ -146,7 +150,9 @@ export default function Users() {
                   <TableCell>E-Mail</TableCell>
                   <TableCell>Firstname</TableCell>
                   <TableCell>Lastname</TableCell>
-                  <TableCell>Admin</TableCell>
+                  {isOwner ? (
+                    <TableCell>Role</TableCell>
+                  ) : ''}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -158,13 +164,20 @@ export default function Users() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.firstname}</TableCell>
                     <TableCell>{user.lastname}</TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={user.isAdmin}
-                        onChange={() => handleAdminChange(user.id)}
-                        inputProps={{ 'aria-label': 'primary checkbox' }}
-                      />
-                    </TableCell>
+                    {isOwner ? (
+                      <TableCell>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={user.role}
+                          onChange={evt => handleRoleChange(evt, user.id)}
+                        >
+                          <MenuItem value={1}>User</MenuItem>
+                          <MenuItem value={2}>Admin</MenuItem>
+                          <MenuItem value={3}>Owner</MenuItem>
+                        </Select>
+                      </TableCell>
+                    ) : ''}
                   </TableRow>
                 ))}
               </TableBody>

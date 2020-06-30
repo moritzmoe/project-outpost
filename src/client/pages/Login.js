@@ -50,16 +50,33 @@ export default function SignIn(props) {
 
   const setUserFirstname = useSetStoreValue('userFirstname', 'Not logged in');
   const setIsAdmin = useSetStoreValue('isAdmin', false);
+  const setIsOwner = useSetStoreValue('isOwner', false);
   const setPageName = useSetStoreValue('pageName');
+  const setCo2Convert = useSetStoreValue('co2Convert');
+  const setUserLastname = useSetStoreValue('userLastname', 'Not logged in');
+  const setUserEmail = useSetStoreValue('userEmail', 'Not logged in');
+  const setUserId = useSetStoreValue('userId', 'Not logged in');
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    axios.get('/api/constants?id=1').then((response) => {
+      setCo2Convert(response.data.value);
+      console.log(response.data.value);
+    });
     axios.post('/api/auth', { email, password })
       .then((res) => {
         if (res.status === 200) {
           axios.get('/api/auth/user').then((response) => {
             setUserFirstname(response.data.firstname);
-            setIsAdmin(response.data.isAdmin);
+            setUserId(response.data.id);
+            setUserLastname(response.data.lastname);
+            setUserEmail(response.data.email);
+            if (response.data.Role.name === 'Admin') {
+              setIsAdmin(true);
+            } else if (response.data.Role.name === 'Owner') {
+              setIsAdmin(true);
+              setIsOwner(true);
+            }
           });
           RouterHistory.push('/');
           props.isLoggedIn(true);
@@ -142,7 +159,7 @@ export default function SignIn(props) {
         <Grid container justify="flex-end">
           <Grid item>
             <Link href="/signup" onClick={(evt) => { evt.preventDefault(); RouterHistory.push('/signup'); }} variant="body2">
-              Don&apos;t have an Account? Sign up
+              Kein Account? Sign up
             </Link>
           </Grid>
         </Grid>
@@ -157,7 +174,7 @@ export default function SignIn(props) {
           className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
-            Wrong E-Mail or Password
+            Falsche E-Mail or Password
           </Alert>
         </Snackbar>
       </div>

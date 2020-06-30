@@ -1,9 +1,12 @@
 /* eslint-disable react/forbid-prop-types */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
-  makeStyles, Grid, Card, CardActionArea, CardContent, Typography
+  makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography, Button
 } from '@material-ui/core';
+import EcoIcon from '@material-ui/icons/Eco';
+import RecommendationDialog from './RecommendationDialog';
 
 
 const useStyles = makeStyles(theme => ({
@@ -16,14 +19,38 @@ const useStyles = makeStyles(theme => ({
 
 export default function ItemCard(props) {
   const classes = useStyles();
+  const [openRecommendation, setOpenRecommendation] = useState(false);
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
-  const { item, openDetails } = props;
+  const { item, openDetails, openRec } = props;
+  let clickHelp = true;
+
+  const handleRecClick = () => {
+    clickHelp = false;
+    setOpenRecommendation(true);
+  };
+
+  const handleHoverCard = () => {
+    clickHelp = true;
+    console.log(clickHelp);
+  };
+
+  const handleClick = () => {
+    if (clickHelp) {
+      openDetails(item.id);
+    }
+  };
+
+  const handleRecommendationClose = () => {
+    setOpenRecommendation(false);
+  };
+
 
   return (
     <div>
       <Grid key={item.id} item>
         <Card className={classes.root}>
-          <CardActionArea onClick={() => openDetails(item.id)}>
+          <CardActionArea onMouseMove={handleHoverCard} onClick={handleClick}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary" gutterBottom>
                 {item.barcode}
@@ -40,23 +67,41 @@ export default function ItemCard(props) {
                     {item.Packaging.name}
                   </Typography>
                 </Grid>
+                { openRec ? (
+                  <Grid item xs={7}>
+                    <Button
+                      color="primary"
+                      aria-label="info"
+                      className={classes.fabInfo}
+                      variant="outlined"
+                      onClick={handleRecClick}
+                    >
+                      <EcoIcon />
+                    </Button>
+                  </Grid>
+                ) : ''}
                 <Grid item xs={5} align="right">
                   <Typography variant="h4" align="right" color="primary">
-                    {item.score}
+                    {(Math.floor(item.score / convertCo2ToScore))}
                     {' '}
-                    g
                   </Typography>
                 </Grid>
               </Grid>
             </CardContent>
           </CardActionArea>
         </Card>
+        <RecommendationDialog isOpen={openRecommendation} id={item.id} handleClose={handleRecommendationClose} />
       </Grid>
     </div>
   );
 }
 
+ItemCard.defaultProps = {
+  openRec: false
+};
+
 ItemCard.propTypes = {
   item: PropTypes.object.isRequired,
-  openDetails: PropTypes.func.isRequired
+  openDetails: PropTypes.func.isRequired,
+  openRec: PropTypes.bool
 };

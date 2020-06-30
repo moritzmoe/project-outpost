@@ -81,7 +81,11 @@ module.exports = {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE
-    }
+    },
+    approved: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
   }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('Items')
 };

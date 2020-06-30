@@ -18,6 +18,8 @@ app.use('/api/origins', require('./routes/origins'));
 app.use('/api/packaging', require('./routes/packaging'));
 app.use('/api/purchases', require('./routes/purchases'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/recommendations', require('./routes/recommendations'));
+app.use('/api/constants', require('./routes/constants'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path));

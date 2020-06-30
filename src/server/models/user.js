@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
+    role: DataTypes.INTEGER
   }, {
     hooks: {
       beforeCreate: (user) => {
@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     models.User.hasMany(models.Purchase, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
+    });
+    models.User.belongsTo(models.Role, {
+      foreignKey: 'role'
     });
   };
 

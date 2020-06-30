@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -21,6 +22,7 @@ import BarcodeScanner from '../components/BarcodeScanner';
 import ItemCard from '../components/ItemCard';
 import ItemSearchDialog from '../components/ItemSearchDialog';
 import ItemUpdateDialog from '../components/ItemUpdateDialog';
+import ItemCreationDialog from '../components/ItemCreationDialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -50,7 +52,17 @@ const useStyles = makeStyles(theme => ({
     bottom: theme.spacing(6),
     right: theme.spacing(1),
     left: theme.spacing(1)
-  }
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  },
+  text: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function Alert(props) {
@@ -73,8 +85,15 @@ export default function PurchaseDialog(props) {
   const [openItemSearch, setOpenItemSearch] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [itemId, setItemId] = useState(0);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   const clearStateAndHandleClose = () => {
+    if (items.length === 0) {
+      axios.delete(`/api/purchases/${purchaseId}`);
+    }
     setPurchaseId(0);
     setItems([]);
     setTotalScore(0);
@@ -111,6 +130,7 @@ export default function PurchaseDialog(props) {
         score = parseInt(totalScore, 10) + parseInt(item.score, 10);
       });
       setTotalScore(score);
+      console.log(score);
       setItems(res.data.Items);
     }).catch((err) => {
       setErrorMsg(err.response.data.error);
@@ -120,6 +140,7 @@ export default function PurchaseDialog(props) {
   };
 
   const handleBarcodeScan = () => {
+    handleConfirmDialogClose();
     if (purchaseId === 0) {
       axios.post('/api/purchases').then((res) => {
         setPurchaseId(res.data.id);
@@ -171,6 +192,7 @@ export default function PurchaseDialog(props) {
     axios.post(`/api/purchases/item/${purchaseId}`, {
       barcode: data
     }).then((res) => {
+      setBarcode(barcode);
       let score = 0;
       res.data.Items.map((item) => {
         score = parseInt(totalScore, 10) + parseInt(item.score, 10);
@@ -180,6 +202,8 @@ export default function PurchaseDialog(props) {
     }).catch((err) => {
       setErrorMsg(err.response.data.error);
       setError(true);
+      console.log('Hier fragen ob neues Item anlegen');
+      setOpenConfirmDialog(true);
     });
     handleBarcodeDialogClose();
     // handleBarcodeTypeInClose();
@@ -193,11 +217,39 @@ export default function PurchaseDialog(props) {
     });
   };
 
-  const handleItemsChange = () => {
-  };
-
   const handleDetailClose = () => {
     setOpenUpdate(false);
+  };
+
+  const handleConfirmDialogClose = () => {
+    setOpenConfirmDialog(false);
+  };
+
+  const handleItemsChange = () => {
+    axios.post(`/api/purchases/item/${purchaseId}`, {
+      barcode
+    }).then((res) => {
+      setBarcode(barcode);
+      let score = 0;
+      res.data.Items.map((item) => {
+        score = parseInt(totalScore, 10) + parseInt(item.score, 10);
+      });
+      setTotalScore(score);
+      setItems(res.data.Items);
+    }).catch((err) => {
+      setErrorMsg(err.response.data.error);
+      setError(true);
+    });
+    handleCreateClose();
+  };
+
+  const handleCreateOpen = () => {
+    setOpenCreate(true);
+    setOpenConfirmDialog(false);
+  };
+
+  const handleCreateClose = () => {
+    setOpenCreate(false);
   };
 
   return (
@@ -214,10 +266,10 @@ export default function PurchaseDialog(props) {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Purchase
+              Einkauf
             </Typography>
             <Button autoFocus color="inherit" onClick={clearStateAndHandleClose}>
-              save
+              Speichern
             </Button>
           </Toolbar>
         </AppBar>
@@ -225,12 +277,11 @@ export default function PurchaseDialog(props) {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Typography variant="h5" gutterBottom className={classes.co2Display}>
-                Purchase CO2:
+                CO2 Punkte:
               </Typography>
               <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
-                {totalScore}
+                {(Math.floor(totalScore / convertCo2ToScore))}
                 {' '}
-                g
               </Typography>
             </Grid>
           </Grid>
@@ -240,6 +291,11 @@ export default function PurchaseDialog(props) {
                 {items.map(value => (
                   <ItemCard item={value} openDetails={handleItemDetails} />
                 ))}
+                {!items.length ? (
+                  <Grid item>
+                    <Typography>Keine Produkte hinzugefügt</Typography>
+                  </Grid>
+                ) : ''}
               </Grid>
             </Grid>
             {/* <Grid item xs={12} sm={6}>
@@ -258,7 +314,7 @@ export default function PurchaseDialog(props) {
                 size="large"
                 onClick={handleBarcodeScan}
               >
-                Scan Barcode
+                Barcode scannen
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
@@ -268,7 +324,7 @@ export default function PurchaseDialog(props) {
                 startIcon={<ShoppingCartIcon />}
                 size="large"
               >
-                Scan QR-Code
+                QR-Code scannen
               </Button>
             </Grid>
             <Grid item xs={12} sm={12} className={classes.alignItemsAndJustifyContent}>
@@ -278,7 +334,7 @@ export default function PurchaseDialog(props) {
                 size="large"
                 onClick={handleSearchOpen}
               >
-                Search
+                Suche
               </Button>
               <ItemSearchDialog
                 isOpen={openItemSearch}
@@ -292,6 +348,12 @@ export default function PurchaseDialog(props) {
                 handleSave={handleItemsChange}
                 handleDelete={handleItemsChange}
                 noInput
+              />
+              <ItemCreationDialog
+                isOpen={openCreate}
+                handleClose={handleCreateClose}
+                handleItemCreated={handleItemsChange}
+                barcode={barcode}
               />
             </Grid>
           </Grid>
@@ -313,6 +375,33 @@ export default function PurchaseDialog(props) {
                 />
               </form>
             </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openConfirmDialog} onClose={handleConfirmDialogClose}>
+        <DialogContent>
+          <Grid item xs={12} align="right">
+            <IconButton className={classes.closeButton} onClick={handleConfirmDialogClose}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+          <Typography variant="h5" color="primary">Leider wurde dieses Produkt nicht gefunden </Typography>
+          <Typography className={classes.text}>Du kannst für diesen Einkauf ein neues Produkt erstellen, dieses wird von unserem Team überprüft und dann für Zukünftige Einkäufe und andere Nutzer freigeschaltet.</Typography>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
+            <Button variant="outlined" color="primary" onClick={handleCreateOpen}>
+              Neues Produkt
+            </Button>
+            <Button variant="outlined" onClick={handleBarcodeScan}>
+              Nochmal Scannen
+            </Button>
+            <Button variant="outlined" onClick={handleConfirmDialogClose}>
+              Abbrechen
+            </Button>
           </Grid>
         </DialogContent>
       </Dialog>

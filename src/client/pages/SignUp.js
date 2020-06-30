@@ -111,7 +111,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="Vorname"
                 autoFocus
                 value={firstname}
                 onChange={e => setFirstname(e.target.value)}
@@ -123,7 +123,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="lastName"
-                label="Last Name"
+                label="Nachname"
                 name="lastName"
                 autoComplete="lname"
                 value={lastname}
@@ -171,7 +171,7 @@ export default function SignUp() {
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/login" onClick={(evt) => { evt.preventDefault(); RouterHistory.push('/login'); }} variant="body2">
-                Already have an account? Sign in
+                Schon einen Account? Sign in
               </Link>
             </Grid>
           </Grid>

@@ -5,7 +5,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
 import React, { useState, useEffect } from 'react';
-import { useSetStoreValue } from 'react-context-hook';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
   PieChart, Pie, Cell
 } from 'recharts';
@@ -14,12 +14,14 @@ import {
   Container, Typography, Fab, Grid
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import InfoIcon from '@material-ui/icons/Info';
 import axios from 'axios';
 import { date } from 'date-fns/locale/af';
 import PurchaseDialog from './PurchaseDialog';
 import PurchaseCard from '../components/PurchaseCard';
 
 import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
+import InformationDialog from '../components/InformationDialog';
 
 const data = [
   { name: 'Group A', value: 50 },
@@ -29,10 +31,15 @@ const data = [
 const COLORS = ['#ff726f', '#00C49F', '#FFBB28'];
 
 const useStyles = makeStyles(theme => ({
-  fab: {
+  fabAdd: {
     position: 'fixed',
     bottom: theme.spacing(4),
     right: theme.spacing(3),
+  },
+  fabInfo: {
+    position: 'fixed',
+    bottom: theme.spacing(4),
+    left: theme.spacing(3),
   },
   co2Display: {
     display: 'flex',
@@ -41,7 +48,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const convertCo2ToScore = 67;
 
 class SimplePieChart extends React.Component {
   render() {
@@ -75,6 +81,7 @@ export default function Home() {
   const [purchaseDetailDialogOpen, setPurchaseDetailDialogOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const setPageName = useSetStoreValue('pageName');
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
     const dateFrom = new Date(new Date().setDate(new Date().getDate() - 7));
@@ -134,13 +141,16 @@ export default function Home() {
       <Container>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom className={classes.co2Display}>
-              Your total Score of the last 7 days:
+            <Typography justify="center" variant="h5" gutterBottom className={classes.co2Display}>
+              CO2 der letzten 7 Tage:
             </Typography>
             <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              / 700 Score
+              / 700
+            </Typography>
+            <Typography variant="h5" gutterBottom className={classes.co2Display}>
+              Punkte
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -148,6 +158,11 @@ export default function Home() {
               {purchases.map(value => (
                 <PurchaseCard key={value.id} purchase={value} openDetails={handlePurchaseDetails} />
               ))}
+              {!purchases.length ? (
+                <Grid item>
+                  <Typography>Keine Einkäufe gefunden</Typography>
+                </Grid>
+              ) : ''}
               <PurchaseDetailDialog isOpen={purchaseDetailDialogOpen} id={idDetail} handleClose={handlePurchaseDetailDialogClose} />
             </Grid>
           </Grid>
@@ -155,9 +170,9 @@ export default function Home() {
 
         {/* <SimplePieChart /> */}
 
-        <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handlePurchaseDialogOpen}>
+        <Fab color="primary" aria-label="add" className={classes.fabAdd} variant="extended" onClick={handlePurchaseDialogOpen}>
           <AddIcon />
-          Add Purchase
+          Einkauf hinzufügen
         </Fab>
         <PurchaseDialog isOpen={purchaseDialogOpen} handleClose={handlePurchaseDialogClose} />
       </Container>

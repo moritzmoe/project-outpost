@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
-import { useStoreValue } from 'react-context-hook';
+import { useStoreValue, useSetStoreValue } from 'react-context-hook';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -28,6 +28,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import StorageIcon from '@material-ui/icons/Storage';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import Ballot from '@material-ui/icons/Ballot';
+
+import { Fab } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
+import InformationDialog from './InformationDialog';
 
 import RouterHistory from '../Tools/RouterHistory';
 
@@ -60,6 +64,10 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.dark,
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
+  },
+  infoButton: {
+    position: 'absolute',
+    right: theme.spacing(2)
   }
 }));
 
@@ -72,6 +80,11 @@ export default function Navigation(props) {
   const pageName = useStoreValue('pageName', 'Project Outpost');
   const userFirstname = useStoreValue('userFirstname');
   const isAdmin = useStoreValue('isAdmin');
+  const setIsAdmin = useSetStoreValue('isAdmin');
+
+  const isOwner = useStoreValue('isOwner');
+  const setIsOwner = useSetStoreValue('isOwner');
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   useEffect(() => {
     console.log('Navigation did mount');
@@ -80,6 +93,8 @@ export default function Navigation(props) {
   const logout = () => {
     setSelected('Login');
     props.isLoggedIn(false);
+    setIsAdmin(false);
+    setIsOwner(false);
     RouterHistory.push('/login');
   };
 
@@ -89,6 +104,15 @@ export default function Navigation(props) {
     }
     setOpen(bool);
   };
+
+  const handleInformationDialogOpen = () => {
+    setInfoDialogOpen(true);
+  };
+
+  const handleInfoDialogClose = () => {
+    setInfoDialogOpen(false);
+  };
+
 
   const sideList = () => (
     <div
@@ -126,7 +150,7 @@ export default function Navigation(props) {
       { isAdmin ? (
         <>
           <Divider />
-          <List subheader={<ListSubheader>You are an Administrator:</ListSubheader>}>
+          <List subheader={<ListSubheader>Du bist ein Administrator:</ListSubheader>}>
             <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
               <ListItemIcon><StorageIcon /></ListItemIcon>
               <ListItemText primary="Item Database" />
@@ -138,6 +162,17 @@ export default function Navigation(props) {
             <ListItem button onClick={() => { setSelected('Category Management'); RouterHistory.push('/categories'); }} selected={selected === 'Category Management'} key="Categories">
               <ListItemIcon><Ballot /></ListItemIcon>
               <ListItemText primary="Category Management" />
+            </ListItem>
+          </List>
+        </>
+      ) : ''}
+      { isOwner ? (
+        <>
+          <Divider />
+          <List subheader={<ListSubheader>Du bist ein Owner:</ListSubheader>}>
+            <ListItem button onClick={() => { setSelected('Owner Settings'); RouterHistory.push('/ownersettings'); }} selected={selected === 'Owner Settings'} key="OwnerSettings">
+              <ListItemIcon><StorageIcon /></ListItemIcon>
+              <ListItemText primary="Owner Settings" />
             </ListItem>
           </List>
         </>
@@ -168,6 +203,10 @@ export default function Navigation(props) {
           <Typography variant="h6" className={classes.title}>
             {pageName}
           </Typography>
+          <IconButton aria-label="info" color="inherit" className={classes.infoButton} variant="extended" onClick={handleInformationDialogOpen}>
+            <InfoIcon />
+          </IconButton>
+          <InformationDialog isOpen={infoDialogOpen} handleClose={handleInfoDialogClose} />
         </Toolbar>
       </AppBar>
       { props.loggedIn ? (

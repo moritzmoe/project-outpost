@@ -5,6 +5,8 @@ const router = express.Router();
 
 const models = require('../models');
 const withAdmin = require('../middleware/admin');
+const withOwner = require('../middleware/owner');
+const withAuth = require('../middleware/auth');
 
 router.get('/', withAdmin, (req, res) => {
   if (req.query.q) {
@@ -75,24 +77,56 @@ router.get('/totalUserCount', withAdmin, (req, res) => {
   }).catch(err => console.log(err));
 });
 
-router.post('/changeAdmin', withAdmin, (req, res) => {
-  const { id } = req.body;
-  models.User.findOne({
+router.post('/changeRole', withOwner, (req, res) => {
+  const { id, roleId } = req.body;
+  console.log(roleId);
+  models.User.update({
+    role: roleId
+  }, {
     where: {
       id
-    },
-    attributes: ['isAdmin']
-  }).then((user) => {
-    const { isAdmin } = user.dataValues;
-    models.User.update({
-      isAdmin: !isAdmin
-    }, {
-      where: {
-        id
-      }
-    }).then(res.sendStatus(200))
-      .catch(err => res.send(err));
-  }).catch(err => res.send(err));
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
+});
+
+router.post('/changeFirstname', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.User.update({
+    firstname: content
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
+});
+
+router.post('/changeLastname', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.User.update({
+    lastname: content
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
+});
+
+router.post('/changeEmail', withAuth, (req, res) => {
+  const { id, content } = req.query;
+  console.log(id, content);
+  models.User.update({
+    email: content
+  }, {
+    where: {
+      id
+    }
+  }).then(res.sendStatus(200))
+    .catch(err => res.send(err));
 });
 
 module.exports = router;

@@ -20,40 +20,32 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PurchaseDetailDialog(props) {
+
+export default function RecommendationDialog(props) {
   const classes = useStyles();
-  const [createdDate, setCreatedDate] = useState(new Date());
-  const [items, setItems] = useState([]);
-  const [totalPurchaseScore, setTotalPurchaseScore] = useState(0);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [itemId, setItemId] = useState(0);
   const [itemRec, setItemRec] = useState([]);
-  const [itemRecScore, setItemRecScore] = useState(0);
-  const [itemRecSubCategory, setItemRecSubcategory] = useState(0);
+  const [items, setItems] = useState([]);
   const convertCo2ToScore = useStoreValue('co2Convert');
-
   const {
     isOpen, id, handleClose
   } = props;
 
   useEffect(() => {
     if (isOpen) {
-      axios.get(`/api/purchases/${id}?expand=ITEMS&expand=PACKAGING&expand=SUBCATEGORY`).then((res) => {
-        const sortedItems = res.data.Items;
-        sortedItems.sort((a, b) => ((a.score > b.score) ? -1 : 1));
-        setItems(sortedItems);
-        setCreatedDate(new Date(res.data.createdAt));
-        let totalScore = 0;
-        res.data.Items.map((item) => {
-          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
-          console.log(item.score);
+      axios.get(`/api/items/${id}`).then((res) => {
+        setItems(res.data);
+        axios.get(`/api/recommendations/?score=${res.data[0].score}&subCategory=${res.data[0].categoryId}`).then((res2) => {
+          setItemRec(res2.data);
         });
-        setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
-        setItemRecScore(sortedItems[0].score);
-        setItemRecSubcategory(sortedItems[0].SubCategory.id);
       });
     }
   }, [isOpen]);
+
+  const handleRecClose = () => {
+    handleClose();
+  };
 
   const handleItemDetails = (passedId) => {
     axios.get(`/api/items/${passedId}`).then((res) => {
@@ -69,54 +61,49 @@ export default function PurchaseDetailDialog(props) {
     setOpenUpdate(false);
   };
 
-
   return (
     <div>
       <Dialog
         fullWidth
-        maxWidth="md"
         open={isOpen}
-        onClose={handleClose}
+        onClose={handleRecClose}
       >
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle id="form-dialog-title" />
+        <Grid container>
+          <Grid item xs={12} align="right">
+            <IconButton className={classes.closeButton} onClick={handleRecClose}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <DialogContent>
           <Grid container>
-            <Grid item xs={6}>
-              <Typography variant="h5">
-                Einkauf vom:
-                {' '}
-                {createdDate.getDate()}
-                .
-                {createdDate.getMonth() + 1}
-                .
-                {createdDate.getFullYear()}
-              </Typography>
-              <Typography variant="body2" component="h2">
-                {createdDate.getHours()}
-                :
-                {(createdDate.getMinutes() < 10 ? '0' : '') + createdDate.getMinutes()}
-                {' '}
-                h
-              </Typography>
-            </Grid>
-            <Grid item xs={5} align="right">
-              <Typography variant="h4" color="primary">
-                {totalPurchaseScore}
-                {' Punkte'}
-              </Typography>
+            <Typography variant="h5" color="primary">Dein Einkauf:</Typography>
+            <Grid container justify="center" spacing={2}>
+              { items.map(value => (
+                <ItemCard item={value} openDetails={handleItemDetails} />
+              ))}
             </Grid>
             <Grid item xs={1} align="right">
               <IconButton className={classes.closeButton} onClick={handleClose}>
                 <CloseIcon />
               </IconButton>
             </Grid>
+            <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }} />
+            <ItemUpdateDialog
+              isOpen={openUpdate}
+              id={itemId}
+              handleClose={handleDetailClose}
+              handleSave={handleItemsChange}
+              handleDelete={handleItemsChange}
+              noInput
+            />
           </Grid>
-
-        </DialogTitle>
-        <DialogContent>
           <Grid container>
+            <Typography variant="h5" color="primary">Unsere Empfehlung:</Typography>
             <Grid container justify="center" spacing={2}>
-              { items.map(value => (
-                <ItemCard item={value} openDetails={handleItemDetails} openRec />
+              { itemRec.map(value => (
+                <ItemCard item={value} openDetails={handleItemDetails} />
               ))}
             </Grid>
             <Grid item xs={1} align="right">
@@ -140,7 +127,7 @@ export default function PurchaseDetailDialog(props) {
   );
 }
 
-PurchaseDetailDialog.propTypes = {
+RecommendationDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
   handleClose: PropTypes.func.isRequired,

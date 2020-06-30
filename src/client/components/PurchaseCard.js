@@ -6,6 +6,7 @@ import {
   makeStyles, Grid, Card, CardActionArea, CardContent,
   Typography, List, ListItem, ListItemText, IconButton
 } from '@material-ui/core';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import ItemList from './ItemList';
 
 
@@ -32,6 +33,8 @@ export default function PurchaseCard(props) {
   const [createdDate, setCreatedDate] = useState(new Date());
   const [totalCO2, setTotalCO2] = useState(0);
   const [firstItems, setFirstItems] = useState('');
+
+  const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
     setCreatedDate(new Date(purchase.createdAt));
@@ -85,9 +88,8 @@ export default function PurchaseCard(props) {
                 </Grid>
                 <Grid item xs={6} align="right">
                   <Typography variant="h4" align="right" color="primary">
-                    {totalCO2}
+                    {(Math.floor(totalCO2 / convertCo2ToScore))}
                     {' '}
-                    g
                   </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.alignItemsAndJustifyContent}>

@@ -11,10 +11,12 @@ DROP TABLE "Items" CASCADE;
 DROP TABLE "Packagings" CASCADE;
 DROP TABLE "Purchases" CASCADE;
 DROP TABLE "SubCategories" CASCADE;
-DROP TABLE "PurchaseItem" CASCADE;
+DROP TABLE "PurchaseItems" CASCADE;
 DROP TABLE "Origins" CASCADE;
-
+DROP TABLE "Constants" CASCADE;
 DROP TABLE "Users" CASCADE;
+DROP TABLE "Roles" CASCADE;
+DROP TABLE "SequelizeMeta" CASCADE;
 
 --overview of all items
 SELECT "Item"."barcode", "Item"."name", "Item"."weight", "Item"."score",
