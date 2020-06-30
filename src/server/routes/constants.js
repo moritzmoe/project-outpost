@@ -5,7 +5,7 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const models = require('../models');
 
-const withAuth = require('../middleware/auth');
+const withOwner = require('../middleware/owner');
 
 const withAdmin = require('../middleware/admin');
 
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
   }).then(item => res.send(item));
 });
 
-router.post('/changeCo2Convert', withAuth, (req, res) => {
+router.post('/changeCo2Convert', withOwner, (req, res) => {
   const { id, content } = req.query;
   console.log(id, content);
   models.Constant.update({
