@@ -263,7 +263,7 @@ export default function Items() {
 
               <Fab color="primary" aria-label="add" className={classes.fab} variant="extended" onClick={handleClickOpen}>
                 <AddIcon />
-                Add Item
+                Produkt hinzufügen
               </Fab>
 
               <Dialog open={openBarcode} onClose={handleBarcodeDialogClose}>

@@ -33,7 +33,7 @@ export default function ScanQRCodeCard() {
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="h6">
-                  Add Purchase via
+                  Einkauf hinzufügen via
                 </Typography>
                 <Typography variant="h4">
                   QR-Code

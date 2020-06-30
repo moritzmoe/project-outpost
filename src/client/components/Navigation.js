@@ -142,10 +142,6 @@ export default function Navigation(props) {
           <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
           <ListItemText primary="Shopping" />
         </ListItem>
-        <ListItem button onClick={() => { setSelected('Friends'); RouterHistory.push('/friends'); }} selected={selected === 'Friends'} key="Friends">
-          <ListItemIcon><GroupIcon /></ListItemIcon>
-          <ListItemText primary="Friends" />
-        </ListItem>
       </List>
       { isAdmin ? (
         <>
