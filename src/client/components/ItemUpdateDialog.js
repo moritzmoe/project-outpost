@@ -67,21 +67,23 @@ export default function ItemUpdateDialog(props) {
   const convertCo2ToScore = useStoreValue('co2Convert');
 
   useEffect(() => {
-    axios.get(`/api/items/${id}`).then((res) => {
-      setBarcode(res.data[0].barcode);
-      setName(res.data[0].name);
-      setWeight(res.data[0].weight);
-      setCategoryId(res.data[0].SubCategory.parentCat);
-      setSubCategoryId(res.data[0].categoryId);
-      setPackagingId(res.data[0].packaging);
-      setOriginId(res.data[0].origin);
-      setScore(res.data[0].score);
-      setCreatedBy(res.data[0].created.email);
-      setLastUpdatedBy(res.data[0].lastUpdated.email);
-      axios.get(`/api/categories/subCats/${res.data[0].SubCategory.parentCat}`).then((response) => {
-        setSubcategories(response.data);
+    if (id) {
+      axios.get(`/api/items/${id}`).then((res) => {
+        setBarcode(res.data[0].barcode);
+        setName(res.data[0].name);
+        setWeight(res.data[0].weight);
+        setCategoryId(res.data[0].SubCategory.parentCat);
+        setSubCategoryId(res.data[0].categoryId);
+        setPackagingId(res.data[0].packaging);
+        setOriginId(res.data[0].origin);
+        setScore(res.data[0].score);
+        setCreatedBy(res.data[0].created.email);
+        setLastUpdatedBy(res.data[0].lastUpdated.email);
+        axios.get(`/api/categories/subCats/${res.data[0].SubCategory.parentCat}`).then((response) => {
+          setSubcategories(response.data);
+        });
       });
-    });
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -236,7 +238,7 @@ export default function ItemUpdateDialog(props) {
                 onChange={handleCategoryPick}
               >
                 {categories.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -249,7 +251,7 @@ export default function ItemUpdateDialog(props) {
                 onChange={handleSubCategoryPick}
               >
                 {subCategories.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -262,7 +264,7 @@ export default function ItemUpdateDialog(props) {
                 onChange={handlePackagingPick}
               >
                 {packaging.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -275,7 +277,7 @@ export default function ItemUpdateDialog(props) {
                 onChange={handleOriginPick}
               >
                 {origin.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>

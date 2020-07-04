@@ -148,7 +148,7 @@ export default function ItemCreationDialog(props) {
                 onChange={handleCategoryPick}
               >
                 {categories.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -160,7 +160,7 @@ export default function ItemCreationDialog(props) {
                 onChange={handleSubCategoryPick}
               >
                 {subCategories.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -172,7 +172,7 @@ export default function ItemCreationDialog(props) {
                 onChange={handlePackagingPick}
               >
                 {packaging.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -184,7 +184,7 @@ export default function ItemCreationDialog(props) {
                 onChange={handleOriginPick}
               >
                 {origin.map(value => (
-                  <MenuItem value={value.id}>{value.name}</MenuItem>
+                  <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
