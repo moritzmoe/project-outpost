@@ -100,7 +100,7 @@ export default function RecommendationDialog(props) {
             <Typography variant="h5" color="primary">Unsere Empfehlung:</Typography>
             <Grid container justify="center" spacing={2}>
               { itemRec.map(value => (
-                <ItemCard item={value} openDetails={handleItemDetails} />
+                <ItemCard key={value.id} item={value} openDetails={handleItemDetails} />
               ))}
             </Grid>
             <Grid item xs={1} align="right">

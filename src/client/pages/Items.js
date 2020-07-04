@@ -223,7 +223,7 @@ export default function Items() {
               </Grid>
               <Grid container justify="center" spacing={3} className={classes.bottom_space}>
                 {itemsNA.map(value => (
-                  <ItemCard item={value} openDetails={handleItemDetails} />
+                  <ItemCard key={value.id} item={value} openDetails={handleItemDetails} />
                 ))}
                 {!itemsNA.length ? (
                   <Grid item>
@@ -243,7 +243,7 @@ export default function Items() {
               </Grid>
               <Grid container justify="center" spacing={2}>
                 {items.map(value => (
-                  <ItemCard item={value} openDetails={handleItemDetails} />
+                  <ItemCard key={value.id} item={value} openDetails={handleItemDetails} />
                 ))}
                 {!items.length ? (
                   <Grid item>

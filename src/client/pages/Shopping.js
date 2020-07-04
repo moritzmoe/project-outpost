@@ -167,7 +167,7 @@ export default function Shopping() {
         </Grid>
         <Grid container justify="center" className={classes.bottomSpacing} spacing={2}>
           {items.map(value => (
-            <ItemCard item={value} openDetails={handleItemClick} openRec />
+            <ItemCard key={value.id} item={value} openDetails={handleItemClick} openRec />
           ))}
           {!items.length ? (
             <Grid item>
@@ -217,7 +217,6 @@ export default function Shopping() {
         aria-label="search"
         className={classes.fabBarcode}
         variant="extended"
-        startIcon={<AddShoppingCartIcon />}
         onClick={handleBarcodeScan}
       >
         <ImageSearchIcon />
@@ -228,7 +227,6 @@ export default function Shopping() {
         aria-label="add"
         className={classes.fabAdd}
         variant="extended"
-        startIcon={<AddShoppingCartIcon />}
         onClick={handleItemCreate}
       >
         <AddIcon />

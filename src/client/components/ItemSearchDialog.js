@@ -102,7 +102,7 @@ export default function ItemSearchDialog(props) {
           </Grid>
           <Grid container justify="center" className={classes.bottomSpacing} spacing={2}>
             {items.map(value => (
-              <ItemCard key={value} item={value} openDetails={handleItemClick} />
+              <ItemCard key={value.id} item={value} openDetails={handleItemClick} />
             ))}
           </Grid>
         </Grid>
