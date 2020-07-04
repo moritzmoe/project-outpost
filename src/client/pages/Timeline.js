@@ -110,13 +110,16 @@ export default function Timeline() {
       <Container>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom className={classes.co2Display}>
-              Durchschnittlich:
+            <Typography justify="center" variant="h5" gutterBottom className={classes.co2Display}>
+              Durchschnittlich
             </Typography>
-            <Typography justify="center" variant="h3" color="primary" gutterBottom className={classes.co2Display}>
+            <Typography variant="h3" color="primary" gutterBottom className={classes.co2Display}>
               {score}
               {' '}
-              Punkte / Einkauf
+              Punkte
+            </Typography>
+            <Typography variant="h5" gutterBottom className={classes.co2Display}>
+              je Einkauf
             </Typography>
           </Grid>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>

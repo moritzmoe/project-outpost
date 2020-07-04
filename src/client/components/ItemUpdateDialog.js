@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import {
   Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Grid, FormControl, InputLabel, Select, MenuItem
+  Button, Grid, FormControl, InputLabel, Select, MenuItem, StepButton
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -62,7 +62,6 @@ export default function ItemUpdateDialog(props) {
   const [idToDelete, setIdToDelete] = useState(0);
   const [nameToDelete, setNameToDelete] = useState('');
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const [inputDisabled, setInputDisabled] = useState(true);
 
   const convertCo2ToScore = useStoreValue('co2Convert');
 
@@ -81,7 +80,6 @@ export default function ItemUpdateDialog(props) {
       axios.get(`/api/categories/subCats/${res.data[0].SubCategory.parentCat}`).then((response) => {
         setSubcategories(response.data);
       });
-      setInputDisabled(noInput);
     });
   }, [isOpen]);
 
@@ -171,7 +169,7 @@ export default function ItemUpdateDialog(props) {
               </IconButton>
             </Grid>
           </Grid>
-          {!inputDisabled ? (
+          {!noInput ? (
             <Grid container>
               <Grid item xs={5}>
 
@@ -199,7 +197,7 @@ export default function ItemUpdateDialog(props) {
         <form onSubmit={handleItemChange}>
           <DialogContent>
             <TextField
-              disabled={inputDisabled}
+              disabled={noInput}
               error={barcodeErr}
               helperText={barcodeErrMsg}
               value={barcode}
@@ -211,7 +209,7 @@ export default function ItemUpdateDialog(props) {
               onChange={e => setBarcode(e.target.value)}
             />
             <TextField
-              disabled={inputDisabled}
+              disabled={noInput}
               value={name}
               fullWidth
               required
@@ -220,7 +218,7 @@ export default function ItemUpdateDialog(props) {
               onChange={e => setName(e.target.value)}
             />
             <TextField
-              disabled={inputDisabled}
+              disabled={noInput}
               value={weight}
               required
               margin="dense"
@@ -232,7 +230,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Kategorie</InputLabel>
               <Select
-                disabled={inputDisabled}
+                disabled={noInput}
                 id="category-select"
                 value={categoryId}
                 onChange={handleCategoryPick}
@@ -245,7 +243,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown} disabled={!categoryId}>
               <InputLabel>Unterkategorie</InputLabel>
               <Select
-                disabled={inputDisabled}
+                disabled={noInput}
                 id="subCat-select"
                 value={subCategoryId}
                 onChange={handleSubCategoryPick}
@@ -258,7 +256,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Verpackung </InputLabel>
               <Select
-                disabled={inputDisabled}
+                disabled={noInput}
                 id="pack-select"
                 value={packagingId}
                 onChange={handlePackagingPick}
@@ -271,7 +269,7 @@ export default function ItemUpdateDialog(props) {
             <FormControl required fullWidth className={classes.dropDown}>
               <InputLabel>Herkunft </InputLabel>
               <Select
-                disabled={inputDisabled}
+                disabled={noInput}
                 id="origin-select"
                 value={originId}
                 onChange={handleOriginPick}
@@ -282,30 +280,30 @@ export default function ItemUpdateDialog(props) {
               </Select>
             </FormControl>
           </DialogContent>
-          <DialogActions>
-            <Button
-              disabled={inputDisabled}
-              size="small"
-              variant="contained"
-              color="primary"
-              className={classes.deleteButton}
-              startIcon={<DeleteIcon />}
-              onClick={() => handleDeleteAlertOpen(id, name)}
-            >
-              Löschen
-            </Button>
-            <Button
-              disabled={inputDisabled}
-              type="submit"
-              size="small"
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              startIcon={<EditIcon />}
-            >
-              Speichern
-            </Button>
-          </DialogActions>
+          {!noInput ? (
+            <DialogActions>
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                className={classes.deleteButton}
+                startIcon={<DeleteIcon />}
+                onClick={() => handleDeleteAlertOpen(id, name)}
+              >
+                Löschen
+              </Button>
+              <Button
+                type="submit"
+                size="small"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={<EditIcon />}
+              >
+                Speichern
+              </Button>
+            </DialogActions>
+          ) : ''}
         </form>
       </Dialog>
       <Dialog

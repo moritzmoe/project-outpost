@@ -7,7 +7,6 @@ import {
   Typography, List, ListItem, ListItemText, IconButton
 } from '@material-ui/core';
 import { useSetStoreValue, useStoreValue } from 'react-context-hook';
-import ItemList from './ItemList';
 
 
 const useStyles = makeStyles(theme => ({
@@ -52,7 +51,7 @@ export default function PurchaseCard(props) {
       itemNames = itemNames.trim();
       itemNames = itemNames.concat('...');
     } else {
-      itemNames = 'No Items';
+      itemNames = 'Keine Produkte';
     }
     setFirstItems(itemNames);
     purchase.Items.map((item) => {
@@ -83,7 +82,7 @@ export default function PurchaseCard(props) {
                     :
                     {(createdDate.getMinutes() < 10 ? '0' : '') + createdDate.getMinutes()}
                     {' '}
-                    h
+                    Uhr
                   </Typography>
                 </Grid>
                 <Grid item xs={6} align="right">

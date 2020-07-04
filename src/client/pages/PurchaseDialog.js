@@ -15,8 +15,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import SearchIcon from '@material-ui/icons/Search';
-import ScanBarcodeCard from '../components/ScanBarcodeCard';
-import ScanQRCodeCard from '../components/ScanQRCodeCard';
 import BarcodeScanner from '../components/BarcodeScanner';
 // import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
@@ -180,13 +178,6 @@ export default function PurchaseDialog(props) {
   };
   */
 
-  const handleErrorClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setError(false);
-    setErrorMsg('');
-  };
 
   const handleBarcodeInput = (data) => {
     setBarcode(data);
@@ -203,11 +194,11 @@ export default function PurchaseDialog(props) {
     }).catch((err) => {
       setErrorMsg(err.response.data.error);
       setError(true);
-      console.log('Hier fragen ob neues Item anlegen');
-      setOpenConfirmDialog(true);
+      if (err.response.data.error === 'Item not found') {
+        setOpenConfirmDialog(true);
+      }
     });
     handleBarcodeDialogClose();
-    // handleBarcodeTypeInClose();
   };
 
   const handleItemDetails = (passedId) => {
@@ -406,25 +397,6 @@ export default function PurchaseDialog(props) {
           </Grid>
         </DialogContent>
       </Dialog>
-      {/* <BarcodeTypeInDialog
-        isOpen={openBarcodeTypeIn}
-        barcodeTypeInResult={handleBarcodeInput}
-        handleClose={handleBarcodeTypeInClose}
-      /> */ }
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={error}
-        autoHideDuration={6000}
-        onClose={handleErrorClose}
-        className={classes.error}
-      >
-        <Alert onClose={handleErrorClose} severity="error">
-          {errorMsg}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

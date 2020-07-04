@@ -139,7 +139,7 @@ export default function SignIn(props) {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Passwort"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -153,13 +153,13 @@ export default function SignIn(props) {
             color="primary"
             className={classes.submit}
           >
-            Log in
+            Anmelden
           </Button>
         </form>
         <Grid container justify="flex-end">
           <Grid item>
             <Link href="/signup" onClick={(evt) => { evt.preventDefault(); RouterHistory.push('/signup'); }} variant="body2">
-              Kein Account? Sign up
+              Noch keinen Account? Jetzt registrieren!
             </Link>
           </Grid>
         </Grid>
@@ -174,7 +174,7 @@ export default function SignIn(props) {
           className={classes.passwordAlert}
         >
           <Alert onClose={handleClose} severity="error">
-            Falsche E-Mail or Password
+            Falsche E-Mail oder falsches Passwort
           </Alert>
         </Snackbar>
       </div>

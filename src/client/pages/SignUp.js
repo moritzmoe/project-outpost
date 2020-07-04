@@ -150,7 +150,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Passwort"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -166,12 +166,12 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Registrieren
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/login" onClick={(evt) => { evt.preventDefault(); RouterHistory.push('/login'); }} variant="body2">
-                Schon einen Account? Sign in
+                Schon einen Account? Jetzt anmelden!
               </Link>
             </Grid>
           </Grid>

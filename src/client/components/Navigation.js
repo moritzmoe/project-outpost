@@ -177,11 +177,11 @@ export default function Navigation(props) {
       <List>
         <ListItem button onClick={() => { setSelected('Settings'); RouterHistory.push('/settings'); }} selected={selected === 'Settings'} key="Settings">
           <ListItemIcon><SettingsIcon /></ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary="Einstellungen" />
         </ListItem>
         <ListItem button onClick={() => logout()} key="Logout">
           <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-          <ListItemText primary="Logout" />
+          <ListItemText primary="Ausloggen" />
         </ListItem>
       </List>
     </div>

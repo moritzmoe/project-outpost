@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
-  makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography, Button
+  makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography, Button, IconButton
 } from '@material-ui/core';
 import EcoIcon from '@material-ui/icons/Eco';
 import RecommendationDialog from './RecommendationDialog';
@@ -52,12 +52,29 @@ export default function ItemCard(props) {
         <Card className={classes.root}>
           <CardActionArea onMouseMove={handleHoverCard} onClick={handleClick}>
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
-                {item.barcode}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {item.name}
-              </Typography>
+              <Grid container>
+                <Grid item xs={10}>
+                  <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    {item.barcode}
+                  </Typography>
+                  <Typography variant="h5" component="h2">
+                    {item.name.length > 18
+                      ? `${item.name.substring(0, 18)}...` : item.name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  { openRec ? (
+                    <IconButton
+                      color="primary"
+                      aria-label="info"
+                      variant="outlined"
+                      onClick={handleRecClick}
+                    >
+                      <EcoIcon />
+                    </IconButton>
+                  ) : ''}
+                </Grid>
+              </Grid>
               <Typography color="textSecondary">
                 {item.SubCategory.name}
               </Typography>
@@ -67,19 +84,6 @@ export default function ItemCard(props) {
                     {item.Packaging.name}
                   </Typography>
                 </Grid>
-                { openRec ? (
-                  <Grid item xs={7}>
-                    <Button
-                      color="primary"
-                      aria-label="info"
-                      className={classes.fabInfo}
-                      variant="outlined"
-                      onClick={handleRecClick}
-                    >
-                      <EcoIcon />
-                    </Button>
-                  </Grid>
-                ) : ''}
                 <Grid item xs={5} align="right">
                   <Typography variant="h4" align="right" color="primary">
                     {(Math.floor(item.score / convertCo2ToScore))}

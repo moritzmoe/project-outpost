@@ -132,7 +132,7 @@ export default function SubCategoryDialog(props) {
           <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0, marginTop: 31 }}>
             <MaterialTable
               icons={tableIcons}
-              title={`${catName}${id}`}
+              title={`${catName}`}
               columns={state.columns}
               data={state.data}
               editable={{

@@ -85,7 +85,7 @@ export default function Shopping() {
     }
     console.log('Query:', query);
     cancel = axios.CancelToken.source();
-    axios.get(`/api/items?limit=5&offset=0&q=${query}`, { cancelToken: cancel.token, })
+    axios.get(`/api/items?limit=9&offset=0&q=${query}`, { cancelToken: cancel.token, })
       .then((res) => {
         setItems(res.data);
       })
@@ -165,7 +165,7 @@ export default function Shopping() {
         <Grid container justify="center" spacing={3}>
           <Grid item>
             <form className={classes.root} noValidate autoComplete="off" onChange={handleSearchInputChange}>
-              <TextField id="itemSearchField" className={classes.bottomSpacing} label="Suchen" variant="outlined" value={searchFieldText} />
+              <TextField id="itemSearchField" className={classes.bottomSpacing} label="Produktsuche" variant="outlined" value={searchFieldText} />
             </form>
           </Grid>
         </Grid>

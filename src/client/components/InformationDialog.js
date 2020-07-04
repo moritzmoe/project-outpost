@@ -27,11 +27,6 @@ export default function InformationDialog(props) {
     isOpen, handleClose
   } = props;
 
-  useEffect(() => {
-    if (isOpen) {
-    }
-  }, [isOpen]);
-
   const handleInfoClose = () => {
     handleClose();
   };

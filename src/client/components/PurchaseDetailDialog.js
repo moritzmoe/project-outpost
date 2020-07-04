@@ -95,7 +95,7 @@ export default function PurchaseDetailDialog(props) {
                 :
                 {(createdDate.getMinutes() < 10 ? '0' : '') + createdDate.getMinutes()}
                 {' '}
-                h
+                Uhr
               </Typography>
             </Grid>
             <Grid item xs={5} align="right">

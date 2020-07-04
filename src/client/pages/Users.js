@@ -148,10 +148,10 @@ export default function Users() {
                 <TableRow>
                   <TableCell>id</TableCell>
                   <TableCell>E-Mail</TableCell>
-                  <TableCell>Firstname</TableCell>
-                  <TableCell>Lastname</TableCell>
+                  <TableCell>Vorname</TableCell>
+                  <TableCell>Nachname</TableCell>
                   {isOwner ? (
-                    <TableCell>Role</TableCell>
+                    <TableCell>Rolle</TableCell>
                   ) : ''}
                 </TableRow>
               </TableHead>
@@ -191,7 +191,7 @@ export default function Users() {
                       rowsPerPage={rowsPerPage}
                       page={page}
                       SelectProps={{
-                        inputProps: { 'aria-label': 'rows per page' },
+                        inputProps: { 'aria-label': 'Zeilen' },
                         native: true
                       }}
                       onChangePage={handleChangePage}
@@ -203,8 +203,8 @@ export default function Users() {
                   <TableRow>
                     <TableCell colSpan={5}>
                       {totalQueryCount > rowsPerPage ? (
-                        `${totalQueryCount} Results. Showing only ${rowsPerPage}.`
-                      ) : (`${totalQueryCount} Result(s).`)}
+                        `${totalQueryCount} Ergebnisse. Es werden nur ${rowsPerPage} angezeigt.`
+                      ) : (`${totalQueryCount} Ergebnis(se).`)}
                     </TableCell>
                   </TableRow>
                 )}
