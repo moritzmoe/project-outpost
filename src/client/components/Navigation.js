@@ -1,39 +1,33 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
-import { useStoreValue, useSetStoreValue } from 'react-context-hook';
-
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
+import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
+import { makeStyles } from '@material-ui/core/styles';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Ballot from '@material-ui/icons/Ballot';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
-import TimelineIcon from '@material-ui/icons/Timeline';
+import InfoIcon from '@material-ui/icons/Info';
+import MenuIcon from '@material-ui/icons/Menu';
+import PersonIcon from '@material-ui/icons/Person';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import GroupIcon from '@material-ui/icons/Group';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import PersonIcon from '@material-ui/icons/Person';
 import StorageIcon from '@material-ui/icons/Storage';
-import RecentActorsIcon from '@material-ui/icons/RecentActors';
-import Ballot from '@material-ui/icons/Ballot';
-
-import { Fab } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
-import InformationDialog from './InformationDialog';
-
+import TimelineIcon from '@material-ui/icons/Timeline';
+import React, { useEffect, useState } from 'react';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import RouterHistory from '../Tools/RouterHistory';
+import InformationDialog from './InformationDialog';
 
 
 const useStyles = makeStyles(theme => ({
@@ -87,7 +81,6 @@ export default function Navigation(props) {
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   useEffect(() => {
-    console.log('Navigation did mount');
   }, []);
 
   const logout = () => {

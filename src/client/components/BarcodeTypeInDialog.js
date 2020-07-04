@@ -1,12 +1,12 @@
 // This is just a utility component
 // It can be used for development on a machine without camera to read in a barcode.
 
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
-  TextField, Button
+  Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+  TextField
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 
 export default function BarcodeTypeInDialog(props) {

@@ -1,24 +1,15 @@
-import React, { useState, useEffect, forwardRef } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 import {
-  Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Grid, FormControl, InputLabel, Select, MenuItem
+  Dialog, DialogTitle,
+  Grid, IconButton
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import DeleteIcon from '@material-ui/icons/Delete';
-// import EditIcon from '@material-ui/icons/Edit';
-
-import MaterialTable from 'material-table';
-
+import { makeStyles } from '@material-ui/core/styles';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
+import CloseIcon from '@material-ui/icons/Close';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import Edit from '@material-ui/icons/Edit';
 import FilterList from '@material-ui/icons/FilterList';
@@ -28,6 +19,12 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import axios from 'axios';
+// import EditIcon from '@material-ui/icons/Edit';
+import MaterialTable from 'material-table';
+import PropTypes from 'prop-types';
+import React, { forwardRef, useEffect, useState } from 'react';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -155,7 +152,6 @@ export default function SubCategoryDialog(props) {
                         });
                       }
                     }).catch((err) => {
-                      console.log(err);
                     });
                   }, 600);
                 }),
@@ -176,7 +172,6 @@ export default function SubCategoryDialog(props) {
                         }
                       }
                     }).catch((err) => {
-                      console.log(err);
                     });
                   }, 600);
                 }),
@@ -192,7 +187,6 @@ export default function SubCategoryDialog(props) {
                         });
                       }
                     }).catch((err) => {
-                      console.log(err);
                     });
                   }, 600);
                 }),

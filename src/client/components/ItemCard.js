@@ -1,11 +1,11 @@
 /* eslint-disable react/forbid-prop-types */
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
-  makeStyles, Grid, Fab, Card, CardActionArea, CardContent, Typography, Button, IconButton
+  Card, CardActionArea, CardContent, Grid, IconButton, makeStyles, Typography
 } from '@material-ui/core';
 import EcoIcon from '@material-ui/icons/Eco';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
 import RecommendationDialog from './RecommendationDialog';
 
 
@@ -32,7 +32,6 @@ export default function ItemCard(props) {
 
   const handleHoverCard = () => {
     clickHelp = true;
-    console.log(clickHelp);
   };
 
   const handleClick = () => {

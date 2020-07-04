@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 import {
-  Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Grid, FormControl, InputLabel, Select, MenuItem, StepButton
+  Button, Dialog, DialogActions, DialogContent, DialogTitle,
+  FormControl, Grid, IconButton,
+  InputLabel, MenuItem, Select, TextField, Typography
 } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
 
 const useStyles = makeStyles(theme => ({
   deleteButton: {
@@ -103,7 +104,6 @@ export default function ItemUpdateDialog(props) {
         handleSave();
       }
     }).catch((err) => {
-      console.log(err);
       handleClose();
     });
   };

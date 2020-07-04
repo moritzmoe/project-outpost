@@ -24,7 +24,6 @@ router.get('/', (req, res) => {
 
 router.post('/changeCo2Convert', withOwner, (req, res) => {
   const { id, content } = req.query;
-  console.log(id, content);
   models.Constant.update({
     value: content
   }, {

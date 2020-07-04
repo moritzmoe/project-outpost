@@ -1,25 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useSetStoreValue } from 'react-context-hook';
-import React, { useState, useEffect } from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-import {
-  Container, Typography, Fab, Grid
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import axios from 'axios';
-import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import PurchaseDialog from './PurchaseDialog';
+  Container, Fab, Grid, Typography
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import axios from 'axios';
+import 'date-fns';
+import React, { useEffect, useState } from 'react';
+import { useSetStoreValue } from 'react-context-hook';
 import PurchaseCard from '../components/PurchaseCard';
-
 import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
+import PurchaseDialog from './PurchaseDialog';
 
 
 const useStyles = makeStyles(theme => ({
@@ -92,7 +85,6 @@ export default function Timeline() {
     setIdDetail(id);
     setPurchaseDetailDialogOpen(true);
     // });
-    console.log(`Purchase Details for ${id} called.\n Still needs to be implemented`);
   };
 
   const handleDateFromChange = (datefrom) => {

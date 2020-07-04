@@ -1,17 +1,17 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
-import Container from '@material-ui/core/Container';
-import { useSetStoreValue } from 'react-context-hook';
 import {
-  Grid, TextField, Dialog, DialogTitle, DialogContent, Button, IconButton, Fab, Snackbar, Typography
+  Dialog, DialogContent, DialogTitle, Fab, Grid, IconButton, Snackbar, TextField, Typography
 } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import ImageSearchIcon from '@material-ui/icons/ImageSearch';
-import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import CloseIcon from '@material-ui/icons/Close';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSetStoreValue } from 'react-context-hook';
 import BarcodeScanner from '../components/BarcodeScanner';
 import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
@@ -83,16 +83,13 @@ export default function Shopping() {
     if (cancel) {
       cancel.cancel();
     }
-    console.log('Query:', query);
     cancel = axios.CancelToken.source();
     axios.get(`/api/items?limit=9&offset=0&q=${query}`, { cancelToken: cancel.token, })
       .then((res) => {
         setItems(res.data);
       })
       .catch((error2) => {
-        console.log(error2);
       });
-    console.log('Items:', items);
   };
 
   const handleBarcodeInput = (data) => {
@@ -103,7 +100,6 @@ export default function Shopping() {
       setSearchQuery(query);
     } else {
       setOpenCreate(true);
-      console.log('Item soll geadded werden'); setAddProductSwitch(false);
     }
     handleBarcodeDialogClose();
     // handleBarcodeTypeInClose();

@@ -1,21 +1,18 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-alert */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import MuiAlert from '@material-ui/lab/Alert';
-import EcoIcon from '@material-ui/icons/Eco';
-import Snackbar from '@material-ui/core/Snackbar';
-import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useSetStoreValue } from 'react-context-hook';
-import RouterHistory from '../Tools/RouterHistory';
 import LogoText from '../img/logoText.svg';
+import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -61,7 +58,6 @@ export default function SignIn(props) {
     evt.preventDefault();
     axios.get('/api/constants?id=1').then((response) => {
       setCo2Convert(response.data.value);
-      console.log(response.data.value);
     });
     axios.post('/api/auth', { email, password })
       .then((res) => {

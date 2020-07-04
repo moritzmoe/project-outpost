@@ -1,26 +1,28 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect } from 'react';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import {
-  Button, Dialog, ListItemText, ListItem, List, Divider,
-  AppBar, Toolbar, IconButton, Typography, Slide, Container,
-  Grid, Paper, Box, DialogTitle, DialogContent, Snackbar, Fab,
-  TextField
+  AppBar, Button,
+  Container, Dialog,
+
+  DialogContent, DialogTitle, Grid, IconButton, Slide,
+
+  TextField, Toolbar, Typography
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import axios from 'axios';
-import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
 import BarcodeScanner from '../components/BarcodeScanner';
 // import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
+import ItemCreationDialog from '../components/ItemCreationDialog';
 import ItemSearchDialog from '../components/ItemSearchDialog';
 import ItemUpdateDialog from '../components/ItemUpdateDialog';
-import ItemCreationDialog from '../components/ItemCreationDialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -128,7 +130,6 @@ export default function PurchaseDialog(props) {
         score = parseInt(totalScore, 10) + parseInt(item.score, 10);
       });
       setTotalScore(score);
-      console.log(score);
       setItems(res.data.Items);
     }).catch((err) => {
       setErrorMsg(err.response.data.error);
@@ -202,7 +203,6 @@ export default function PurchaseDialog(props) {
   };
 
   const handleItemDetails = (passedId) => {
-    console.log('passedId', passedId);
     axios.get(`/api/items/${passedId}`).then((res) => {
       setItemId(res.data[0].id);
       setOpenUpdate(true);

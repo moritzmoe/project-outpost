@@ -1,12 +1,12 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
-  makeStyles, Grid, Card, CardActionArea, CardContent,
-  Typography, List, ListItem, ListItemText, IconButton
+  Card, CardActionArea, CardContent, Grid, makeStyles,
+  Typography
 } from '@material-ui/core';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
 
 
 const useStyles = makeStyles(theme => ({

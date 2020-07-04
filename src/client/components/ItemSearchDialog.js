@@ -1,14 +1,12 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import {
+  Dialog, DialogTitle,
+  Grid, IconButton, TextField
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
-import {
-  Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Grid, FormControl, InputLabel, Select, MenuItem
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import DeleteIcon from '@material-ui/icons/Delete';
+import React, { useEffect, useState } from 'react';
 // import EditIcon from '@material-ui/icons/Edit';
 import ItemCard from './ItemCard';
 
@@ -46,7 +44,6 @@ export default function ItemSearchDialog(props) {
 
   const handleItemClick = (id) => {
     let barcode;
-    console.log(id);
     items.map((item) => {
       if (item.id === id) {
         ({ barcode } = item);
@@ -61,17 +58,6 @@ export default function ItemSearchDialog(props) {
     setItems([]);
   };
 
-  /*
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const itemId = document.getElementById('itemSearchField').value;
-    axios.get(`/api/items/${itemId}`).then((res) => {
-      setItems(res.data);
-      console.log(res.data[0]);
-    });
-  };
-  */
-
   const handleSearchInputChange = (evt) => {
     evt.preventDefault();
     const query = evt.target.value;
@@ -82,21 +68,13 @@ export default function ItemSearchDialog(props) {
     if (cancel) {
       cancel.cancel();
     }
-    console.log('Query:', query);
     cancel = axios.CancelToken.source();
     axios.get(`/api/items?limit=5&offset=0&q=${query}`, { cancelToken: cancel.token, })
       .then((res) => {
         setItems(res.data);
-        /* console.log('Res.data:', res.data);
-        axios.get(`/api/items/totalQueryCount?q=${query}`, { cancelToken: cancel.token })
-          .then((response) => {
-            setTotalQueryCount(parseInt(response.data, 10));
-          }); */
       })
       .catch((error) => {
-        console.log(error);
       });
-    console.log('Items:', items);
   };
 
 

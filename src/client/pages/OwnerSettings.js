@@ -4,17 +4,16 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
-import React, { useState, useEffect } from 'react';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
+import {
+  Container, Fab, Grid, Snackbar, TextField, Typography
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
-import axios from 'axios';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 
-
-import {
-  Container, Typography, Fab, Grid, TextField, Snackbar
-} from '@material-ui/core';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -48,7 +47,6 @@ export default function Settings() {
 
   const handleCo2ConvertInput = (input) => {
     setCo2ConvertInput(input.target.value);
-    console.log(co2ConvertInput);
   };
 
   const handleCo2ConvertSave = () => {
@@ -59,7 +57,6 @@ export default function Settings() {
           setOpenMessage(true);
         }
       }).catch((err) => {
-        console.log(err);
         setMessage('Etwas ist schiefgelaufen');
         setOpenError(true);
       });

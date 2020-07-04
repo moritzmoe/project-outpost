@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
-import { makeStyles } from '@material-ui/core/styles';
+import { Snackbar, TextField, Typography } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { TextField, Snackbar, Typography } from '@material-ui/core';
-
-
+import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import BarcodeScanner from '../components/BarcodeScanner';
 import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
+import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
 import ItemUpdateDialog from '../components/ItemUpdateDialog';
-import ItemCard from '../components/ItemCard';
 
 
 const useStyles = makeStyles(theme => ({
@@ -93,7 +91,6 @@ export default function Items() {
     fetchSearchResults(searchQuery);
     fetchSearchResultsNA(searchQueryNA);
     setPageName('Item Database');
-    console.log('JaNein', itemsNA.length);
   }, []);
 
   useEffect(() => {
@@ -108,32 +105,26 @@ export default function Items() {
     if (cancel) {
       cancel.cancel();
     }
-    console.log('Query:', query);
     cancel = axios.CancelToken.source();
     axios.get(`/api/items?limit=5&offset=0&q=${query}`, { cancelToken: cancel.token, })
       .then((res) => {
         setItems(res.data);
       })
       .catch((error2) => {
-        console.log(error2);
       });
-    console.log('Items:', items);
   };
 
   const fetchSearchResultsNA = (query) => {
     if (cancelNA) {
       cancelNA.cancel();
     }
-    console.log('Query:', query);
     cancelNA = axios.CancelToken.source();
     axios.get(`/api/items/approved/?limit=2&offset=0&q=${query}`, { cancelToken: cancelNA.token, })
       .then((res) => {
         setItemsNA(res.data);
       })
       .catch((error2) => {
-        console.log(error2);
       });
-    console.log('Items:', itemsNA);
   };
 
   const handleBarcodeDialogClose = () => {

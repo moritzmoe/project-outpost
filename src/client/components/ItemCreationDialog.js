@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
 
 const useStyles = makeStyles(theme => ({
   scoreText: {
@@ -50,8 +50,6 @@ export default function ItemCreationDialog(props) {
     axios.get('/api/packaging').then((res) => { setPackaging(res.data); });
     axios.get('/api/origins').then((res) => { setOrigin(res.data); });
     if (isAdmin) setNeedApproval(1);
-    console.log('isadmin', isAdmin);
-    console.log('approval', needApproval);
   }, []);
 
   const handleCategoryPick = (evt) => {
@@ -99,7 +97,6 @@ export default function ItemCreationDialog(props) {
         handleItemCreated();
       }
     }).catch((err) => {
-      console.log(err);
       clearStateHandleClose();
     });
   };

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {
-  makeStyles, Grid, Card, CardActionArea, CardContent, Typography
+  Card, CardActionArea, CardContent, Grid, makeStyles, Typography
 } from '@material-ui/core';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   root: {

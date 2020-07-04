@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import Quagga from 'quagga';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Quagga from 'quagga';
+import React, { useEffect } from 'react';
 
 let barcodeScannerProps;
 let scannerIsRunning;
@@ -43,7 +43,6 @@ function initQuagga() {
     frequency: 15,
   }, (err) => {
     if (err) {
-      console.log(err);
       return;
     }
     Quagga.start();

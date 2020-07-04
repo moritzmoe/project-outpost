@@ -79,7 +79,6 @@ router.get('/totalUserCount', withAdmin, (req, res) => {
 
 router.post('/changeRole', withOwner, (req, res) => {
   const { id, roleId } = req.body;
-  console.log(roleId);
   models.User.update({
     role: roleId
   }, {
@@ -92,7 +91,6 @@ router.post('/changeRole', withOwner, (req, res) => {
 
 router.post('/changeFirstname', withAuth, (req, res) => {
   const { id, content } = req.query;
-  console.log(id, content);
   models.User.update({
     firstname: content
   }, {
@@ -105,7 +103,6 @@ router.post('/changeFirstname', withAuth, (req, res) => {
 
 router.post('/changeLastname', withAuth, (req, res) => {
   const { id, content } = req.query;
-  console.log(id, content);
   models.User.update({
     lastname: content
   }, {
@@ -118,7 +115,6 @@ router.post('/changeLastname', withAuth, (req, res) => {
 
 router.post('/changeEmail', withAuth, (req, res) => {
   const { id, content } = req.query;
-  console.log(id, content);
   models.User.update({
     email: content
   }, {

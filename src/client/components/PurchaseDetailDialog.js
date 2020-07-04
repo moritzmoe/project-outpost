@@ -1,13 +1,13 @@
-import React, { useState, useEffect, forwardRef } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Grid, FormControl, InputLabel, Select, MenuItem
+  Dialog, DialogContent, DialogTitle,
+  Grid, IconButton, Typography
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useStoreValue } from 'react-context-hook';
 import ItemCard from './ItemCard';
 import ItemUpdateDialog from './ItemUpdateDialog';
 
@@ -46,7 +46,6 @@ export default function PurchaseDetailDialog(props) {
         let totalScore = 0;
         res.data.Items.map((item) => {
           totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
-          console.log(item.score);
         });
         setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
         setItemRecScore(sortedItems[0].score);

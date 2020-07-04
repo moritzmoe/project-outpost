@@ -1,21 +1,18 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import PersonIcon from '@material-ui/icons/Person';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useSetStoreValue } from 'react-context-hook';
-import RouterHistory from '../Tools/RouterHistory';
 import LogoText from '../img/logoText.svg';
+import RouterHistory from '../Tools/RouterHistory';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -92,15 +89,6 @@ export default function SignUp() {
       <CssBaseline />
       <div className={classes.paper}>
         <img src={LogoText} alt="Logo" width="300em" height="150em" />
-        {/* <Avatar className={classes.avatar}>
-          <PersonIcon />
-        </Avatar>
-        <Typography variant="body1">
-          Project Outpost
-        </Typography>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography> */}
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>

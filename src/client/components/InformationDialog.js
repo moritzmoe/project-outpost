@@ -1,14 +1,11 @@
-import React, { useState, useEffect, forwardRef } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Dialog, DialogTitle, Typography, IconButton, DialogContent, TextField, DialogActions,
-  Button, Grid, FormControl, InputLabel, Select, MenuItem, DialogContentText, Slide
+  Button, Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle,
+  Slide
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import ItemCard from './ItemCard';
-import ItemUpdateDialog from './ItemUpdateDialog';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   closeButton: {

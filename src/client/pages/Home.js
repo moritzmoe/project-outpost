@@ -4,24 +4,19 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
-import React, { useState, useEffect } from 'react';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import {
-  PieChart, Pie, Cell
-} from 'recharts';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Container, Typography, Fab, Grid
+  Container, Fab, Grid, Typography
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import InfoIcon from '@material-ui/icons/Info';
 import axios from 'axios';
-import { date } from 'date-fns/locale/af';
-import PurchaseDialog from './PurchaseDialog';
+import React, { useEffect, useState } from 'react';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
+import { Cell, Pie, PieChart } from 'recharts';
 import PurchaseCard from '../components/PurchaseCard';
-
 import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
-import InformationDialog from '../components/InformationDialog';
+import PurchaseDialog from './PurchaseDialog';
+
 
 const data = [
   { name: 'Group A', value: 50 },
@@ -118,22 +113,7 @@ export default function Home() {
 
   const handlePurchaseDetails = (id) => {
     setIdDetail(id);
-    // purchases.map((purchase) => {
-    //  // console.log(purchase.id, id);
-    // console.log(purchase.id === id);
-
-    //  if (purchase.id === id) {
-    //    setPurchaseDetail(purchase);
-    // console.log(purchase);
-    //  }
-    // });
-    // const found = purchases.filter(item => item.id === id);
-    // setPurchaseDetail({ input: found[0] }, () => {
-    //  setPurchaseDetail(found[0]);
-    //  console.log(purchaseDetail);
     setPurchaseDetailDialogOpen(true);
-    // });
-    console.log(`Purchase Details for ${id} called.\n Still needs to be implemented`);
   };
 
   return (

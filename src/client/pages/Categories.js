@@ -1,13 +1,5 @@
-import React, { useState, useEffect, forwardRef } from 'react';
-import { useSetStoreValue, useStoreValue } from 'react-context-hook';
-import axios from 'axios';
-
-import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable from 'material-table';
-
 import Container from '@material-ui/core/Container';
-
-
+import { makeStyles } from '@material-ui/core/styles';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -23,8 +15,12 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
+import axios from 'axios';
+import MaterialTable from 'material-table';
+import React, { forwardRef, useEffect, useState } from 'react';
+import { useSetStoreValue, useStoreValue } from 'react-context-hook';
 import SubCategoryDialog from '../components/SubCategoryDialog';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -90,12 +86,9 @@ export default function Categories() {
   }, []);
 
   const handleRowClick = (event, rowData) => {
-    // axios.get(`/api/categories/subCats/${rowData.id}`).then((res) => {
-    //  console.log(res.data);
     setId(parseInt(rowData.id, 10));
     setCatName(rowData.name);
     setOpenSubCategoryDialog(true);
-    // });
   };
 
   const handleClose = () => {
@@ -131,7 +124,6 @@ export default function Categories() {
                       });
                     }
                   }).catch((err) => {
-                    console.log(err);
                   });
                 }, 600);
               }),
@@ -152,7 +144,6 @@ export default function Categories() {
                       }
                     }
                   }).catch((err) => {
-                    console.log(err);
                   });
                 }, 600);
               }),
@@ -168,7 +159,6 @@ export default function Categories() {
                       });
                     }
                   }).catch((err) => {
-                    console.log(err);
                   });
                 }, 600);
               }),
