@@ -84,7 +84,6 @@ export default function Timeline() {
   const handlePurchaseDetails = (id) => {
     setIdDetail(id);
     setPurchaseDetailDialogOpen(true);
-    // });
   };
 
   const handleDateFromChange = (datefrom) => {

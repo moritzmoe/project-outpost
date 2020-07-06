@@ -40,7 +40,6 @@ export default function Settings() {
   const [firstNameInput, setFirstnameInput] = useState('');
   const [lastnameInput, setLastnameInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
-  const userId = useStoreValue('userId');
   const userFirstname = useStoreValue('userFirstname');
   const userLastname = useStoreValue('userLastname');
   const userEmail = useStoreValue('userEmail');
@@ -66,7 +65,7 @@ export default function Settings() {
 
   const handleFirstnameSave = () => {
     if (!(firstNameInput === '')) {
-      axios.post(`/api/users/changeFirstname?id=${userId}&content=${firstNameInput}`).then((res) => {
+      axios.post(`/api/users/changeFirstname?content=${firstNameInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('Vorname erfolgreich geändert');
           setOpenMessage(true);
@@ -76,14 +75,14 @@ export default function Settings() {
         setOpenError(true);
       });
     } else {
-      setMessage('Bitte gebe einen Vornamen ein');
+      setMessage('Bitte gib einen Vornamen ein');
       setOpenError(true);
     }
   };
 
   const handleLastnameSave = () => {
     if (!(lastnameInput === '')) {
-      axios.post(`/api/users/changeLastname?id=${userId}&content=${lastnameInput}`).then((res) => {
+      axios.post(`/api/users/changeLastname?content=${lastnameInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('Nachname erfolgreich geändert');
           setOpenMessage(true);
@@ -93,14 +92,14 @@ export default function Settings() {
         setOpenError(true);
       });
     } else {
-      setMessage('Bitte gebe einen Nachnamen ein');
+      setMessage('Bitte gib einen Nachnamen ein');
       setOpenError(true);
     }
   };
 
   const handleEmailSave = () => {
     if (!(emailInput === '')) {
-      axios.post(`/api/users/changeEmail?id=${userId}&content=${emailInput}`).then((res) => {
+      axios.post(`/api/users/changeEmail?content=${emailInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('E-mail Adresse erfolgreich geändert');
           setOpenMessage(true);
@@ -110,7 +109,7 @@ export default function Settings() {
         setOpenError(true);
       });
     } else {
-      setMessage('Bitte gebe eine E-Mail Adresse ein');
+      setMessage('Bitte gib eine E-Mail Adresse ein');
       setOpenError(true);
     }
   };

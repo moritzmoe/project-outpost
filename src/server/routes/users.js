@@ -90,36 +90,36 @@ router.post('/changeRole', withOwner, (req, res) => {
 });
 
 router.post('/changeFirstname', withAuth, (req, res) => {
-  const { id, content } = req.query;
+  const { content } = req.query;
   models.User.update({
     firstname: content
   }, {
     where: {
-      id
+      id: req.userId
     }
   }).then(res.sendStatus(200))
     .catch(err => res.send(err));
 });
 
 router.post('/changeLastname', withAuth, (req, res) => {
-  const { id, content } = req.query;
+  const { content } = req.query;
   models.User.update({
     lastname: content
   }, {
     where: {
-      id
+      id: req.userId
     }
   }).then(res.sendStatus(200))
     .catch(err => res.send(err));
 });
 
 router.post('/changeEmail', withAuth, (req, res) => {
-  const { id, content } = req.query;
+  const { content } = req.query;
   models.User.update({
     email: content
   }, {
     where: {
-      id
+      id: req.userId
     }
   }).then(res.sendStatus(200))
     .catch(err => res.send(err));
