@@ -51,7 +51,7 @@ export default function Settings() {
 
   const handleCo2ConvertSave = () => {
     if (!(co2ConvertInput === '')) {
-      axios.post(`/api/constants/changeCo2Convert?id=${1}&content=${co2ConvertInput}`).then((res) => {
+      axios.put(`/api/constants/updateConstant?id=${1}&content=${co2ConvertInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('Co2 Umrechnungsfaktor wurde geändert');
           setOpenMessage(true);
