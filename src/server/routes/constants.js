@@ -7,7 +7,7 @@ const withAuth = require('../middleware/auth');
 
 const controller = require('../controller/constants.controller');
 
-router.get('/', withAuth, controller.getConstants);
+router.get('/', controller.getConstants);
 
 router.put('/updateConstant', withOwner, controller.updateConstant);
 

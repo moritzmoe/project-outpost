@@ -1,5 +1,4 @@
 const express = require('express');
-const { Op } = require('sequelize');
 
 const router = express.Router();
 
@@ -8,121 +7,20 @@ const withAdmin = require('../middleware/admin');
 const withOwner = require('../middleware/owner');
 const withAuth = require('../middleware/auth');
 
-router.get('/', withAdmin, (req, res) => {
-  if (req.query.q) {
-    models.User.findAll({
-      order: [
-        ['id', 'ASC'],
-      ],
-      limit: req.query.limit,
-      offset: req.query.offset,
-      where: {
-        [Op.or]: [
-          {
-            email: {
-              [Op.like]: `%${req.query.q}%`
-            }
-          },
-          {
-            lastname: {
-              [Op.like]: `%${req.query.q}%`
-            }
-          }
-        ]
-      },
-      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
-    }).then(users => res.send(users))
-      .catch(err => console.log(err));
-  } else {
-    models.User.findAll({
-      order: [
-        ['id', 'ASC'],
-      ],
-      limit: req.query.limit,
-      offset: req.query.offset,
-      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
-    }).then(users => res.send(users))
-      .catch(err => console.log(err));
-  }
-});
+const controller = require('../controller/users.controller');
 
-router.get('/totalQueryCount', withAdmin, (req, res) => {
-  if (req.query.q) {
-    models.User.count({
-      where: {
-        [Op.or]: [
-          {
-            email: {
-              [Op.like]: `%${req.query.q}%`
-            }
-          },
-          {
-            lastname: {
-              [Op.like]: `%${req.query.q}%`
-            }
-          }
-        ]
-      }
-    })
-      .then(result => res.send(result.toString()))
-      .catch(err => console.log(err));
-  } else {
-    res.send('no query provided');
-  }
-});
+router.get('/', withAdmin, controller.getUsers);
 
-router.get('/totalUserCount', withAdmin, (req, res) => {
-  models.User.count().then((result) => {
-    res.send(result.toString());
-  }).catch(err => console.log(err));
-});
+router.get('/totalQueryCount', withAdmin, controller.userCountOfQuery);
 
-router.post('/changeRole', withOwner, (req, res) => {
-  const { id, roleId } = req.body;
-  models.User.update({
-    role: roleId
-  }, {
-    where: {
-      id
-    }
-  }).then(res.sendStatus(200))
-    .catch(err => res.send(err));
-});
+router.get('/totalUserCount', withAdmin, controller.totalUserCount);
 
-router.post('/changeFirstname', withAuth, (req, res) => {
-  const { content } = req.query;
-  models.User.update({
-    firstname: content
-  }, {
-    where: {
-      id: req.userId
-    }
-  }).then(res.sendStatus(200))
-    .catch(err => res.send(err));
-});
+router.post('/changeRole', withOwner, controller.changeRole);
 
-router.post('/changeLastname', withAuth, (req, res) => {
-  const { content } = req.query;
-  models.User.update({
-    lastname: content
-  }, {
-    where: {
-      id: req.userId
-    }
-  }).then(res.sendStatus(200))
-    .catch(err => res.send(err));
-});
+router.post('/changeFirstname', withAuth, controller.changeFirstname);
 
-router.post('/changeEmail', withAuth, (req, res) => {
-  const { content } = req.query;
-  models.User.update({
-    email: content
-  }, {
-    where: {
-      id: req.userId
-    }
-  }).then(res.sendStatus(200))
-    .catch(err => res.send(err));
-});
+router.post('/changeLastname', withAuth, controller.changeLastname);
+
+router.post('/changeEmail', withAuth, controller.changeEmail);
 
 module.exports = router;

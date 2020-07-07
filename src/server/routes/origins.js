@@ -8,5 +8,4 @@ const withAuth = require('../middleware/auth');
 
 router.get('/', withAuth, controller.getOrigins);
 
-
 module.exports = router;
