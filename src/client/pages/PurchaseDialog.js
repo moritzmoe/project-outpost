@@ -247,7 +247,15 @@ export default function PurchaseDialog(props) {
   };
 
   const handleQRCodeOpen = () => {
-    setOpenQRCode(true);
+    if (purchaseId === 0) {
+      axios.post('/api/purchases').then((res) => {
+        setPurchaseId(res.data.id);
+      }).then((res) => {
+        setOpenQRCode(true);
+      });
+    } else {
+      setOpenQRCode(true);
+    }
   };
 
   const handleQRCodeDialogClose = () => {
@@ -255,7 +263,28 @@ export default function PurchaseDialog(props) {
   };
 
   const handleQRCodeInput = (data) => {
-    console.log(data);
+    const dataString = String(data);
+    const dataArr = dataString.split(';');
+
+    dataArr.map((scan) => {
+      axios.post(`/api/purchases/item/${purchaseId}`, {
+        barcode: scan
+      }).then((res) => {
+        setBarcode(barcode);
+        let score = 0;
+        res.data.Items.map((item) => {
+          score = parseInt(totalScore, 10) + parseInt(item.score, 10);
+        });
+        setTotalScore(score);
+        setItems(res.data.Items);
+      }).catch((err) => {
+        setErrorMsg(err.response.data.error);
+        setError(true);
+        if (err.response.data.error === 'Item not found') {
+          setOpenConfirmDialog(true);
+        }
+      });
+    });
     handleQRCodeDialogClose();
   };
 
@@ -296,7 +325,7 @@ export default function PurchaseDialog(props) {
             <Grid item xs={12}>
               <Grid container justify="center" spacing={2}>
                 {items.map(value => (
-                  <ItemCard item={value} openDetails={handleItemDetails} />
+                  <ItemCard key={value.id} item={value} openDetails={handleItemDetails} />
                 ))}
                 {!items.length ? (
                   <Grid item>
