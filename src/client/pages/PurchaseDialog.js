@@ -256,6 +256,7 @@ export default function PurchaseDialog(props) {
 
   const handleQRCodeInput = (data) => {
     console.log(data);
+    handleQRCodeDialogClose();
   };
 
   return (

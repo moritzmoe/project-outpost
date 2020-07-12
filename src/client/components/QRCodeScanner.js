@@ -18,7 +18,7 @@ const QRCodeScanner = (props) => {
       setResult({
         result: data
       });
-      QRCodeScannerProps.callback(result);
+      QRCodeScannerProps.callback({ result: data });
     }
   };
 
