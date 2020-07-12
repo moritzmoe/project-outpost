@@ -23,6 +23,7 @@ import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
 import ItemSearchDialog from '../components/ItemSearchDialog';
 import ItemUpdateDialog from '../components/ItemUpdateDialog';
+import QRCodeScanner from '../components/QRCodeScanner';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -87,6 +88,7 @@ export default function PurchaseDialog(props) {
   const [itemId, setItemId] = useState(0);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
+  const [openQRCode, setOpenQRCode] = useState(false);
 
   const convertCo2ToScore = useStoreValue('co2Convert');
 
@@ -244,6 +246,18 @@ export default function PurchaseDialog(props) {
     setOpenCreate(false);
   };
 
+  const handleQRCodeOpen = () => {
+    setOpenQRCode(true);
+  };
+
+  const handleQRCodeDialogClose = () => {
+    setOpenQRCode(false);
+  };
+
+  const handleQRCodeInput = (data) => {
+    console.log(data);
+  };
+
   return (
     <div>
       <Dialog
@@ -314,6 +328,7 @@ export default function PurchaseDialog(props) {
                 variant="contained"
                 color="primary"
                 startIcon={<ShoppingCartIcon />}
+                onClick={handleQRCodeOpen}
                 size="large"
               >
                 QR-Code scannen
@@ -370,6 +385,18 @@ export default function PurchaseDialog(props) {
           </Grid>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={openQRCode} onClose={handleQRCodeDialogClose}>
+        <DialogTitle id="form-dialog-title">QR-Code</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={1}>
+            <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
+              <QRCodeScanner callback={handleQRCodeInput} stopOnDetect stopOnClick />
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={openConfirmDialog} onClose={handleConfirmDialogClose}>
         <DialogContent>
           <Grid item xs={12} align="right">

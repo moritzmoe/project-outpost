@@ -46,6 +46,7 @@
     "react": "^16.5.2",
     "react-context-hook": "^2.1.0",
     "react-dom": "^16.5.2",
+    "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.1.2",
     "recharts": "^1.8.5",
     "sequelize": "^5.21.5",
