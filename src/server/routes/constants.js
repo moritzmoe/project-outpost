@@ -2,36 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 
-const { Op } = require('sequelize');
-const models = require('../models');
-
 const withOwner = require('../middleware/owner');
+const withAuth = require('../middleware/auth');
 
-const withAdmin = require('../middleware/admin');
+const controller = require('../controller/constants.controller');
 
-router.get('/', (req, res) => {
-  const id = parseInt(req.query.id, 10);
-  if (!id) {
-    res.status(400).json({ error: 'Please provide an id' });
-  }
-  models.Constant.findOne({
-    where: {
-      id
-    },
-    // attributes: ['id', 'name', 'barcode', 'origin', 'score'],
-  }).then(item => res.send(item));
-});
+router.get('/', controller.getConstants);
 
-router.post('/changeCo2Convert', withOwner, (req, res) => {
-  const { id, content } = req.query;
-  models.Constant.update({
-    value: content
-  }, {
-    where: {
-      id
-    }
-  }).then(res.sendStatus(200))
-    .catch(err => res.send(err));
-});
+router.put('/updateConstant', withOwner, controller.updateConstant);
 
 module.exports = router;
