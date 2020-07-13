@@ -45,7 +45,7 @@ export default function PurchaseDetailDialog(props) {
         setCreatedDate(new Date(res.data.createdAt));
         let totalScore = 0;
         res.data.Items.map((item) => {
-          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+          totalScore = parseInt(totalScore, 10) + (parseInt(item.score, 10) * item.PurchaseItem.quantity);
         });
         setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
         setItemRecScore(sortedItems[0].score);
