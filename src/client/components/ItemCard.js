@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable react/forbid-prop-types */
 import {
   Card, CardActionArea, CardContent, Grid, IconButton, makeStyles, Typography
@@ -101,7 +102,11 @@ export default function ItemCard(props) {
             </CardContent>
           </CardActionArea>
         </Card>
-        <RecommendationDialog isOpen={openRecommendation} id={item.id} handleClose={handleRecommendationClose} />
+        <RecommendationDialog
+          isOpen={openRecommendation}
+          id={item.id}
+          handleClose={handleRecommendationClose}
+        />
       </Grid>
     </div>
   );
