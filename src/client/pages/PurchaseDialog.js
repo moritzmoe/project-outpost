@@ -274,15 +274,13 @@ export default function PurchaseDialog(props) {
         let score = 0;
         res.data.Items.map((item) => {
           score = parseInt(totalScore, 10) + parseInt(item.score, 10);
+          console.log(item);
         });
         setTotalScore(score);
         setItems(res.data.Items);
       }).catch((err) => {
         setErrorMsg(err.response.data.error);
         setError(true);
-        if (err.response.data.error === 'Item not found') {
-          setOpenConfirmDialog(true);
-        }
       });
     });
     handleQRCodeDialogClose();

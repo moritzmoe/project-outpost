@@ -208,9 +208,11 @@ exports.addItemToPurchase = (req, res) => {
               attributes: ['id', 'name', 'barcode', 'origin', 'score'],
               include: [
                 { model: models.Packaging, attributes: ['name'] },
-                { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
-              ]
-            }]
+                { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] },
+              ],
+              purchaseItem
+            }, // { model: models.PurchaseItem, attributes: ['quantity'] }
+            ]
           }).then((purchaseWithNewItem) => {
             if (!purchaseWithNewItem) {
               res.status(404).json({ error: 'Purchase with new item could not be retrieved.' });
