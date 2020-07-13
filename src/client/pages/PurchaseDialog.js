@@ -23,6 +23,7 @@ import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
 import ItemSearchDialog from '../components/ItemSearchDialog';
 import ItemUpdateDialog from '../components/ItemUpdateDialog';
+import QRCodeScanner from '../components/QRCodeScanner';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -87,6 +88,7 @@ export default function PurchaseDialog(props) {
   const [itemId, setItemId] = useState(0);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
+  const [openQRCode, setOpenQRCode] = useState(false);
 
   const convertCo2ToScore = useStoreValue('co2Convert');
 
@@ -244,6 +246,48 @@ export default function PurchaseDialog(props) {
     setOpenCreate(false);
   };
 
+  const handleQRCodeOpen = () => {
+    if (purchaseId === 0) {
+      axios.post('/api/purchases').then((res) => {
+        setPurchaseId(res.data.id);
+      }).then((res) => {
+        setOpenQRCode(true);
+      });
+    } else {
+      setOpenQRCode(true);
+    }
+  };
+
+  const handleQRCodeDialogClose = () => {
+    setOpenQRCode(false);
+  };
+
+  const handleQRCodeInput = (data) => {
+    const dataString = String(data);
+    const dataArr = dataString.split(';');
+
+    dataArr.map((scan) => {
+      axios.post(`/api/purchases/item/${purchaseId}`, {
+        barcode: scan
+      }).then((res) => {
+        setBarcode(barcode);
+        let score = 0;
+        res.data.Items.map((item) => {
+          score = parseInt(totalScore, 10) + parseInt(item.score, 10);
+        });
+        setTotalScore(score);
+        setItems(res.data.Items);
+      }).catch((err) => {
+        setErrorMsg(err.response.data.error);
+        setError(true);
+        if (err.response.data.error === 'Item not found') {
+          setOpenConfirmDialog(true);
+        }
+      });
+    });
+    handleQRCodeDialogClose();
+  };
+
   return (
     <div>
       <Dialog
@@ -281,7 +325,7 @@ export default function PurchaseDialog(props) {
             <Grid item xs={12}>
               <Grid container justify="center" spacing={2}>
                 {items.map(value => (
-                  <ItemCard item={value} openDetails={handleItemDetails} />
+                  <ItemCard key={value.id} item={value} openDetails={handleItemDetails} />
                 ))}
                 {!items.length ? (
                   <Grid item>
@@ -314,6 +358,7 @@ export default function PurchaseDialog(props) {
                 variant="contained"
                 color="primary"
                 startIcon={<ShoppingCartIcon />}
+                onClick={handleQRCodeOpen}
                 size="large"
               >
                 QR-Code scannen
@@ -370,6 +415,18 @@ export default function PurchaseDialog(props) {
           </Grid>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={openQRCode} onClose={handleQRCodeDialogClose}>
+        <DialogTitle id="form-dialog-title">QR-Code</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={1}>
+            <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>
+              <QRCodeScanner callback={handleQRCodeInput} stopOnDetect stopOnClick />
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={openConfirmDialog} onClose={handleConfirmDialogClose}>
         <DialogContent>
           <Grid item xs={12} align="right">
