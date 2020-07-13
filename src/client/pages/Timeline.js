@@ -53,9 +53,9 @@ export default function Timeline() {
       let totalScore = 0;
       let allPurchases = 0;
       res.data.map((purchase) => {
+        allPurchases += 1;
         purchase.Items.map((item) => {
-          allPurchases += 1;
-          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+          totalScore = parseInt(totalScore, 10) + (parseInt(item.score, 10) * item.PurchaseItem.quantity);
         });
       });
       setScore(Math.floor((totalScore / convertCo2ToScore) / allPurchases));
