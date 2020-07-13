@@ -22,7 +22,9 @@ export default function ItemCard(props) {
   const [openRecommendation, setOpenRecommendation] = useState(false);
   const convertCo2ToScore = useStoreValue('co2Convert');
 
-  const { item, openDetails, openRec } = props;
+  const {
+    item, openDetails, openRec, quantity
+  } = props;
   let clickHelp = true;
 
   const handleRecClick = () => {
@@ -72,6 +74,12 @@ export default function ItemCard(props) {
                       <EcoIcon />
                     </IconButton>
                   ) : ''}
+                  { (quantity > 1) ? (
+                    <Typography variant="h6">
+                      {quantity}
+                      x
+                    </Typography>
+                  ) : ''}
                 </Grid>
               </Grid>
               <Typography color="textSecondary">
@@ -100,11 +108,13 @@ export default function ItemCard(props) {
 }
 
 ItemCard.defaultProps = {
-  openRec: false
+  openRec: false,
+  quantity: 1
 };
 
 ItemCard.propTypes = {
   item: PropTypes.object.isRequired,
   openDetails: PropTypes.func.isRequired,
-  openRec: PropTypes.bool
+  openRec: PropTypes.bool,
+  quantity: PropTypes.number
 };

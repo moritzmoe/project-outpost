@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const models = require('../models');
+const purchaseitem = require('../models/purchaseitem');
 
 
 function buildIncludeObj(expand) {
@@ -182,34 +183,49 @@ exports.addItemToPurchase = (req, res) => {
         res.status(404).json({ error: 'Purchase not found' });
         return;
       }
-      purchase.addItem(item).then(() => {
-        models.Purchase.findOne({
-          where: {
-            id: purchaseId,
-            userId: req.userId
-          },
-          include: [{
-            model: models.Item,
-            attributes: ['id', 'name', 'barcode', 'origin', 'score'],
-            include: [
-              { model: models.Packaging, attributes: ['name'] },
-              { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
-            ]
-          }]
-        }).then((purchaseWithNewItem) => {
-          if (!purchaseWithNewItem) {
-            res.status(404).json({ error: 'Purchase with new item could not be retrieved.' });
-            return;
-          }
-          // This Response gets send on success
-          res.send(purchaseWithNewItem);
+      let itemCount;
+      models.PurchaseItem.findOne({
+        where: {
+          PurchaseId: purchaseId,
+          ItemId: item.id
+        }
+      }).then((purchaseItem) => {
+        if (!purchaseItem) {
+          itemCount = 0;
+        } else {
+          itemCount = purchaseItem.quantity;
+        }
+
+
+        purchase.addItem(item, { through: { quantity: (itemCount + 1) } }).then(() => {
+          models.Purchase.findOne({
+            where: {
+              id: purchaseId,
+              userId: req.userId
+            },
+            include: [{
+              model: models.Item,
+              attributes: ['id', 'name', 'barcode', 'origin', 'score'],
+              include: [
+                { model: models.Packaging, attributes: ['name'] },
+                { model: models.SubCategory, attributes: ['name', 'id', 'parentCat'] }
+              ]
+            }]
+          }).then((purchaseWithNewItem) => {
+            if (!purchaseWithNewItem) {
+              res.status(404).json({ error: 'Purchase with new item could not be retrieved.' });
+              return;
+            }
+            // This Response gets send on success
+            res.send(purchaseWithNewItem);
+          }).catch((err) => {
+            console.log(`Internal error while retrieving purchase with new item:\n${err}`);
+            res.sendStatus(500);
+          });
         }).catch((err) => {
-          console.log(`Internal error while retrieving purchase with new item:\n${err}`);
+          console.log(`Internal error while adding item to purchase:\n${err}`);
           res.sendStatus(500);
         });
-      }).catch((err) => {
-        console.log(`Internal error while adding item to purchase:\n${err}`);
-        res.sendStatus(500);
       });
     }).catch((err) => {
       console.log(`Internal error while retrieving purchase:\n${err}`);

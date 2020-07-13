@@ -21,6 +21,11 @@ module.exports = {
         model: 'Items'
       }
     },
+    quantity: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

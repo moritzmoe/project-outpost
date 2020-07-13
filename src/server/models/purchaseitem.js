@@ -1,7 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
   const PurchaseItem = sequelize.define('PurchaseItem', {
     PurchaseId: DataTypes.INTEGER,
-    ItemId: DataTypes.INTEGER
+    ItemId: DataTypes.INTEGER,
+    quantity: DataTypes.INTEGER
   }, {});
   PurchaseItem.associate = function (models) {
     // associations can be defined here
