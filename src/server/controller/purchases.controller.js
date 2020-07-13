@@ -1,7 +1,5 @@
 const { Op } = require('sequelize');
 const models = require('../models');
-const purchaseitem = require('../models/purchaseitem');
-
 
 function buildIncludeObj(expand) {
   const includeObj = {
@@ -195,8 +193,6 @@ exports.addItemToPurchase = (req, res) => {
         } else {
           itemCount = purchaseItem.quantity;
         }
-
-
         purchase.addItem(item, { through: { quantity: (itemCount + 1) } }).then(() => {
           models.Purchase.findOne({
             where: {
