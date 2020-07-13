@@ -93,7 +93,7 @@ export default function ItemCard(props) {
                 </Grid>
                 <Grid item xs={5} align="right">
                   <Typography variant="h4" align="right" color="primary">
-                    {(Math.floor(item.score / convertCo2ToScore))}
+                    {(Math.floor(item.score / convertCo2ToScore) * quantity)}
                     {' '}
                   </Typography>
                 </Grid>
