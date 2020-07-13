@@ -55,7 +55,7 @@ export default function PurchaseCard(props) {
     }
     setFirstItems(itemNames);
     purchase.Items.map((item) => {
-      totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+      totalScore = parseInt(totalScore, 10) + (parseInt(item.score, 10) * item.PurchaseItem.quantity);
     });
     setTotalCO2(totalScore);
   }, [purchase]);

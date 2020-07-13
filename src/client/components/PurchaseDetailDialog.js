@@ -45,7 +45,7 @@ export default function PurchaseDetailDialog(props) {
         setCreatedDate(new Date(res.data.createdAt));
         let totalScore = 0;
         res.data.Items.map((item) => {
-          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+          totalScore = parseInt(totalScore, 10) + (parseInt(item.score, 10) * item.PurchaseItem.quantity);
         });
         setTotalPurchaseScore(Math.floor(totalScore / convertCo2ToScore));
         setItemRecScore(sortedItems[0].score);
@@ -115,7 +115,7 @@ export default function PurchaseDetailDialog(props) {
           <Grid container>
             <Grid container justify="center" spacing={2}>
               { items.map(value => (
-                <ItemCard key={value.id} item={value} openDetails={handleItemDetails} openRec />
+                <ItemCard key={value.id} item={value} openDetails={handleItemDetails} openRec quantity={value.PurchaseItem.quantity} />
               ))}
             </Grid>
             <Grid item xs={1} align="right">
