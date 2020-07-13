@@ -115,7 +115,7 @@ export default function PurchaseDetailDialog(props) {
           <Grid container>
             <Grid container justify="center" spacing={2}>
               { items.map(value => (
-                <ItemCard key={value.id} item={value} openDetails={handleItemDetails} openRec />
+                <ItemCard key={value.id} item={value} openDetails={handleItemDetails} openRec quantity={value.PurchaseItem.quantity} />
               ))}
             </Grid>
             <Grid item xs={1} align="right">
