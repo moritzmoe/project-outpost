@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 function quaggaCallback(data) {
   if (data && data.codeResult && data.codeResult.code) {
     const eanCode = data.codeResult.code;
-    if (barcodeScannerProps.callback) { barcodeScannerProps.callback(eanCode); }
+    if (barcodeScannerProps.callback && scannerIsRunning) { barcodeScannerProps.callback(eanCode); }
     if (barcodeScannerProps.stopOnDetect) {
       Quagga.stop();
       scannerIsRunning = false;
