@@ -1,7 +1,8 @@
 import {
   Button, Dialog, DialogActions, DialogContent,
   DialogContentText, DialogTitle,
-  Slide
+  Slide,
+  Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -55,7 +56,11 @@ export default function InformationDialog(props) {
             Mithilfe dieser App kannst du Einkäufe anlegen und Barcodes einscannen. Für jeden Einkauf werden deine verbrauchten Punkte
             gespeichert. Du kannst dir außerdem anschauen, wie viele Punkte du die letzten 7 Tage insgesamt verbraucht hast und wie stark dein
             Konsum von einer nachhaltigen Lebensweise entfernt ist.
+            <br />
+            <br />
+            Kontakt:
           </DialogContentText>
+          <Typography variant="h8">team-outpost@vision.com</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
