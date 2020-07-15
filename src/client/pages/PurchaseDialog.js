@@ -127,9 +127,9 @@ export default function PurchaseDialog(props) {
     axios.post(`/api/purchases/item/${purchaseId}`, {
       barcode: data
     }).then((res) => {
-      let score = totalScore;
+      let score = 0;
       res.data.Items.map((item) => {
-        score = parseInt(score, 10) + (parseInt(item.score, 10));
+        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
       });
       setTotalScore(score);
       setItems(res.data.Items);
@@ -188,9 +188,9 @@ export default function PurchaseDialog(props) {
       barcode: data
     }).then((res) => {
       setBarcode(barcode);
-      let score = totalScore;
+      let score = 0;
       res.data.Items.map((item) => {
-        score = parseInt(score, 10) + (parseInt(item.score, 10));
+        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
       });
       setTotalScore(score);
       setItems(res.data.Items);
@@ -224,9 +224,9 @@ export default function PurchaseDialog(props) {
       barcode
     }).then((res) => {
       setBarcode(barcode);
-      let score = totalScore;
+      let score = 0;
       res.data.Items.map((item) => {
-        score = parseInt(score, 10) + (parseInt(item.score, 10));
+        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
       });
       setTotalScore(score);
       setItems(res.data.Items);
@@ -271,9 +271,9 @@ export default function PurchaseDialog(props) {
         barcode: scan
       }).then((res) => {
         setBarcode(barcode);
-        let score = totalScore;
+        let score = 0;
         res.data.Items.map((item) => {
-          score = parseInt(score, 10) + (parseInt(item.score, 10));
+          score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
         });
         setTotalScore(score);
         setItems(res.data.Items);
