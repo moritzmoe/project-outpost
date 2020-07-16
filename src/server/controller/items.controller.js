@@ -44,7 +44,7 @@ exports.getItems = (req, res) => {
 };
 
 
-exports.getApprovedItems = (req, res) => {
+exports.getNotApprovedItems = (req, res) => {
   if (req.query.q) {
     models.Item.findAll({
       order: [

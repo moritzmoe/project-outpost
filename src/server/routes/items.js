@@ -10,7 +10,7 @@ const withAuth = require('../middleware/auth');
 
 router.get('/', withAdmin, controller.getItems);
 
-router.get('/approved/', withAuth, controller.getApprovedItems);
+router.get('/notApproved/', withAdmin, controller.getNotApprovedItems);
 
 router.get('/:id', withAdmin, controller.getOneItem);
 

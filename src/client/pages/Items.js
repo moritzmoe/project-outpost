@@ -119,7 +119,7 @@ export default function Items() {
       cancelNA.cancel();
     }
     cancelNA = axios.CancelToken.source();
-    axios.get(`/api/items/approved/?limit=2&offset=0&q=${query}`, { cancelToken: cancelNA.token, })
+    axios.get(`/api/items/notApproved/?limit=2&offset=0&q=${query}`, { cancelToken: cancelNA.token, })
       .then((res) => {
         setItemsNA(res.data);
       })
