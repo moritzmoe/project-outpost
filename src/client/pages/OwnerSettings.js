@@ -85,7 +85,7 @@ export default function Settings() {
             <Typography variant="h6">Co2 / Punkte Divisor:</Typography>
           </Grid>
           <Grid item>
-            <form className={classes.root} noValidate autoComplete="off" onChange={handleCo2ConvertInput}>
+            <form className={classes.root} noValidate autoComplete="off" onChange={handleCo2ConvertInput} onSubmit={(e) => { e.preventDefault(); }}>
               <TextField type="number" id="itemSearchField" className={classes.bottomSpacing} label="Co2 Dividor" variant="outlined" defaultValue={co2Convert} />
             </form>
           </Grid>

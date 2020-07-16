@@ -135,8 +135,8 @@ export default function Settings() {
             <Typography variant="h6">Vorname ändern:</Typography>
           </Grid>
           <Grid item>
-            <form className={classes.root} noValidate autoComplete="off" onChange={handleFirstnameInput}>
-              <TextField id="itemSearchField" className={classes.bottomSpacing} label="Vorname" variant="outlined" defaultValue={userFirstname} />
+            <form className={classes.root} noValidate autoComplete="off" onChange={handleFirstnameInput} onSubmit={(e) => { e.preventDefault(); }}>
+              <TextField id="vorname" className={classes.bottomSpacing} label="Vorname" variant="outlined" defaultValue={userFirstname} />
             </form>
           </Grid>
           <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleFirstnameSave}>
@@ -149,8 +149,8 @@ export default function Settings() {
             <Typography variant="h6">Nachname ändern:</Typography>
           </Grid>
           <Grid item>
-            <form className={classes.root} noValidate autoComplete="off" onChange={handleLastnameInput}>
-              <TextField id="itemSearchField" className={classes.bottomSpacing} label="Nachname" variant="outlined" defaultValue={userLastname} />
+            <form className={classes.root} noValidate autoComplete="off" onChange={handleLastnameInput} onSubmit={(e) => { e.preventDefault(); }}>
+              <TextField id="nachname" className={classes.bottomSpacing} label="Nachname" variant="outlined" defaultValue={userLastname} />
             </form>
           </Grid>
           <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleLastnameSave}>
@@ -163,8 +163,8 @@ export default function Settings() {
             <Typography variant="h6">E-Mail Adresse ändern:</Typography>
           </Grid>
           <Grid item>
-            <form className={classes.root} noValidate autoComplete="off" onChange={handleEmailInput}>
-              <TextField id="itemSearchField" className={classes.bottomSpacing} label="E-Mail" variant="outlined" defaultValue={userEmail} />
+            <form className={classes.root} noValidate autoComplete="off" onChange={handleEmailInput} onSubmit={(e) => { e.preventDefault(); }}>
+              <TextField id="email" className={classes.bottomSpacing} label="E-Mail" variant="outlined" defaultValue={userEmail} />
             </form>
           </Grid>
           <Fab color="primary" aria-label="info" className={classes.fabInfo} variant="extended" onClick={handleEmailSave}>
