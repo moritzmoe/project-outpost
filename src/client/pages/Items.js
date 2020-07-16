@@ -167,7 +167,6 @@ export default function Items() {
     const query = barcode;
     setSearchQuery(query);
     fetchSearchResults(searchQuery);
-    setMessage('Produkt wurde erfolgreich angelegt!');
     setOpenMessage(true);
     handleClose();
   };
