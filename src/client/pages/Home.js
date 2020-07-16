@@ -85,7 +85,7 @@ export default function Home() {
       let totalScore = 0;
       res.data.map((purchase) => {
         purchase.Items.map((item) => {
-          totalScore = parseInt(totalScore, 10) + parseInt(item.score, 10);
+          totalScore = parseInt(totalScore, 10) + (parseInt(item.score, 10) * item.PurchaseItem.quantity);
         });
       });
       setScore(Math.floor(totalScore / convertCo2ToScore));
