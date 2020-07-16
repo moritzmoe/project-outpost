@@ -65,7 +65,7 @@ export default function Settings() {
 
   const handleFirstnameSave = () => {
     if (!(firstNameInput === '')) {
-      axios.post(`/api/users/changeFirstname?content=${firstNameInput}`).then((res) => {
+      axios.put(`/api/users/firstname?content=${firstNameInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('Vorname erfolgreich geändert');
           setOpenMessage(true);
@@ -82,7 +82,7 @@ export default function Settings() {
 
   const handleLastnameSave = () => {
     if (!(lastnameInput === '')) {
-      axios.post(`/api/users/changeLastname?content=${lastnameInput}`).then((res) => {
+      axios.put(`/api/users/lastname?content=${lastnameInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('Nachname erfolgreich geändert');
           setOpenMessage(true);
@@ -99,7 +99,7 @@ export default function Settings() {
 
   const handleEmailSave = () => {
     if (!(emailInput === '')) {
-      axios.post(`/api/users/changeEmail?content=${emailInput}`).then((res) => {
+      axios.put(`/api/users/email?content=${emailInput}`).then((res) => {
         if (res.status === 200) {
           setMessage('E-mail Adresse erfolgreich geändert');
           setOpenMessage(true);

@@ -14,12 +14,12 @@ router.get('/totalQueryCount', withAdmin, controller.userCountOfQuery);
 
 router.get('/totalUserCount', withAdmin, controller.totalUserCount);
 
-router.post('/changeRole', withOwner, controller.changeRole);
+router.put('/role/:id', withOwner, controller.changeRole);
 
-router.post('/changeFirstname', withAuth, controller.changeFirstname);
+router.put('/firstname', withAuth, controller.changeFirstname);
 
-router.post('/changeLastname', withAuth, controller.changeLastname);
+router.put('/lastname', withAuth, controller.changeLastname);
 
-router.post('/changeEmail', withAuth, controller.changeEmail);
+router.put('/email', withAuth, controller.changeEmail);
 
 module.exports = router;

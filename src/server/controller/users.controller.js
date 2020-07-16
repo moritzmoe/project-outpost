@@ -73,7 +73,8 @@ exports.totalUserCount = (req, res) => {
 
 
 exports.changeRole = (req, res) => {
-  const { id, roleId } = req.body;
+  const id = parseInt(req.params.id, 10);
+  const { roleId } = req.body;
   models.User.update({
     role: roleId
   }, {
