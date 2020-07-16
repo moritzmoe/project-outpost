@@ -2,7 +2,6 @@ const express = require('express');
 
 const router = express.Router();
 
-const models = require('../models');
 const withAdmin = require('../middleware/admin');
 const withOwner = require('../middleware/owner');
 const withAuth = require('../middleware/auth');
