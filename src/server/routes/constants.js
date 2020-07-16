@@ -9,6 +9,6 @@ const controller = require('../controller/constants.controller');
 
 router.get('/', controller.getConstants);
 
-router.put('/updateConstant', withOwner, controller.updateConstant);
+router.put('/:id', withOwner, controller.updateConstant);
 
 module.exports = router;

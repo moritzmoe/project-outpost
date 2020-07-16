@@ -14,7 +14,8 @@ exports.getConstants = (req, res) => {
 };
 
 exports.updateConstant = (req, res) => {
-  const { id, content } = req.query;
+  const id = parseInt(req.params.id, 10);
+  const { content } = req.query;
   models.Constant.update({
     value: content
   }, {
