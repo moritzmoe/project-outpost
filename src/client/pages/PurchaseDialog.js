@@ -172,7 +172,7 @@ export default function PurchaseDialog(props) {
   };
 
   const discardPurchase = () => {
-    if (purchaseId !== 0 && purchaseId !== 0) {
+    if (purchaseId !== 0) {
       axios.delete(`/api/purchases/${purchaseId}`).then((res) => {
         clearStateAndHandleClose();
       });
