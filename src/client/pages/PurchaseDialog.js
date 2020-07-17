@@ -18,7 +18,6 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useStoreValue } from 'react-context-hook';
 import BarcodeScanner from '../components/BarcodeScanner';
-// import BarcodeTypeInDialog from '../components/BarcodeTypeInDialog';
 import ItemCard from '../components/ItemCard';
 import ItemCreationDialog from '../components/ItemCreationDialog';
 import ItemSearchDialog from '../components/ItemSearchDialog';
@@ -76,7 +75,6 @@ export default function PurchaseDialog(props) {
   const classes = useStyles();
   const { isOpen, handleClose } = props;
   const [purchaseId, setPurchaseId] = useState(0);
-  // const [openBarcodeTypeIn, setOpenBarcodeTypeIn] = useState(false);
   const [openBarcode, setOpenBarcode] = useState(false);
   const [barcode, setBarcode] = useState('');
   const [totalScore, setTotalScore] = useState(0);
@@ -93,7 +91,7 @@ export default function PurchaseDialog(props) {
   const convertCo2ToScore = useStoreValue('co2Convert');
 
   const clearStateAndHandleClose = () => {
-    if (items.length === 0) {
+    if (items.length === 0 && purchaseId !== 0) {
       axios.delete(`/api/purchases/${purchaseId}`);
     }
     setPurchaseId(0);
@@ -103,16 +101,23 @@ export default function PurchaseDialog(props) {
     setError(false);
     setErrorMsg('');
   };
-  // this is needed to detect if the users system has a camera
-  /* navigator.getMedia = (navigator.getUserMedia
-      || navigator.webkitGetUserMedia
-      || navigator.mozGetUserMedia
-      || navigator.msGetUserMedia);
-  */
 
   function addItem(data, allowItemCreation) {
+    if (purchaseId === 0) {
+      axios.post('/api/purchases').then((res) => {
+        setPurchaseId(res.data.id);
+        postItem(data, allowItemCreation, res.data.id);
+      });
+    } else {
+      postItem(data, allowItemCreation);
+    }
+  }
+
+  function postItem(data, allowItemCreation, pId) {
     setBarcode(data);
-    axios.post(`/api/purchases/item/${purchaseId}`, {
+    if (!pId) { pId = purchaseId; }
+
+    axios.post(`/api/purchases/item/${pId}`, {
       barcode: data
     }).then((res) => {
       setBarcode(barcode);
@@ -132,11 +137,6 @@ export default function PurchaseDialog(props) {
   }
 
   const handleSearchOpen = () => {
-    if (purchaseId === 0) {
-      axios.post('/api/purchases').then((res) => {
-        setPurchaseId(res.data.id);
-      });
-    }
     setOpenItemSearch(true);
   };
 
@@ -145,35 +145,13 @@ export default function PurchaseDialog(props) {
   };
 
   const handleSearchInput = (data) => {
-    /* axios.post(`/api/purchases/item/${purchaseId}`, {
-      barcode: data
-    }).then((res) => {
-      let score = 0;
-      res.data.Items.map((item) => {
-        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
-      });
-      setTotalScore(score);
-      setItems(res.data.Items);
-    }).catch((err) => {
-      setErrorMsg(err.response.data.error);
-      setError(true);
-    }); */
     addItem(data, false);
     handleItemSearchClose();
   };
 
   const handleBarcodeScan = () => {
     handleConfirmDialogClose();
-    if (purchaseId === 0) {
-      axios.post('/api/purchases').then((res) => {
-        setPurchaseId(res.data.id);
-      });
-    }
-    // navigator.getMedia({ video: true }, () => {
     setOpenBarcode(true);
-    // }, () => {
-    //  setOpenBarcodeTypeIn(true);
-    // });
   };
 
   const handleBarcodeTypeInSubmit = (evt) => {
@@ -198,32 +176,7 @@ export default function PurchaseDialog(props) {
     setOpenBarcode(false);
   };
 
-  /* const handleBarcodeTypeInClose = () => {
-    setOpenBarcodeTypeIn(false);
-  };
-  */
-
-
   const handleBarcodeInput = (data) => {
-    /* setBarcode(data);
-    axios.post(`/api/purchases/item/${purchaseId}`, {
-      barcode: data
-    }).then((res) => {
-      setBarcode(barcode);
-      let score = 0;
-      res.data.Items.map((item) => {
-        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
-      });
-      setTotalScore(score);
-      setItems(res.data.Items);
-    }).catch((err) => {
-      setErrorMsg(err.response.data.error);
-      setError(true);
-      if (err.response.data.error === 'Item not found') {
-        setOpenConfirmDialog(true);
-      }
-    }); */
-
     addItem(data, true);
     handleBarcodeDialogClose();
   };
@@ -244,21 +197,6 @@ export default function PurchaseDialog(props) {
   };
 
   const handleItemsChange = () => {
-    /* axios.post(`/api/purchases/item/${purchaseId}`, {
-      barcode
-    }).then((res) => {
-      setBarcode(barcode);
-      let score = 0;
-      res.data.Items.map((item) => {
-        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
-      });
-      setTotalScore(score);
-      setItems(res.data.Items);
-    }).catch((err) => {
-      setErrorMsg(err.response.data.error);
-      setError(true);
-    });
-    */
     addItem(barcode, false);
     handleCreateClose();
   };
@@ -273,15 +211,7 @@ export default function PurchaseDialog(props) {
   };
 
   const handleQRCodeOpen = () => {
-    if (purchaseId === 0) {
-      axios.post('/api/purchases').then((res) => {
-        setPurchaseId(res.data.id);
-      }).then((res) => {
-        setOpenQRCode(true);
-      });
-    } else {
-      setOpenQRCode(true);
-    }
+    setOpenQRCode(true);
   };
 
   const handleQRCodeDialogClose = () => {
@@ -294,21 +224,6 @@ export default function PurchaseDialog(props) {
 
     dataArr.map((scan) => {
       addItem(scan, false);
-      /*
-      axios.post(`/api/purchases/item/${purchaseId}`, {
-        barcode: scan
-      }).then((res) => {
-        setBarcode(barcode);
-        let score = 0;
-        res.data.Items.map((item) => {
-          score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
-        });
-        setTotalScore(score);
-        setItems(res.data.Items);
-      }).catch((err) => {
-        setErrorMsg(err.response.data.error);
-        setError(true);
-      }); */
     });
     handleQRCodeDialogClose();
   };
@@ -359,12 +274,6 @@ export default function PurchaseDialog(props) {
                 ) : ''}
               </Grid>
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <ScanBarcodeCard handleClick={handleBarcodeScan} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ScanQRCodeCard />
-                </Grid> */}
           </Grid>
           <Grid container spacing={3} className={classes.bottomControls}>
             <Grid item xs={12} sm={6} className={classes.alignItemsAndJustifyContent}>

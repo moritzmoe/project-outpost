@@ -1,9 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/jsx-closing-tag-location */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-tabs */
 import {
   Container, Fab, Grid, Typography
 } from '@material-ui/core';
@@ -12,17 +6,10 @@ import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSetStoreValue, useStoreValue } from 'react-context-hook';
-import { Cell, Pie, PieChart } from 'recharts';
 import PurchaseCard from '../components/PurchaseCard';
 import PurchaseDetailDialog from '../components/PurchaseDetailDialog';
 import PurchaseDialog from './PurchaseDialog';
 
-
-const data = [
-  { name: 'Group A', value: 50 },
-  { name: 'Group B', value: 20 },
-  { name: 'Group C', value: 30 },
-];
 const COLORS = ['#ff726f', '#00C49F', '#FFBB28'];
 
 const useStyles = makeStyles(theme => ({
@@ -42,30 +29,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   }
 }));
-
-
-class SimplePieChart extends React.Component {
-  render() {
-  	return (
-    	<PieChart width={350} height={350} onMouseEnter={this.onPieEnter}>
-      <Pie
-        data={data}
-        dataKey="value"
-        cx={175}
-        cy={175}
-        innerRadius={100}
-        outerRadius={130}
-        fill="#8884d8"
-        paddingAngle={5}
-      >
-        {
-          	data.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)
-          }
-      </Pie>
-    </PieChart>
-    );
-  }
-}
 
 export default function Home() {
   const classes = useStyles();
