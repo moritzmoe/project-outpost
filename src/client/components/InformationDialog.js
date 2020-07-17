@@ -60,7 +60,7 @@ export default function InformationDialog(props) {
             <br />
             Kontakt:
           </DialogContentText>
-          <Typography variant="h8">team-outpost@vision.com</Typography>
+          <Typography>team-outpost@vision.com</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
