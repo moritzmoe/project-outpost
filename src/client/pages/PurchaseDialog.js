@@ -176,6 +176,8 @@ export default function PurchaseDialog(props) {
       axios.delete(`/api/purchases/${purchaseId}`).then((res) => {
         clearStateAndHandleClose();
       });
+    } else {
+      clearStateAndHandleClose();
     }
   };
 
