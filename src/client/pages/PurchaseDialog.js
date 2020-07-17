@@ -103,22 +103,28 @@ export default function PurchaseDialog(props) {
   };
 
   function addItem(data, allowItemCreation) {
+    const arr = data.split(';');
+
     if (purchaseId === 0) {
       axios.post('/api/purchases').then((res) => {
         setPurchaseId(res.data.id);
-        postItem(data, allowItemCreation, res.data.id);
+        arr.map((item) => {
+          postItem(item, allowItemCreation, res.data.id);
+        });
       });
     } else {
-      postItem(data, allowItemCreation);
+      arr.map((item) => {
+        postItem(item, allowItemCreation, purchaseId);
+      });
     }
   }
 
-  function postItem(data, allowItemCreation, pId) {
-    setBarcode(data);
+  function postItem(itemBarcode, allowItemCreation, pId) {
+    setBarcode(itemBarcode);
     if (!pId) { pId = purchaseId; }
 
     axios.post(`/api/purchases/item/${pId}`, {
-      barcode: data
+      barcode: itemBarcode
     }).then((res) => {
       setBarcode(barcode);
       let score = 0;
@@ -166,10 +172,11 @@ export default function PurchaseDialog(props) {
   };
 
   const discardPurchase = () => {
-    if (purchaseId !== 0) {
-      axios.delete(`/api/purchases/${purchaseId}`);
+    if (purchaseId !== 0 && purchaseId !== 0) {
+      axios.delete(`/api/purchases/${purchaseId}`).then((res) => {
+        clearStateAndHandleClose();
+      });
     }
-    clearStateAndHandleClose();
   };
 
   const handleBarcodeDialogClose = () => {
@@ -220,11 +227,12 @@ export default function PurchaseDialog(props) {
 
   const handleQRCodeInput = (data) => {
     const dataString = String(data);
-    const dataArr = dataString.split(';');
 
-    dataArr.map((scan) => {
+    addItem(dataString, false);
+
+    /* dataArr.map((scan) => {
       addItem(scan, false);
-    });
+    }); */
     handleQRCodeDialogClose();
   };
 
