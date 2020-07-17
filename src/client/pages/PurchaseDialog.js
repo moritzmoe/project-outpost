@@ -110,6 +110,27 @@ export default function PurchaseDialog(props) {
       || navigator.msGetUserMedia);
   */
 
+  function addItem(data, allowItemCreation) {
+    setBarcode(data);
+    axios.post(`/api/purchases/item/${purchaseId}`, {
+      barcode: data
+    }).then((res) => {
+      setBarcode(barcode);
+      let score = 0;
+      res.data.Items.map((item) => {
+        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
+      });
+      setTotalScore(score);
+      setItems(res.data.Items);
+    }).catch((err) => {
+      setErrorMsg(err.response.data.error);
+      setError(true);
+      if (err.response.data.error === 'Item not found' && allowItemCreation) {
+        setOpenConfirmDialog(true);
+      }
+    });
+  }
+
   const handleSearchOpen = () => {
     if (purchaseId === 0) {
       axios.post('/api/purchases').then((res) => {
@@ -124,7 +145,7 @@ export default function PurchaseDialog(props) {
   };
 
   const handleSearchInput = (data) => {
-    axios.post(`/api/purchases/item/${purchaseId}`, {
+    /* axios.post(`/api/purchases/item/${purchaseId}`, {
       barcode: data
     }).then((res) => {
       let score = 0;
@@ -136,7 +157,8 @@ export default function PurchaseDialog(props) {
     }).catch((err) => {
       setErrorMsg(err.response.data.error);
       setError(true);
-    });
+    }); */
+    addItem(data, false);
     handleItemSearchClose();
   };
 
@@ -183,7 +205,7 @@ export default function PurchaseDialog(props) {
 
 
   const handleBarcodeInput = (data) => {
-    setBarcode(data);
+    /* setBarcode(data);
     axios.post(`/api/purchases/item/${purchaseId}`, {
       barcode: data
     }).then((res) => {
@@ -200,7 +222,9 @@ export default function PurchaseDialog(props) {
       if (err.response.data.error === 'Item not found') {
         setOpenConfirmDialog(true);
       }
-    });
+    }); */
+
+    addItem(data, true);
     handleBarcodeDialogClose();
   };
 
@@ -220,7 +244,7 @@ export default function PurchaseDialog(props) {
   };
 
   const handleItemsChange = () => {
-    axios.post(`/api/purchases/item/${purchaseId}`, {
+    /* axios.post(`/api/purchases/item/${purchaseId}`, {
       barcode
     }).then((res) => {
       setBarcode(barcode);
@@ -234,6 +258,8 @@ export default function PurchaseDialog(props) {
       setErrorMsg(err.response.data.error);
       setError(true);
     });
+    */
+    addItem(barcode, false);
     handleCreateClose();
   };
 
@@ -267,6 +293,8 @@ export default function PurchaseDialog(props) {
     const dataArr = dataString.split(';');
 
     dataArr.map((scan) => {
+      addItem(scan, false);
+      /*
       axios.post(`/api/purchases/item/${purchaseId}`, {
         barcode: scan
       }).then((res) => {
@@ -280,7 +308,7 @@ export default function PurchaseDialog(props) {
       }).catch((err) => {
         setErrorMsg(err.response.data.error);
         setError(true);
-      });
+      }); */
     });
     handleQRCodeDialogClose();
   };
