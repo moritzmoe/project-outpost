@@ -108,17 +108,44 @@ export default function PurchaseDialog(props) {
     if (purchaseId === 0) {
       axios.post('/api/purchases').then((res) => {
         setPurchaseId(res.data.id);
-        arr.map((item) => {
+        handleItemPost(arr, allowItemCreation, res.data.id, (arr.length - 1));
+        /* arr.map((item) => {
           postItem(item, allowItemCreation, res.data.id);
-        });
+        }); */
       });
     } else {
-      arr.map((item) => {
+      handleItemPost(arr, allowItemCreation, purchaseId, (arr.length - 1));
+      /* arr.map((item) => {
         postItem(item, allowItemCreation, purchaseId);
-      });
+      }); */
     }
   }
 
+  function handleItemPost(dataArr, allowItemCreation, pId, exitNum) {
+    if (exitNum >= 0) {
+      setBarcode(dataArr[exitNum]);
+      axios.post(`/api/purchases/item/${pId}`, {
+        barcode: dataArr[exitNum]
+      }).then((res) => {
+        // setBarcode(barcode);
+        let score = 0;
+        res.data.Items.map((item) => {
+          score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
+        });
+        setTotalScore(score);
+        setItems(res.data.Items);
+        handleItemPost(dataArr, allowItemCreation, pId, (exitNum - 1));
+      }).catch((err) => {
+        setErrorMsg(err.response.data.error);
+        setError(true);
+        handleItemPost(dataArr, allowItemCreation, pId, (exitNum - 1));
+        if (err.response.data.error === 'Item not found' && allowItemCreation) {
+          setOpenConfirmDialog(true);
+        }
+      });
+    }
+  }
+  /*
   function postItem(itemBarcode, allowItemCreation, pId) {
     setBarcode(itemBarcode);
     if (!pId) { pId = purchaseId; }
@@ -140,7 +167,7 @@ export default function PurchaseDialog(props) {
         setOpenConfirmDialog(true);
       }
     });
-  }
+  } */
 
   const handleSearchOpen = () => {
     setOpenItemSearch(true);
