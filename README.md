@@ -48,7 +48,7 @@ Welcome to Project Outpost. This repository contains all the necessary informati
   npx sequelize-cli db:migrate
   ```
 
-  *(This will create the database schema)*
+  *(This will create the database schema) If the command does not work install the Sequelize CLI (`npm i -g sequelize-cli`)*
 
   - To generate some initial data (initial categories, origins and packaging options) run:
 
