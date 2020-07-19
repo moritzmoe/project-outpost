@@ -103,13 +103,19 @@ exports.getOneItem = (req, res) => {
 
 exports.createItem = (req, res) => {
   const {
-    name, weight, categoryId, barcode, packaging, origin, approved
+    name, weight, categoryId, barcode, packaging, origin
   } = req.body;
   if (!name || !weight || !categoryId || !barcode || !packaging || !origin) {
     res.status(400).json({
       error: 'Please provide all neccessary information needed to create an item'
     });
     return;
+  }
+  let approved = 0;
+  if (req.role === 'Admin') {
+    approved = 1;
+  } else if (req.role === 'Owner') {
+    approved = 1;
   }
   models.Item.findOne({
     where: {
