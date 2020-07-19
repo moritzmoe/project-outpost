@@ -43,13 +43,11 @@ export default function ItemCreationDialog(props) {
   const [barcodeErr, setBarcodeErr] = useState(false);
   const [barcodeErrMsg, setBarcodeErrMsg] = useState('');
   const isAdmin = useStoreValue('isAdmin');
-  const [needApproval, setNeedApproval] = useState(0);
 
   useEffect(() => {
     axios.get('/api/categories').then((res) => { setCategories(res.data); });
     axios.get('/api/packaging').then((res) => { setPackaging(res.data); });
     axios.get('/api/origins').then((res) => { setOrigin(res.data); });
-    if (isAdmin) setNeedApproval(1);
   }, []);
 
   const handleCategoryPick = (evt) => {
@@ -90,7 +88,7 @@ export default function ItemCreationDialog(props) {
       return;
     }
     axios.post('/api/items', {
-      name, weight, categoryId: subCategoryId, barcode, packaging: packagingId, origin: originId, approved: needApproval
+      name, weight, categoryId: subCategoryId, barcode, packaging: packagingId, origin: originId
     }).then((res) => {
       if (res.status === 200) {
         clearState();
