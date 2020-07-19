@@ -109,15 +109,9 @@ export default function PurchaseDialog(props) {
       axios.post('/api/purchases').then((res) => {
         setPurchaseId(res.data.id);
         handleItemPost(arr, allowItemCreation, res.data.id, (arr.length - 1));
-        /* arr.map((item) => {
-          postItem(item, allowItemCreation, res.data.id);
-        }); */
       });
     } else {
       handleItemPost(arr, allowItemCreation, purchaseId, (arr.length - 1));
-      /* arr.map((item) => {
-        postItem(item, allowItemCreation, purchaseId);
-      }); */
     }
   }
 
@@ -127,7 +121,6 @@ export default function PurchaseDialog(props) {
       axios.post(`/api/purchases/item/${pId}`, {
         barcode: dataArr[exitNum]
       }).then((res) => {
-        // setBarcode(barcode);
         let score = 0;
         res.data.Items.map((item) => {
           score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
@@ -145,29 +138,6 @@ export default function PurchaseDialog(props) {
       });
     }
   }
-  /*
-  function postItem(itemBarcode, allowItemCreation, pId) {
-    setBarcode(itemBarcode);
-    if (!pId) { pId = purchaseId; }
-
-    axios.post(`/api/purchases/item/${pId}`, {
-      barcode: itemBarcode
-    }).then((res) => {
-      setBarcode(barcode);
-      let score = 0;
-      res.data.Items.map((item) => {
-        score = parseInt(score, 10) + ((parseInt(item.score, 10)) * item.PurchaseItem.quantity);
-      });
-      setTotalScore(score);
-      setItems(res.data.Items);
-    }).catch((err) => {
-      setErrorMsg(err.response.data.error);
-      setError(true);
-      if (err.response.data.error === 'Item not found' && allowItemCreation) {
-        setOpenConfirmDialog(true);
-      }
-    });
-  } */
 
   const handleSearchOpen = () => {
     setOpenItemSearch(true);

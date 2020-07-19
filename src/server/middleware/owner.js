@@ -14,6 +14,7 @@ const withOwner = function (req, res, next) {
         res.status(401).send('Unauthorized: Invalid token');
       } else if (decoded.role === 'Owner') {
         req.userId = decoded.id;
+        req.role = decoded.role;
         next();
       } else {
         res.status(401).send('Unauthorized: Owner Role required');
