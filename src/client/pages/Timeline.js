@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import DateFnsUtils from '@date-io/date-fns';
 import {
   Container, Fab, Grid, Typography

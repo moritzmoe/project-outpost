@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable react/forbid-prop-types */
 import {
   Card, CardActionArea, CardContent, Grid, makeStyles,
   Typography

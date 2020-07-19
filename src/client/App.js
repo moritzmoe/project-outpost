@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable react/destructuring-assignment */
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';

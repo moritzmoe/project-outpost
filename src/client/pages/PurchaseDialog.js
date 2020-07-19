@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import {
   AppBar, Button,
   Container, Dialog,

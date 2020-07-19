@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Origins', [
     { name: 'Deutschland', co2: 50, createdAt: new Date(), updatedAt: new Date() },

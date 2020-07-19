@@ -1,9 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/jsx-closing-tag-location */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-tabs */
 import {
   Container, Fab, Grid, Snackbar, TextField, Typography
 } from '@material-ui/core';

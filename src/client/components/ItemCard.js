@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable react/forbid-prop-types */
 import {
   Card, CardActionArea, CardContent, Grid, IconButton, makeStyles, Typography
 } from '@material-ui/core';

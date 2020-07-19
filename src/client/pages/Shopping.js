@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   Dialog, DialogContent, DialogTitle, Fab, Grid, IconButton, Snackbar, TextField, Typography
 } from '@material-ui/core';

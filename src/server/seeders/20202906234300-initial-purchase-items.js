@@ -1,5 +1,3 @@
-/* eslint-disable object-curly-newline */
-
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('PurchaseItems', [
 

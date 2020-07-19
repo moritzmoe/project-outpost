@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkInsert('Categories', [
@@ -12,17 +11,6 @@ module.exports = {
       { name: 'Obst', createdAt: new Date(), updatedAt: new Date() },
       { name: 'Sonstiges, Gewürze, Fertiggerichte', createdAt: new Date(), updatedAt: new Date() },
       { name: 'Getränke', createdAt: new Date(), updatedAt: new Date() }
-      /* { id: 1, name: 'Fette, Öle', createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, name: 'Fisch, Meerestiere', createdAt: new Date(), updatedAt: new Date() },
-      { id: 3, name: 'Fleisch, Geflügel, Eier', createdAt: new Date(), updatedAt: new Date() },
-      { id: 4, name: 'Gemüse, Pilze', createdAt: new Date(), updatedAt: new Date() },
-      { id: 5, name: 'Getreideprodukte', createdAt: new Date(), updatedAt: new Date() },
-      { id: 6, name: 'Hülsenfrüchte, Samen, Nüsse', createdAt: new Date(), updatedAt: new Date() },
-      { id: 7, name: 'Milch und Milchprodukte', createdAt: new Date(), updatedAt: new Date() },
-      { id: 8, name: 'Obst', createdAt: new Date(), updatedAt: new Date() },
-      { id: 9, name: 'Sonstiges, Gewürze, Fertiggerichte', createdAt: new Date(),
-      updatedAt: new Date() },
-      { id: 10, name: 'Getränke', createdAt: new Date(), updatedAt: new Date() } */
     ], {});
 
     const categories = await queryInterface.sequelize.query(

@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Packagings', [
     { name: 'Einfach verpackt, Plastik', co2: 195, createdAt: new Date(), updatedAt: new Date() },

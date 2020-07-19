@@ -1,5 +1,3 @@
-/* eslint-disable object-curly-newline */
-
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Items', [
     { name: 'Black Tiger Garnelen', weight: 160, categoryId: 13, barcode: '4388844025929', packaging: 13, origin: 1, score: 2500, createdBy: 1, lastUpdatedBy: 1, createdAt: new Date(), updatedAt: new Date(), approved: 1 },
