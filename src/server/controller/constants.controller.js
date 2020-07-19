@@ -15,7 +15,15 @@ exports.getConstants = (req, res) => {
 
 exports.updateConstant = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const { content } = req.query;
+  const {
+    content
+  } = req.query;
+  if (!content) {
+    res.status(400).json({
+      error: 'Please provide a the updated value to update the constant'
+    });
+    return;
+  }
   models.Constant.update({
     value: content
   }, {
