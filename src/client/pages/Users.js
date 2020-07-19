@@ -75,7 +75,7 @@ export default function Users() {
 
   const handleRoleChange = (evt, id) => {
     const roleId = evt.target.value;
-    axios.post('/api/users/changeRole', { id, roleId })
+    axios.put(`/api/users/role/${id}`, { roleId })
       .then((res) => {
         if (res.status === 200) {
           if (!searchQuery) {
