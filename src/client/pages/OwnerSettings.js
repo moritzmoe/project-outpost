@@ -36,7 +36,7 @@ export default function Settings() {
   const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
-    setPageName('Owner Settings');
+    setPageName('Owner Einstellungen');
   }, []);
 
   const handleCo2ConvertInput = (input) => {

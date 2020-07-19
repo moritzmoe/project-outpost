@@ -90,7 +90,7 @@ export default function Items() {
   useEffect(() => {
     fetchSearchResults(searchQuery);
     fetchSearchResultsNA(searchQueryNA);
-    setPageName('Item Database');
+    setPageName('Produktdatenbank');
   }, []);
 
   useEffect(() => {

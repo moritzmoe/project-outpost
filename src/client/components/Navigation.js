@@ -140,15 +140,15 @@ export default function Navigation(props) {
           <List subheader={<ListSubheader>Du bist ein Administrator:</ListSubheader>}>
             <ListItem button onClick={() => { setSelected('Item Database'); RouterHistory.push('/items'); }} selected={selected === 'Item Database'} key="Items">
               <ListItemIcon><StorageIcon /></ListItemIcon>
-              <ListItemText primary="Item Database" />
+              <ListItemText primary="Produktdatenbank" />
             </ListItem>
             <ListItem button onClick={() => { setSelected('User Management'); RouterHistory.push('/users'); }} selected={selected === 'User Management'} key="Users">
               <ListItemIcon><RecentActorsIcon /></ListItemIcon>
-              <ListItemText primary="User Management" />
+              <ListItemText primary="Nutzerverwaltung" />
             </ListItem>
             <ListItem button onClick={() => { setSelected('Category Management'); RouterHistory.push('/categories'); }} selected={selected === 'Category Management'} key="Categories">
               <ListItemIcon><Ballot /></ListItemIcon>
-              <ListItemText primary="Category Management" />
+              <ListItemText primary="Kategorien" />
             </ListItem>
           </List>
         </>
@@ -159,7 +159,7 @@ export default function Navigation(props) {
           <List subheader={<ListSubheader>Du bist ein Owner:</ListSubheader>}>
             <ListItem button onClick={() => { setSelected('Owner Settings'); RouterHistory.push('/ownersettings'); }} selected={selected === 'Owner Settings'} key="OwnerSettings">
               <ListItemIcon><StorageIcon /></ListItemIcon>
-              <ListItemText primary="Owner Settings" />
+              <ListItemText primary="Owner Einstellungen" />
             </ListItem>
           </List>
         </>

@@ -64,7 +64,7 @@ export default function Users() {
   };
 
   useEffect(() => {
-    setPageName('User Management');
+    setPageName('Nutzerverwaltung');
     axios.get('/api/users/totalUserCount').then((res) => {
       setTotalUserCount(res.data);
       axios.get(`api/users?limit=${rowsPerPage}&offset=0`).then((response) => {

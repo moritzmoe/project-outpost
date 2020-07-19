@@ -82,7 +82,7 @@ export default function Categories() {
         return { ...prevState, data };
       });
     });
-    setPageName('Category Database');
+    setPageName('Kategorien');
   }, []);
 
   const handleRowClick = (event, rowData) => {
