@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/moritz158/project-outpost.svg?token=uTrfHuycA9MEVotDbaQq&branch=master)](https://travis-ci.com/moritz158/project-outpost)
 
-Welcome to Project Outpost. This repository contains all the necessary information and all the code to get the app up and running. When looking at the [Project](https://github.com/moritz158/project-outpost/projects/1) section of this repo all todos can be found. Below is some basic information on how to setup the local development environment and how to configure VS Code for this project. There is also some information on how this repository is structured. Some more information can be found in the [wiki-section](https://github.com/moritz158/project-outpost/wiki) of this project.
+Welcome to Project Outpost. This repository contains all the necessary information and all the code to get the app up and running. Below is some basic information on how to setup the local development environment and how to configure VS Code for this project. There is also some information on how this repository is structured.
 
 ## Setting up the local development environment
 
@@ -72,19 +72,7 @@ The following extensions are recommended:
 
 - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) - to manage the database containers
 - [ES7 React/Redux/GraphQL/React-Native snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets) - for React Development
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - to ensure code-quality this project uses ESLint. [Airbnb's](https://github.com/airbnb/javascript) Style Guide is used.
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - takes care of all the formatting
-
-Use the following settings with the extensions above installed:
-
-```json
-{
-    "eslint.alwaysShowStatus": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    }
-}
-```
 
 
 ## Repository Structure
