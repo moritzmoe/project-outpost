@@ -1,24 +1,24 @@
 {
 	"info": {
 		"_postman_id": "5662e2e5-4553-4607-bb25-9910f35bb6f4",
-		"name": "project-outpost",
+		"name": "outpost",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Items - Admin Required",
+			"name": "Items",
 			"item": [
 				{
-					"name": "All Items",
+					"name": "All Items (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/items?limit=200&offset=0",
+							"raw": "localhost:3000/api/items?limit=200&offset=0",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"items"
@@ -38,33 +38,33 @@
 					"response": []
 				},
 				{
-					"name": "Single Item",
+					"name": "Single Item (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/items/6",
+							"raw": "localhost:3000/api/items/3",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"items",
-								"6"
+								"3"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update Item",
+					"name": "Update Item (ADMIN)",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Bacillol Tissues\",\n    \"category\": \"Hygiene\",\n    \"barcode\": \"4031678039814\",\n    \"packtype\": \"Plastik\",\n    \"packmat\": \"Plastik\",\n    \"origin\": \"N/A\",\n    \"score\": \"50\"\n}",
+							"raw": "{\n    \"name\":\"Hortamira Biomais\",\n    \"weight\":500,\n    \"subCategoryId\":45,\n    \"packagingId\":1,\n    \"originId\":1,\n    \"score\":565,\n    \"barcode\":\"4327475060695\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -72,28 +72,28 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/items/24",
+							"raw": "localhost:3000/api/items/38",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"items",
-								"24"
+								"38"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Add Item",
+					"name": "Add Item (USER)",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"6 Eier aus Bodenhaltung\",\n\t\"weight\": 210,\n    \"categoryId\": 30,\n    \"barcode\": \"4260089830233\",\n    \"packaging\": 13,\n    \"origin\": 1\n}",
+							"raw": "{\n\t\"name\": \"6 Eier aus Bodenhaltung\",\n\t\"weight\": 210,\n    \"categoryId\": 27,\n    \"barcode\": \"4260689830243\",\n    \"packaging\": 13,\n    \"origin\": 2\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,11 +101,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/items",
+							"raw": "localhost:3000/api/items",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"items"
@@ -115,20 +115,40 @@
 					"response": []
 				},
 				{
-					"name": "Delete Item",
+					"name": "Delete Item (ADMIN)",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/items/1",
+							"raw": "localhost:3000/api/items/1",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"items",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Not Approved Items (ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/items/notApproved",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"items",
+								"notApproved"
 							]
 						}
 					},
@@ -160,10 +180,10 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Users - Admin Required",
+			"name": "Users",
 			"item": [
 				{
-					"name": "All Users",
+					"name": "All Users (ADMIN)",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -180,11 +200,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/users/",
+							"raw": "localhost:3000/api/users/",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"users",
@@ -195,13 +215,13 @@
 					"response": []
 				},
 				{
-					"name": "Change Admin",
+					"name": "Change Role (OWNER)",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": 2\n}",
+							"raw": "{\n\t\"roleId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -209,7 +229,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/users/changeAdmin",
+							"raw": "localhost:8081/api/users/role/3",
 							"host": [
 								"localhost"
 							],
@@ -217,14 +237,15 @@
 							"path": [
 								"api",
 								"users",
-								"changeAdmin"
+								"role",
+								"3"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Total User Count",
+					"name": "Total User Count (ADMIN)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -244,12 +265,107 @@
 					"response": []
 				},
 				{
-					"name": "Total User Query Count",
+					"name": "Total User Query Count (ADMIN)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "localhost:3000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Firstname (USER)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"newOwner\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/users/firstname?content=newFirstname",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"firstname"
+							],
+							"query": [
+								{
+									"key": "content",
+									"value": "newFirstname"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Lastname (USER)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/users/lastname?content=newLastname",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"lastname"
+							],
+							"query": [
+								{
+									"key": "content",
+									"value": "newLastname"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change E-Mail (USER)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/users/email?content=newEmail",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"email"
+							],
+							"query": [
+								{
+									"key": "content",
+									"value": "newEmail"
+								}
+							]
 						}
 					},
 					"response": []
@@ -261,16 +377,16 @@
 			"name": "Categories",
 			"item": [
 				{
-					"name": "Get all Categories",
+					"name": "All Categories (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/categories/",
+							"raw": "localhost:3000/api/categories/",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"categories",
@@ -281,7 +397,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Subcategories of Category",
+					"name": "Subcategories of Category (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -300,15 +416,172 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create Category (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ExampleCat\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/categories",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/categories/11",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"renamedExampleCat\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/categories/12",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Subcategory (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"newSubCat\",\n    \"co2\": 10,\n    \"parentCat\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/categories/subCats",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"subCats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Subcategory (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/categories/subCats/150",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"subCats",
+								"150"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Subcategory (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"parentCat\": 2,\n    \"name\": \"Fisch (frisch)\",\n    \"co2\": 6250 \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/categories/subCats/11",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"subCats",
+								"11"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Packaging",
+			"name": "Packaging, Origins, Recommendations",
 			"item": [
 				{
-					"name": "Get all Packaging",
+					"name": "Packaging (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -325,6 +598,54 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Origins (USER)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/origins",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"origins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recommendations (USER)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/recommendations?score=340&subCategory=113",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recommendations"
+							],
+							"query": [
+								{
+									"key": "score",
+									"value": "340"
+								},
+								{
+									"key": "subCategory",
+									"value": "113"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -333,7 +654,7 @@
 			"name": "Purchases",
 			"item": [
 				{
-					"name": "Create Purchase",
+					"name": "Create Purchase (USER)",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -347,11 +668,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/purchases",
+							"raw": "localhost:3000/api/purchases",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"purchases"
@@ -361,13 +682,13 @@
 					"response": []
 				},
 				{
-					"name": "Add Item to Purchase",
+					"name": "Add Item to Purchase (USER)",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"barcode\": \"4316268370059\"\n}",
+							"raw": "{\n  \"barcode\": \"4260189830233\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -375,76 +696,87 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/purchases/item/3",
+							"raw": "localhost:3000/api/purchases/item/1",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"purchases",
 								"item",
-								"3"
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Purchase",
+					"name": "Delete Purchase (USER)",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/purchases/7",
+							"raw": "localhost:3000/api/purchases/1",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"purchases",
-								"7"
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Purchase ",
+					"name": "Get Purchase With Items (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/purchases/3",
+							"raw": "localhost:3000/api/purchases/16?expand=ITEMS",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "3000",
 							"path": [
 								"api",
 								"purchases",
-								"3"
+								"16"
+							],
+							"query": [
+								{
+									"key": "expand",
+									"value": "ITEMS"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get all Purchases of User",
+					"name": "Get all Purchases of User (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/purchases/",
+							"raw": "localhost:8081/api/purchases?expand=ITEMS",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
 								"api",
-								"purchases",
-								""
+								"purchases"
+							],
+							"query": [
+								{
+									"key": "expand",
+									"value": "ITEMS"
+								}
 							]
 						}
 					},
@@ -454,16 +786,148 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Origins",
+			"name": "Authentication",
 			"item": [
 				{
-					"name": "Get all Origins",
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"owner@test.com\",\n\t\"password\": \"secure\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth"
+							]
+						},
+						"description": "Login User and get Token"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstname\": \"test\",\n\t\"lastname\": \"test\",\n\t\"email\": \"test@test.de\",\n\t\"password\": \"secure\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register new User to App"
+					},
+					"response": []
+				},
+				{
+					"name": "Check Auth Token (USER)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
-						}
+							"raw": "localhost:3000/api/auth/checkToken",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"checkToken"
+							]
+						},
+						"description": "Check if user sends requests with authentication token"
+					},
+					"response": []
+				},
+				{
+					"name": "Check Admin (ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/auth/checkAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"checkAdmin"
+							]
+						},
+						"description": "Check if user is administrator"
+					},
+					"response": []
+				},
+				{
+					"name": "Current User (USER)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/auth/user",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"user"
+							]
+						},
+						"description": "Retrieves the current user"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout (USER)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/auth/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logs out current user - Cookie gets destroyed."
 					},
 					"response": []
 				}
@@ -471,82 +935,61 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Register User",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"firstname\": \"Peter\",\n\t\"lastname\": \"Parker\",\n\t\"email\": \"peter@parker.spiderman\",\n\t\"password\": \"secure\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Constants",
+			"item": [
+				{
+					"name": "Constant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/constants?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"constants"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8081/api/auth/register",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login - Get Token",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"peter@parker.spiderman\",\n\t\"password\": \"secure\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Update Constant (OWNER)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/constants/1?content=87",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"constants",
+								"1"
+							],
+							"query": [
+								{
+									"key": "content",
+									"value": "87"
+								}
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8081/api/auth/",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"auth",
-						""
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Logout",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8081/api/auth/logout",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"auth",
-						"logout"
-					]
-				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
