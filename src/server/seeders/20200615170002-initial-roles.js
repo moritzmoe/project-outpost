@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Roles', [
     { id: 1, name: 'User', createdAt: new Date(), updatedAt: new Date() },
