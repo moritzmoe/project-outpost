@@ -1,24 +1,10 @@
--- get all subcategories with their parent cat names OUTDATED
+-- get all subcategories with their parent cat names
 SELECT sc.id, sc.name AS subcategory, c.name AS parentcategory
-FROM "SubCatgories"  AS sc
+FROM "SubCategories"  AS sc
 INNER JOIN "Categories" AS c
 ON (sc."parentCat" = c.id);
 
-
--- drop all tables
-DROP TABLE "Categories" CASCADE;
-DROP TABLE "Items" CASCADE;
-DROP TABLE "Packagings" CASCADE;
-DROP TABLE "Purchases" CASCADE;
-DROP TABLE "SubCategories" CASCADE;
-DROP TABLE "PurchaseItems" CASCADE;
-DROP TABLE "Origins" CASCADE;
-DROP TABLE "Constants" CASCADE;
-DROP TABLE "Users" CASCADE;
-DROP TABLE "Roles" CASCADE;
-DROP TABLE "SequelizeMeta" CASCADE;
-
---overview of all items OUTDATED
+--overview of all items 
 SELECT "Item"."barcode", "Item"."name", "Item"."weight", "Item"."score",
     "SubCategory"."name" AS "SubCategory", "SubCategory"."co2" AS "SubCategory.co2", 
     "Packaging"."name" AS "Packaging", "Packaging"."co2" AS "Packaging.co2", 
@@ -29,7 +15,7 @@ FROM "Items" AS "Item"
     LEFT OUTER JOIN "Origins" AS "Origin" ON "Item"."origin" = "Origin"."id" 
 ORDER BY "Item"."updatedAt" DESC;
 
---overview of all purchases OUTDATED
+--overview of all purchases
 SELECT 
 "Purchase"."id" AS "purchase.id", 
 "Purchase->User"."email" AS "user.email",
@@ -38,13 +24,20 @@ SELECT
 "Items"."score" AS "item.score",
 "Items->Packaging"."name" AS "item.packaging", 
 "Items->SubCategory"."name" AS "item.subcategory",
-"Items->Origin"."name" AS "item.origin"
+"Items->Origin"."name" AS "item.origin",
+"Purchase"."createdAt" AS "Purchase.CreatedAt"
 FROM "Purchases" AS "Purchase" 
-LEFT OUTER JOIN ( "PurchaseItems" AS "Items->PurchaseItem" INNER JOIN "Items" AS "Items" ON "Items"."id" = "Items->PurchaseItem"."ItemId") ON "Purchase"."id" = "Items->PurchaseItem"."PurchaseId" 
-LEFT OUTER JOIN "Packagings" AS "Items->Packaging" ON "Items"."packaging" = "Items->Packaging"."id" 
-LEFT OUTER JOIN "SubCategories" AS "Items->SubCategory" ON "Items"."categoryId" = "Items->SubCategory"."id" 
-LEFT OUTER JOIN "Origins" AS "Items->Origin" ON "Items"."origin" = "Items->Origin"."id"
-LEFT OUTER JOIN "Users" AS "Purchase->User" ON "Purchase"."userId" = "Purchase->User"."id"
+LEFT OUTER JOIN ( "PurchaseItems" AS "Items->PurchaseItem" 
+INNER JOIN "Items" AS "Items" 
+ON "Items"."id" = "Items->PurchaseItem"."ItemId") 
+ON "Purchase"."id" = "Items->PurchaseItem"."PurchaseId" 
+LEFT OUTER JOIN "Packagings" AS "Items->Packaging" 
+ON "Items"."packaging" = "Items->Packaging"."id" 
+LEFT OUTER JOIN "SubCategories" AS "Items->SubCategory" 
+ON "Items"."categoryId" = "Items->SubCategory"."id" 
+LEFT OUTER JOIN "Origins" AS "Items->Origin" 
+ON "Items"."origin" = "Items->Origin"."id"
+LEFT OUTER JOIN "Users" AS "Purchase->User" 
+ON "Purchase"."userId" = "Purchase->User"."id"
 ORDER BY "Purchase"."updatedAt" DESC;
-
     
