@@ -4,6 +4,7 @@
 
 Welcome to Project Outpost. This repository contains all the necessary information and all the code to get the app up and running. Below is some basic information on how to setup the local development environment and how to configure VS Code for this project. There is also some information on how this repository is structured.
 
+
 ## Setting up the local development environment
 
 - Make sure to have [node.js](https://nodejs.org/en/) (Version 12) installed on your machine (check with `node --version`).
