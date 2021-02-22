@@ -1,7 +1,5 @@
 # Project Outpost 🌿
 
-[![Build Status](https://travis-ci.com/moritz158/project-outpost.svg?token=uTrfHuycA9MEVotDbaQq&branch=master)](https://travis-ci.com/moritz158/project-outpost)
-
 Welcome to Project Outpost. This repository contains all the necessary information and all the code to get the app up and running. Below is some basic information on how to setup the local development environment and how to configure VS Code for this project. There is also some information on how this repository is structured.
 
 
