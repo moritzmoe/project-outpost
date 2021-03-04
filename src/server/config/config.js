@@ -4,7 +4,7 @@ module.exports = {
     username: 'postgres',
     password: 'my_pass',
     database: 'postgres',
-    host: 'localhost',
+    host: 'db',
     dialect: 'postgres'
   },
   test: {
@@ -12,6 +12,12 @@ module.exports = {
     storage: ':memory:'
   },
   production: {
+    username: 'postgres',
+    password: 'my_pass',
+    database: 'postgres',
+    host: 'db',
+    dialect: 'postgres'
+    /*
     username: 'postgres',
     password: process.env.DB_PASSWORD,
     database: 'postgresdb',
@@ -21,6 +27,6 @@ module.exports = {
     ssl: true,
     dialectOptions: {
       ssl: 'Amazon RDS'
-    }
+    } */
   }
 };
